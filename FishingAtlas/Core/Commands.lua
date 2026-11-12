@@ -48,6 +48,22 @@ function commands.run(raw)
     say(ns.storage.count() .. " observations saved account-wide")
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
+  elseif command == "route" then
+    local mapID, x, y = location()
+    if not mapID then say(x); return end
+    local matches = ns.routes.plan(mapID, x, y, rest)
+    say(#matches .. " matching saved positions on this map, nearest first")
+    for i = 1, math.min(#matches, 8) do
+      local n = matches[i].node
+      say(string.format("%s at %.1f, %.1f", n.label, n.x * 100, n.y * 100))
+    end
+  elseif command == "guide" then
+    local results = ns.guides.fishSearch(rest)
+    say(#results .. " matching fish entries")
+    for i = 1, math.min(#results, 8) do
+      local fish = results[i]
+      say(fish.name .. " (" .. fish.confidence .. ")")
+    end
   elseif command == "caught" then
     local count, name = rest:match("^(%d+)%s+(.+)$")
     name = name or rest
@@ -98,6 +114,6 @@ function commands.run(raw)
   else
     say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
     say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
-    say("Journal: caught [quantity] <item name>, collection")
+    say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
   end
 end
