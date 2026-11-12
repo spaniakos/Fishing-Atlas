@@ -21,6 +21,7 @@ jobs:
           luacheck FishingAtlas tests --config .luacheckrc
           lua5.1 tests/test_storage.lua
           lua5.1 tests/test_commands.lua
+          lua5.1 tests/test_fishing.lua
           python3 scripts/validate.py
       - name: Package
         run: |
