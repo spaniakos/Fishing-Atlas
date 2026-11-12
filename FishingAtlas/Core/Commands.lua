@@ -31,7 +31,9 @@ function commands.run(raw)
     if not mapID then say(x); return end
     local node, created = ns.storage.add(mapID, x, y, rest, "manual")
     if not node then say(created); return end
-    say((created and "Saved" or "Updated") .. " player-position observation: " .. node.label .. string.format(" (%.1f, %.1f)", x * 100, y * 100))
+    local status = created and "Saved" or "Updated"
+    say(status .. " player-position observation: " .. node.label ..
+      string.format(" (%.1f, %.1f)", x * 100, y * 100))
   elseif command == "nearby" then
     local mapID, err = location()
     if not mapID then say(err); return end
@@ -39,7 +41,8 @@ function commands.run(raw)
     say(#records .. " stored historical observations in this zone (not confirmed active pools)")
     for i = 1, math.min(#records, 10) do
       local n = records[i]
-      say(string.format("%s: %.1f, %.1f (%d sightings)", n.label or "Spot", (n.x or 0) * 100, (n.y or 0) * 100, n.sightings or 1))
+      say(string.format("%s: %.1f, %.1f (%d sightings)",
+        n.label or "Spot", (n.x or 0) * 100, (n.y or 0) * 100, n.sightings or 1))
     end
   elseif command == "stats" then
     say(ns.storage.count() .. " observations saved account-wide")
