@@ -34,6 +34,31 @@ function commands.run(raw)
     local status = created and "Saved" or "Updated"
     say(status .. " player-position observation: " .. node.label ..
       string.format(" (%.1f, %.1f)", x * 100, y * 100))
+  elseif command == "school" then
+    local mapID, x, y = location()
+    if not mapID then say(x); return end
+    local rec, created = ns.schools.record(mapID, x, y, rest)
+    if not rec then say(created); return end
+    say((created and "Recorded" or "Updated") .. " school proximity: " .. rec.label ..
+      " (player coordinates, NOT verified school spawn)")
+  elseif command == "schools" then
+    local mapID, err = location()
+    if not mapID then say(err); return end
+    local list = ns.schools.inZone(mapID)
+    say(#list .. " manually observed school candidates in current zone")
+    for i = 1, math.min(#list, 15) do
+      local rec = list[i]
+      say(string.format("%s at player %.1f, %.1f (%d sightings)", rec.label,
+        rec.x * 100, rec.y * 100, rec.sightings))
+    end
+  elseif command == "pole" or command == "lure" then
+    local kind = command == "pole" and "fishing_pole" or "lure"
+    local ok, name = ns.gear.set(kind, rest)
+    say(ok and ("Saved preferred " .. command .. ": " .. name .. " (manual equip only)") or name)
+  elseif command == "profile" then
+    local profile = ns.gear.profile()
+    say("Pole: " .. (profile.fishing_pole and ns.catalog.name("item", profile.fishing_pole) or "not selected"))
+    say("Lure: " .. (profile.lure and ns.catalog.name("item", profile.lure) or "not selected"))
   elseif command == "nearby" then
     local mapID, err = location()
     if not mapID then say(err); return end
@@ -45,7 +70,7 @@ function commands.run(raw)
         n.label or "Spot", (n.x or 0) * 100, (n.y or 0) * 100, n.sightings or 1))
     end
   elseif command == "stats" then
-    say(ns.storage.count() .. " observations saved account-wide")
+    say(ns.storage.count() .. " ordinary fishing positions, " .. ns.schools.total() .. " school candidates")
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
   elseif command == "route" then
@@ -136,6 +161,15 @@ function commands.run(raw)
       ns.storage.db.settings.notifications = rest == "on"
       say("Notifications " .. rest)
     else say("Use: /fa notify on|off") end
+  elseif command == "waypointschool" then
+    local node = ns.schools.latest()
+    if not node then say("No school candidates saved"); return end
+    if TomTom and type(TomTom.AddWaypoint) == "function" then
+      local ok = pcall(TomTom.AddWaypoint, TomTom, node.mapID, node.x, node.y,
+        {title = "Fishing Atlas: near " .. node.label .. " (unconfirmed)", persistent = false})
+      if ok then say("TomTom school-candidate waypoint created"); return end
+    end
+    say("TomTom is unavailable or rejected this waypoint")
   elseif command == "waypoint" then
     local node = ns.storage.latest()
     if not node then say("No observations yet"); return end
@@ -146,8 +180,8 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
-    say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
+    say("Commands: /fa add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
+    say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>")
   end

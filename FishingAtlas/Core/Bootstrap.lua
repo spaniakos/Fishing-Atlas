@@ -16,5 +16,6 @@ frame:SetScript("OnEvent", function(_, event, arg)
     ns.nearby.start()
     ns.loot.start()
     ns.vendors.start()
+    ns.mapPins.start()
   end
 end)

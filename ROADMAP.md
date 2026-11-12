@@ -26,9 +26,9 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 
 ## v0.9.0: Fishing interaction and discoveries
 - [ ] Verify secure one-key casting and manual bobber interaction against build 70888.
-- [ ] Optional lure and equipment profiles with safe restore/combat restrictions.
-- [ ] World map/minimap markers, confirmed observations, deduplication, alert cooldowns, optional TomTom.
-- [ ] Persist player positions separately from actual pool-coordinate observations.
+- [x] Store optional fishing pole and lure preferences; deliberately no automatic gear swapping before client testing.
+- [x] World map overlay for saved player positions, school-candidate records, deduplication, alert cooldowns and optional TomTom. Minimap integration and automatic school-object detection need in-client validation.
+- [x] Persist generic player positions and manually noted school-proximity candidates separately; neither claims exact school-object coordinates.
 
 **Gate:** mocked API tests plus explicit manual client tests; no unattended botting.
 

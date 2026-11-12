@@ -10,6 +10,8 @@ FishingAtlasDB = nil
 time = function() return 1700000000 end
 assert(ns.storage.init())
 assert(ns.storage.count() == 0)
+assert(ns.storage.db.schemaVersion == 2)
+assert(type(ns.storage.db.schoolCandidates) == "table")
 assert(ns.util.gridKey(1, 0.5, 0.25) == "1:5000:2500")
 assert(not ns.util.gridKey(1, -0.2, 0.3))
 local node, fresh = ns.storage.add(1434, 0.426, 0.183, "Test school", "manual")
