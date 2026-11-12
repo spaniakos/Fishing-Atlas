@@ -26,5 +26,6 @@ jobs:
           lua5.1 tests/test_storage.lua
           lua5.1 tests/test_commands.lua
           lua5.1 tests/test_fishing.lua
+          lua5.1 tests/test_nearby.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py

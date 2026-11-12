@@ -48,6 +48,14 @@ function commands.run(raw)
     say(ns.storage.count() .. " observations saved account-wide")
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
+  elseif command == "radius" then
+    local num = tonumber(rest)
+    if num and num >= 0.1 and num <= 5 then
+      ns.storage.db.settings.radiusPercent = num
+      say("Historical observation alert radius: " .. num .. "% of the current map")
+    else
+      say("Use /fa radius 0.1 through 5 (map percentage, not yards)")
+    end
   elseif command == "fishing" then
     local _, message = ns.fishing.setEnabled(rest == "on")
     say(message)
@@ -66,6 +74,6 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off, fishing on|off")
+    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off, radius <percent>, fishing on|off")
   end
 end
