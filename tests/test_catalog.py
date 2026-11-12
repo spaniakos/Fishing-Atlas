@@ -15,7 +15,7 @@ class CatalogTests(unittest.TestCase):
         cls.data = json.loads(catalog.INPUT.read_text(encoding="utf-8"))
 
     def test_valid_seed(self):
-        self.assertEqual(len(catalog.validate(copy.deepcopy(self.data))["recipes"]), 1)
+        self.assertGreaterEqual(len(catalog.validate(copy.deepcopy(self.data))["recipes"]), 136)
 
     def test_deterministic(self):
         self.assertEqual(catalog.build(self.data), catalog.build(copy.deepcopy(self.data)))

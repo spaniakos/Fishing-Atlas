@@ -49,7 +49,7 @@ class ImportTests(unittest.TestCase):
         }]
         result = import_pack(self.base, pack)
         self.assertEqual(len(result["entities"]), len(self.base["entities"]) + 1)
-        self.assertEqual(len(self.base["entities"]), 5)
+        self.assertGreater(len(self.base["entities"]), 200)
 
     def test_reject_duplicate(self):
         pack = copy.deepcopy(self.example)
