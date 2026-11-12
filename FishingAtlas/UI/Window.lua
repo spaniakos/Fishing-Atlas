@@ -58,7 +58,7 @@ end
 local function build()
   if frame or type(CreateFrame) ~= "function" or not UIParent then return end
   frame = CreateFrame("Frame", "FishingAtlasExplorer", UIParent)
-  frame:SetSize(660, 550)
+  frame:SetSize(660, 670)
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:SetFrameStrata("DIALOG")
   frame:SetMovable(true)
@@ -111,7 +111,7 @@ local function build()
     end
   end)
   toggle:Show()
-  details = font(frame, 20, -481, 615, 65, "GameFontHighlightSmall")
+  details = font(frame, 20, -486, 615, 160, "GameFontHighlightSmall")
   details:SetJustifyV("TOP")
   details:SetText("Select an entry for details. Unverified data is labeled.")
   frame:Hide()
