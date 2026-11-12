@@ -1,7 +1,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 local _, ns = ...
 local Store = ns.storage
-local SCHEMA_VERSION = 1
+local SCHEMA_VERSION = 2
 local MAX_NODES = 4000
 local MERGE_DISTANCE = 0.003 -- Map-normalized approximation, not a world-distance claim
 
@@ -17,6 +17,8 @@ function Store.init()
     return nil, "Saved data was written by a newer Fishing Atlas version"
   end
   if type(db.observations) ~= "table" then db.observations = {} end
+  if type(db.schoolCandidates) ~= "table" then db.schoolCandidates = {} end
+  if type(db.gearProfile) ~= "table" then db.gearProfile = {} end
   if type(db.settings) ~= "table" then db.settings = {} end
   if db.settings.notifications == nil then db.settings.notifications = true end
   db.schemaVersion = SCHEMA_VERSION
