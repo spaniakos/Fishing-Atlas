@@ -24,6 +24,10 @@ The TOC targets interface `16001`. Verify the interface number on your Forever i
 ## Safety and limitations
 A location is an observation of a **player standing near water**, not proof a fish school is at exactly that coordinate. The addon never claims that a saved school is currently spawned. It does **not** automatically cast, hook, or loot fish in this first release. Protected game actions, if added later, will be initiated by player input and tested against Forever's restrictions.
 
+## Database baseline
+
+The new ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog is currently a small seed and **not** the complete Forever database. See [ROADMAP.md](ROADMAP.md).
+
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests
 - v0.3: world-map/minimap markers, school recognition, proximity alerts, TomTom

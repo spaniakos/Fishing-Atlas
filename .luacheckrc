@@ -4,3 +4,6 @@ globals = {
   "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
 }
 max_line_length = 140
+
+-- Generated deterministic catalog is syntax-checked and compared to the source JSON in CI.
+exclude_files = {"FishingAtlas/Data/Catalog.lua"}
