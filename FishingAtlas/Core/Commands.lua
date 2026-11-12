@@ -71,6 +71,40 @@ function commands.run(raw)
     if item then say("Recorded " .. item.count .. " total: " .. item.name) else say(err) end
   elseif command == "collection" then
     say("Collected " .. ns.journal.total() .. " catches across " .. ns.journal.unique() .. " item types")
+  elseif command == "catalog" then
+    local s = ns.catalog.stats()
+    say(string.format("Build 70888: %d items, %d spells, %d recipes (%d cooking, %d fishing)",
+      s.items, s.spells, s.recipes, s.cooking, s.fishing))
+  elseif command == "find" then
+    local matches = ns.catalog.search(rest, nil, nil, 12)
+    say(#matches .. " matching imported records (client records are not live spawn verification)")
+    for _, item in ipairs(matches) do
+      say(item.name .. " [" .. item.kind .. ":" .. item.id .. "] (" .. item.confidence .. ")")
+    end
+  elseif command == "fish" or command == "gear" then
+    local categories = command == "fish" and {"fish"} or {"fishing_pole", "lure"}
+    for _, category in ipairs(categories) do
+      local found = ns.catalog.byCategory(category, 25)
+      say(category .. ": " .. #found .. " reference entries")
+      for _, item in ipairs(found) do say(item.name .. " [" .. item.id .. "] (" .. item.confidence .. ")") end
+    end
+  elseif command == "zones" then
+    local found = ns.catalog.zones()
+    say(#found .. " map records extracted from build 70888")
+    for i = 1, math.min(#found, 10) do
+      say(found[i].name .. " [UiMapID " .. found[i].mapId .. "]")
+    end
+  elseif command == "recipeid" then
+    local id = tonumber(rest)
+    local recipe = id and ns.catalog.recipe(id) or nil
+    if not recipe then say("Unknown recipe spell ID: " .. tostring(rest)); return end
+    say(ns.catalog.name("spell", id) .. " [" .. id .. "], " .. tostring(recipe.profession))
+    if recipe.outputItemId then
+      say("Output: " .. ns.catalog.name("item", recipe.outputItemId) .. " [" .. recipe.outputItemId .. "]")
+    end
+    for _, item in ipairs(recipe.ingredients or {}) do
+      say("  " .. item.amount .. " x " .. ns.catalog.name("item", item.itemId) .. " [" .. item.itemId .. "]")
+    end
   elseif command == "recipes" then
     local matches = ns.kitchen.search(rest)
     say(#matches .. " matching cooking recipes (reference data)")
@@ -115,5 +149,6 @@ function commands.run(raw)
     say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
     say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
+    say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>")
   end
 end

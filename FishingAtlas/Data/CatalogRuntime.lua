@@ -1,0 +1,79 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+local _, ns = ...
+ns.catalog = {}
+local C = ns.catalog
+local data = ns.data.catalog or {}
+local byKind, bySpell = {}, {}
+for _, entity in ipairs(data.entities or {}) do
+  if not byKind[entity.type] then byKind[entity.type] = {} end
+  byKind[entity.type][entity.id] = entity
+end
+for _, recipe in ipairs(data.recipes or {}) do bySpell[recipe.spellId] = recipe end
+
+function C.entity(kind, id)
+  return byKind[kind] and byKind[kind][tonumber(id)] or nil
+end
+function C.recipe(id)
+  return bySpell[tonumber(id)]
+end
+function C.name(kind, id)
+  id = tonumber(id)
+  if not id then return "Unknown" end
+  if kind == "item" and type(GetItemInfo) == "function" then
+    local name = GetItemInfo(id)
+    if type(name) == "string" and name ~= "" then return name, true end
+  elseif kind == "spell" and type(GetSpellInfo) == "function" then
+    local name = GetSpellInfo(id)
+    if type(name) == "string" and name ~= "" then return name, true end
+  end
+  local item = C.entity(kind, id)
+  if item and type(item.name) == "string" and not item.name:match("^Item #")
+    and not item.name:match("^Spell #") then return item.name, false end
+  return (kind == "spell" and "Unresolved spell #" or "Unresolved item #") .. id, false
+end
+function C.stats()
+  local n = {items = 0, spells = 0, recipes = 0, cooking = 0, fishing = 0}
+  for _, entry in ipairs(data.entities or {}) do
+    if entry.type == "item" then n.items = n.items + 1
+    elseif entry.type == "spell" then n.spells = n.spells + 1 end
+  end
+  for _, recipe in ipairs(data.recipes or {}) do
+    n.recipes = n.recipes + 1
+    if recipe.profession == "Cooking" then n.cooking = n.cooking + 1 end
+    if recipe.profession == "Fishing" then n.fishing = n.fishing + 1 end
+  end
+  return n
+end
+
+function C.search(term, kind, category, limit)
+  term = type(term) == "string" and term:lower() or ""
+  if #term < 2 then return {} end
+  limit = math.min(tonumber(limit) or 20, 50)
+  local matches = {}
+  for _, entity in ipairs(data.entities or {}) do
+    if (not kind or kind == entity.type) and (not category or category == entity.category) then
+      local label = C.name(entity.type, entity.id)
+      if label:lower():find(term, 1, true) or tostring(entity.id) == term then
+        matches[#matches + 1] = {id = entity.id, kind = entity.type,
+          name = label, category = entity.category, confidence = entity.confidence}
+      end
+      if #matches >= limit then break end
+    end
+  end
+  return matches
+end
+function C.byCategory(category, limit)
+  local output = {}
+  limit = math.min(tonumber(limit) or 20, 100)
+  for _, entity in ipairs(data.entities or {}) do
+    if entity.category == category then
+      output[#output + 1] = {id = entity.id, name = C.name(entity.type, entity.id),
+        confidence = entity.confidence}
+      if #output >= limit then break end
+    end
+  end
+  return output
+end
+function C.zones()
+  return data.zones or {}
+end

@@ -15,7 +15,7 @@ class CatalogTests(unittest.TestCase):
         cls.data = json.loads(catalog.INPUT.read_text(encoding="utf-8"))
 
     def test_valid_seed(self):
-        self.assertEqual(len(catalog.validate(copy.deepcopy(self.data))["recipes"]), 1)
+        self.assertGreaterEqual(len(catalog.validate(copy.deepcopy(self.data))["recipes"]), 136)
 
     def test_deterministic(self):
         self.assertEqual(catalog.build(self.data), catalog.build(copy.deepcopy(self.data)))
@@ -30,6 +30,26 @@ class CatalogTests(unittest.TestCase):
         broken = copy.deepcopy(self.data)
         broken["recipes"][0]["ingredients"][0]["itemId"] = 987654
         with self.assertRaisesRegex(ValueError, "Orphaned"):
+            catalog.validate(broken)
+
+    def test_baseline_coverage(self):
+        fish = [e for e in self.data["entities"] if e.get("category") == "fish"]
+        self.assertGreaterEqual(len(fish), 23)
+        self.assertEqual(len(self.data["equipment"]), 11)
+        self.assertEqual(len(self.data["zones"]), 46)
+        self.assertEqual(len(self.data["recipes"]), 136)
+        self.assertEqual(len(self.data["schools"]), 0)
+
+    def test_equipment_referential_integrity(self):
+        broken = copy.deepcopy(self.data)
+        broken["equipment"][0]["itemId"] = 9999999
+        with self.assertRaisesRegex(ValueError, "Orphaned equipment"):
+            catalog.validate(broken)
+
+    def test_zone_geometry(self):
+        broken = copy.deepcopy(self.data)
+        broken["zones"][0]["bounds"]["left"] = None
+        with self.assertRaisesRegex(ValueError, "geometry"):
             catalog.validate(broken)
 
     def test_missing_provenance(self):

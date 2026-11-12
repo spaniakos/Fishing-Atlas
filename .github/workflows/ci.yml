@@ -21,6 +21,7 @@ jobs:
           python3 scripts/build_catalog.py --check
           python3 scripts/catalog_coverage.py
           python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 scripts/import_curated.py database/source-pack.example.json --check
       - name: Lua syntax validation
         run: |
           find FishingAtlas tests -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
@@ -35,5 +36,7 @@ jobs:
           lua5.1 tests/test_kitchen.lua
           lua5.1 tests/test_journal.lua
           lua5.1 tests/test_guides.lua
+          lua5.1 tests/test_vendor.lua
+          lua5.1 tests/test_catalog_runtime.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py

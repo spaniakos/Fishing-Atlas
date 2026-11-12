@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "build": "1.60.1.70888",
+    "license": "original",
+    "sourceUrl": "https://github.com/spaniakos/Fishing-Atlas",
+    "reviewed": true,
+    "description": "Empty example of a manually reviewed source pack. Do not mark unreviewed external records as reviewed."
+  },
+  "entities": [],
+  "recipes": []
+}

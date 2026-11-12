@@ -5,9 +5,9 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> Early development (0.1.0). Data is deliberately small and labeled as reference data until validated in the Forever client.
+> Pre-release development: v0.8 provides an initial build-70888 fishing/cooking catalog with source attribution. **Live-client behavior remains untested; zone-specific school spawns and vendor acquisitions are incomplete.**
 
-## Features in the first foundation
+## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
 - `/fa add [label]`: record the **player's** current map position as a fishing observation.
 - `/fa nearby`: list observations in the current map; these are **historical** sightings, not currently active pools.
@@ -16,17 +16,25 @@
 - Account-wide SavedVariables with migration-ready schema and coordinate clustering.
 - Optional TomTom integration via `/fa waypoint` for your most recent observation.
 
+## v0.8 initial database
+- 133 Cooking and 3 Fishing craft recipes from a build-70888 client extraction, with numeric relationships and provenance.
+- `/fa catalog` reports imported counts; `/fa recipeid 18243` displays Nightfin Soup recipe relationships.
+- `/fa find <term>` searches imported records; `/fa fish`, `/fa gear` and `/fa zones` browse categories.
+- Client API name resolution where available; unresolved IDs remain explicitly labeled.
+- Merchant-window item ID observations saved account-wide.
+- **Not complete:** fishing-school coordinates, vendor guides, equipment acquisition locations and full acquisition paths remain outstanding. 23 reference fish and 11 gear IDs are indexed.
+
 ## Installation
 Copy the `FishingAtlas` folder into `World of Warcraft/_forever_/Interface/AddOns/` (adjust the client installation folder if different). Enable the addon and enter `/fa`.
 
 The TOC targets interface `16001`. Verify the interface number on your Forever installation; this client is evolving.
 
 ## Safety and limitations
-A location is an observation of a **player standing near water**, not proof a fish school is at exactly that coordinate. The addon never claims that a saved school is currently spawned. It does **not** automatically cast, hook, or loot fish in this first release. Protected game actions, if added later, will be initiated by player input and tested against Forever's restrictions.
+A location is an observation of a **player standing near water**, not proof a fish school is at exactly that coordinate. The addon never claims that a saved school is currently spawned. The optional Space override casts Fishing through a secure button when supported; hook and loot interactions remain manual and **not yet tested in-game**. Protected game actions, if added later, will be initiated by player input and tested against Forever's restrictions.
 
 ## Database baseline
 
-The new ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog is currently a small seed and **not** the complete Forever database. See [ROADMAP.md](ROADMAP.md).
+The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog contains extracted recipes/maps and selected reference fish/gear IDs but **is not an exhaustive Forever database**; see [coverage](docs/DATABASE-COVERAGE.md). See [ROADMAP.md](ROADMAP.md).
 
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests
