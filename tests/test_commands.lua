@@ -4,6 +4,7 @@ local load = function(path) return assert(loadfile(path))("FishingAtlas", ns) en
 load("FishingAtlas/Core/Namespace.lua")
 load("FishingAtlas/Core/Storage.lua")
 load("FishingAtlas/Data/Fish.lua")
+load("FishingAtlas/Atlas/Schools.lua")
 load("FishingAtlas/Core/Commands.lua")
 FishingAtlasDB = nil
 assert(ns.storage.init())
