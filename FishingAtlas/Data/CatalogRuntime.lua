@@ -74,6 +74,9 @@ function C.byCategory(category, limit)
   end
   return output
 end
+function C.recipeList()
+  return data.recipes or {}
+end
 function C.zones()
   return data.zones or {}
 end

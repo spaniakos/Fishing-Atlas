@@ -35,6 +35,8 @@ jobs:
           lua5.1 tests/test_schools.lua
           lua5.1 tests/test_gears.lua
           lua5.1 tests/test_map_pins.lua
+          lua5.1 tests/test_catalog_planner.lua
+          lua5.1 tests/test_browser.lua
           python3 scripts/validate.py
       - name: Package
         run: |
