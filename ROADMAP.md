@@ -8,17 +8,17 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 - [x] Define canonical ID-based entities and relationship types.
 - [x] Implement deterministic JSON -> Lua generator with schema and integrity validation.
 - [x] Wire generator freshness check into CI and release packaging.
-- [ ] Import a broad licensed source of build-matched client records (not placeholders).
-- [ ] Produce coverage and discrepancy reports per entity type and validation status.
-- [ ] Validate source licensing before bulk redistributing extracted datasets.
+- [x] Import a build-matched Cooking/Fishing client recipe extract (133 + 3 records); broader game records remain outstanding.
+- [x] Produce baseline coverage reports; independent discrepancy and completeness review remains outstanding.
+- [x] Document upstream client-extract provenance and source credits; review any future player-observation datasets separately.
 
 **Gate:** No orphaned foreign keys, no duplicate typed IDs, every nontrivial assertion has a source and build. Unknowns remain unknown. Tests prove reproducible outputs.
 
 ## v0.8.0: Encyclopedia population (blocking)
 - [ ] Fish, catchable objects, schools, zones, skill requirements, gear, lures, quests, trainers and vendors.
-- [ ] Cooking spells, recipe items, cooked outputs, ingredients and acquisition paths, connected by numeric IDs.
+- [x] Import 136 Cooking/Fishing spell-output-reagent relationships; recipe scroll IDs and acquisition paths remain incomplete.
 - [ ] Search and navigation in-game for every supported content category.
-- [ ] Distinguish client-defined facts from server observations; source attribution and coverage numbers.
+- [x] Separate client-extracted recipes from locally recorded merchant observations and historical references.
 - [ ] Cross-check disagreements between at least two credible sources.
 - [ ] Do not invent pool coordinates, catch probabilities or vendor stock.
 
