@@ -1,28 +1,36 @@
-# Source imports and evidence gates
+# Database imports and evidence gates
 
 Target client: WoW Forever **1.60.1.70888** (interface 16001).
 
-## Data categories
+## Source categories
+- **Client extracts**: item, spell and recipe IDs; client presence does not prove server availability.
+- **In-game observations**: merchant inventory snapshots, fish catches and player positions.
+- **Historic references**: Classic guides and public sites; never marked Forever-confirmed without corroboration.
+- **External datasets**: imported only with provenance, build and redistribution rights.
 
-* **Client extracts**: item, spell and recipe IDs. An entry in game files does not prove live availability.
-* **In-game observations**: merchant inventory snapshots, fishing catches and player fishing positions.
-* **Historic references**: Classic guides and public sites. Not considered confirmed in Forever.
-* **External published datasets**: may be imported only after provenance, licensing and attribution checks.
+## Curated import workflow
 
-## Vendor observations (v0.8)
+1. Obtain a legally reusable export from its publisher.
+2. Review records and adapt them to the normalized `database/source-pack.example.json` format. Preserve provenance **per entity and recipe**.
+3. Record the source version, license, URL, original checksum and access date in the associated pull request.
+4. Validate locally: `python3 scripts/import_curated.py source-pack.json --check`.
+5. Merge accepted records: `python3 scripts/import_curated.py source-pack.json --write`.
+6. Run `python3 scripts/build_catalog.py` and all tests. Review coverage differences.
+7. External datasets with CC BY-SA obligations require visible attribution and license separation, not a silent change to GPL.
 
-A merchant window scan stores a list of item IDs, NPC ID and timestamp account-wide in `FishingAtlasDB.vendorObservations`.
-Only a valid `Creature-...` GUID from the current `npc` unit is accepted.
-No vendor prices or vendor location coordinates are inferred. A record is an observation of a merchant inventory snapshot, not a guaranteed permanent stock listing.
+**Important:** the `reviewed` flag is a human approval gate, not an assertion that every record is live verified.
 
-## External data licenses
+## In-game vendor observations
+A merchant scan records an NPC ID, the item IDs visible, timestamp and current build in
+`FishingAtlasDB.vendorObservations`. Unknown NPC IDs are skipped. Merchant inventory is
+observed, not guaranteed permanent; it does not provide drop rates or fishing school locations.
 
-Everloot publishes observations under CC BY-SA 4.0, while its software is AGPL-3.0.
-Respect attribution and share-alike obligations; do **not** relicense third-party observations as GPL source.
-AHledger API has use and retention restrictions. We must not create a bulk archive from its API without appropriate rights.
-
-Before a bulk import lands in Git, record the exact export URL, build, publication date, license, terms and source hash. Run validation and coverage reports. Do not silently treat another client's IDs and catch probabilities as Forever-confirmed.
+## External license examples
+Everloot's player observations are CC BY-SA 4.0, with its own mandatory credit notice.
+Its game-file layer is labeled as Blizzard game data and unconfirmed.
+AHledger restricts API retention and large-scale archival. Do not bulk copy its API data.
 
 ## Coverage gate for v0.8
-
-v0.8 is incomplete until the curated game IDs and relationships are populated sufficiently to back the promised fish, equipment, vendor, recipe and cooking guide screens. Record coverage explicitly; unknown data stays unknown.
+v0.8 is **incomplete** until fish, equipment, recipes, schools and acquisition data have useful
+coverage and public-source conflicts are resolved. Do not use passable unit tests as a substitute
+for populated content.
