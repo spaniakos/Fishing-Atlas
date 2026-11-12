@@ -77,7 +77,7 @@ def lua(value, level=0):
     if type(value) in (int, float):
         return str(value)
     if isinstance(value, str):
-        return json.dumps(value, ensure_ascii=True)
+        return json.dumps(value, ensure_ascii=False)
     if isinstance(value, list):
         return "{" + ", ".join(lua(v, level + 1) for v in value) + "}"
     if isinstance(value, dict):
