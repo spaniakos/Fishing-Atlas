@@ -15,9 +15,9 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 **Gate:** No orphaned foreign keys, no duplicate typed IDs, every nontrivial assertion has a source and build. Unknowns remain unknown. Tests prove reproducible outputs.
 
 ## v0.8.0: Encyclopedia population (blocking)
-- [ ] Fish, catchable objects, schools, zones, skill requirements, gear, lures, quests, trainers and vendors.
+- [x] Curate 23 reference fish and 11 fishing equipment IDs; 46 build-matched zone maps. Schools, live skill requirements, quests, trainers and vendor locations are still incomplete.
 - [x] Import 136 Cooking/Fishing spell-output-reagent relationships; recipe scroll IDs and acquisition paths remain incomplete.
-- [ ] Search and navigation in-game for every supported content category.
+- [x] Runtime ID/name lookup, category browsing and /fa find; full graphical navigation remains for v0.95.
 - [x] Separate client-extracted recipes from locally recorded merchant observations and historical references.
 - [ ] Cross-check disagreements between at least two credible sources.
 - [ ] Do not invent pool coordinates, catch probabilities or vendor stock.

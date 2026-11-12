@@ -64,6 +64,27 @@ def validate(raw):
                     "Orphaned ingredient")
             require(type(ing.get("amount")) is int and ing["amount"] > 0,
                     "Invalid ingredient amount")
+    seen_equipment = set()
+    for gear in raw.get("equipment", []):
+        ident = gear.get("itemId")
+        require(type(ident) is int and ("item", ident) in seen, "Orphaned equipment item")
+        require(ident not in seen_equipment, "Duplicate equipment item")
+        require(gear.get("type") in ("fishing_pole", "lure", "accessory"), "Invalid equipment type")
+        require(gear.get("confidence") in CONFIDENCE, "Invalid equipment confidence")
+        validate_source(gear.get("provenance"), "Equipment %s" % ident)
+        seen_equipment.add(ident)
+    seen_maps = set()
+    for zone in raw.get("zones", []):
+        mid = zone.get("mapId")
+        require(type(mid) is int and ("zone", mid) in seen, "Orphaned zone map ID")
+        require(mid not in seen_maps, "Duplicate zone map ID")
+        require(zone.get("confidence") in CONFIDENCE, "Invalid zone confidence")
+        validate_source(zone.get("provenance"), "Zone %s" % mid)
+        bounds = zone.get("bounds")
+        require(isinstance(bounds, dict) and all(
+            type(bounds.get(k)) in (float, int) for k in ("left", "right", "top", "bottom")
+        ), "Invalid zone geometry")
+        seen_maps.add(mid)
     for category in ("vendors", "schools", "zones", "equipment", "observations"):
         require(isinstance(raw.get(category), list), "Missing list: " + category)
     return raw

@@ -15,4 +15,8 @@ GetSpellInfo = function(id) if id == 18243 then return "Nightfin Soup" end end
 assert(ns.catalog.name("item", 13759) == "Raw Nightfin Snapper")
 assert(ns.catalog.name("spell", 18243) == "Nightfin Soup")
 assert(ns.catalog.stats().recipes == 1)
+assert(#ns.catalog.search("snapper") == 1)
+assert(ns.catalog.search("snapper")[1].id == 13759)
+assert(#ns.catalog.byCategory("fish") == 0)
+assert(#ns.catalog.zones() == 0)
 print("catalog runtime tests passed")

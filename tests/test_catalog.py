@@ -32,6 +32,18 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Orphaned"):
             catalog.validate(broken)
 
+    def test_equipment_referential_integrity(self):
+        broken = copy.deepcopy(self.data)
+        broken["equipment"][0]["itemId"] = 9999999
+        with self.assertRaisesRegex(ValueError, "Orphaned equipment"):
+            catalog.validate(broken)
+
+    def test_zone_geometry(self):
+        broken = copy.deepcopy(self.data)
+        broken["zones"][0]["bounds"]["left"] = None
+        with self.assertRaisesRegex(ValueError, "geometry"):
+            catalog.validate(broken)
+
     def test_missing_provenance(self):
         broken = copy.deepcopy(self.data)
         broken["entities"][0]["provenance"] = []

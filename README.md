@@ -21,7 +21,7 @@
 - `/fa catalog` reports imported counts; `/fa recipeid 18243` displays Nightfin Soup recipe relationships.
 - Client API name resolution where available; unresolved IDs remain explicitly labeled.
 - Merchant-window item ID observations saved account-wide.
-- **Not complete:** fishing-school coordinates, vendor guides, equipment sources and full acquisition paths remain outstanding.
+- **Not complete:** fishing-school coordinates, vendor guides, equipment acquisition locations and full acquisition paths remain outstanding. 23 reference fish and 11 gear IDs are indexed.
 
 ## Installation
 Copy the `FishingAtlas` folder into `World of Warcraft/_forever_/Interface/AddOns/` (adjust the client installation folder if different). Enable the addon and enter `/fa`.
@@ -33,7 +33,7 @@ A location is an observation of a **player standing near water**, not proof a fi
 
 ## Database baseline
 
-The new ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog is currently a small seed and **not** the complete Forever database. See [ROADMAP.md](ROADMAP.md).
+The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog is currently a small seed and **not** the complete Forever database. See [ROADMAP.md](ROADMAP.md).
 
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests

@@ -7,7 +7,7 @@
       "interface": 16001,
       "buildDate": "2026-11-09"
     },
-    "status": "client_recipes_imported_partial",
+    "status": "partial_client_recipe_and_reference_fishing_catalog",
     "license": "Original Fishing Atlas curated metadata; external reference links are attribution, not copied bulk datasets",
     "clientRecipeSource": {
       "source": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
@@ -1157,14 +1157,20 @@
     {
       "type": "item",
       "id": 4603,
-      "name": "Item #4603",
-      "category": "ingredient",
+      "name": "Raw Spotted Yellowtail",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=4603",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1546,15 +1552,36 @@
     },
     {
       "type": "item",
+      "id": 6256,
+      "name": "Fishing Pole",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6256",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
       "id": 6289,
-      "name": "Item #6289",
-      "category": "ingredient",
+      "name": "Raw Longjaw Mud Snapper",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6289",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1577,14 +1604,20 @@
     {
       "type": "item",
       "id": 6291,
-      "name": "Item #6291",
-      "category": "ingredient",
+      "name": "Raw Brilliant Smallfish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6291",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1592,8 +1625,8 @@
     {
       "type": "item",
       "id": 6303,
-      "name": "Item #6303",
-      "category": "ingredient",
+      "name": "Raw Slitherskin Mackerel",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
@@ -1601,20 +1634,32 @@
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
           "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6303",
+          "build": "classic",
+          "verifiedInForever": false
         }
       ]
     },
     {
       "type": "item",
       "id": 6308,
-      "name": "Item #6308",
-      "category": "ingredient",
+      "name": "Raw Bristle Whisker Catfish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6308",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1637,14 +1682,50 @@
     {
       "type": "item",
       "id": 6317,
-      "name": "Item #6317",
-      "category": "ingredient",
+      "name": "Raw Loch Frenzy",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6317",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6358,
+      "name": "Oily Blackmouth",
+      "category": "fish",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6358",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6359,
+      "name": "Firefin Snapper",
+      "category": "fish",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6359",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1652,14 +1733,20 @@
     {
       "type": "item",
       "id": 6361,
-      "name": "Item #6361",
-      "category": "ingredient",
+      "name": "Raw Rainbow Fin Albacore",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6361",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1667,8 +1754,8 @@
     {
       "type": "item",
       "id": 6362,
-      "name": "Item #6362",
-      "category": "ingredient",
+      "name": "Raw Rockscale Cod",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
@@ -1676,20 +1763,107 @@
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
           "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6362",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6365,
+      "name": "Strong Fishing Pole",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6365",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6367,
+      "name": "Big Iron Fishing Pole",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6367",
+          "build": "classic",
+          "verifiedInForever": false
         }
       ]
     },
     {
       "type": "item",
       "id": 6522,
-      "name": "Item #6522",
-      "category": "ingredient",
+      "name": "Deviate Fish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6522",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6529,
+      "name": "Shiny Bauble",
+      "category": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6529",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6530,
+      "name": "Nightcrawlers",
+      "category": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6530",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6532,
+      "name": "Bright Baubles",
+      "category": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6532",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1705,6 +1879,21 @@
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 6811,
+      "name": "Aquadynamic Fish Attractor",
+      "category": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6811",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1765,6 +1954,21 @@
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 7307,
+      "name": "Flesh Eating Worm",
+      "category": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=7307",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -1847,14 +2051,20 @@
     {
       "type": "item",
       "id": 8365,
-      "name": "Item #8365",
-      "category": "ingredient",
+      "name": "Raw Mithril Head Trout",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=8365",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2296,6 +2506,36 @@
     },
     {
       "type": "item",
+      "id": 12225,
+      "name": "Blump Family Fishing Pole",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=12225",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 13422,
+      "name": "Stonescale Eel",
+      "category": "fish",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13422",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
       "id": 13465,
       "name": "Item #13465",
       "category": "ingredient",
@@ -2312,14 +2552,20 @@
     {
       "type": "item",
       "id": 13754,
-      "name": "Item #13754",
-      "category": "ingredient",
+      "name": "Raw Glossy Mightfish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13754",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2327,14 +2573,20 @@
     {
       "type": "item",
       "id": 13755,
-      "name": "Item #13755",
-      "category": "ingredient",
+      "name": "Winter Squid",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13755",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2342,8 +2594,8 @@
     {
       "type": "item",
       "id": 13756,
-      "name": "Item #13756",
-      "category": "ingredient",
+      "name": "Raw Summer Bass",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
@@ -2351,20 +2603,32 @@
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
           "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13756",
+          "build": "classic",
+          "verifiedInForever": false
         }
       ]
     },
     {
       "type": "item",
       "id": 13758,
-      "name": "Item #13758",
-      "category": "ingredient",
+      "name": "Raw Redgill",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13758",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2393,14 +2657,20 @@
     {
       "type": "item",
       "id": 13760,
-      "name": "Item #13760",
-      "category": "ingredient",
+      "name": "Raw Sunscale Salmon",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13760",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2423,8 +2693,8 @@
     {
       "type": "item",
       "id": 13888,
-      "name": "Item #13888",
-      "category": "ingredient",
+      "name": "Darkclaw Lobster",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
@@ -2432,20 +2702,32 @@
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
           "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13888",
+          "build": "classic",
+          "verifiedInForever": false
         }
       ]
     },
     {
       "type": "item",
       "id": 13889,
-      "name": "Item #13889",
-      "category": "ingredient",
+      "name": "Raw Whitescale Salmon",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13889",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2788,6 +3070,36 @@
     },
     {
       "type": "item",
+      "id": 19022,
+      "name": "Nat Pagle's Extreme Angler FC-5000",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=19022",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 19970,
+      "name": "Arcanite Fishing Pole",
+      "category": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=19970",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
       "id": 20074,
       "name": "Item #20074",
       "category": "crafted_output",
@@ -2864,14 +3176,20 @@
     {
       "type": "item",
       "id": 21071,
-      "name": "Item #21071",
-      "category": "ingredient",
+      "name": "Raw Sagefish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=21071",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -2894,14 +3212,20 @@
     {
       "type": "item",
       "id": 21153,
-      "name": "Item #21153",
-      "category": "ingredient",
+      "name": "Raw Greater Sagefish",
+      "category": "fish",
       "confidence": "verified_client",
       "provenance": [
         {
           "source": "wow_forever_client_recipe_extract",
           "build": "1.60.1.70888",
           "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/client-recipes.json",
+          "verifiedInForever": false
+        },
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=21153",
+          "build": "classic",
           "verifiedInForever": false
         }
       ]
@@ -11462,6 +11786,150 @@
       ]
     }
   ],
-  "equipment": [],
+  "equipment": [
+    {
+      "itemId": 6256,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6256",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6365,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6365",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6367,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6367",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6529,
+      "type": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6529",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6530,
+      "type": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6530",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6532,
+      "type": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6532",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 6811,
+      "type": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=6811",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 7307,
+      "type": "lure",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=7307",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 12225,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=12225",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 19022,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=19022",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "itemId": 19970,
+      "type": "fishing_pole",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=19970",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    }
+  ],
   "observations": []
 }

@@ -44,3 +44,36 @@ function C.stats()
   end
   return n
 end
+
+function C.search(term, kind, category, limit)
+  term = type(term) == "string" and term:lower() or ""
+  if #term < 2 then return {} end
+  limit = math.min(tonumber(limit) or 20, 50)
+  local matches = {}
+  for _, entity in ipairs(data.entities or {}) do
+    if (not kind or kind == entity.type) and (not category or category == entity.category) then
+      local label = C.name(entity.type, entity.id)
+      if label:lower():find(term, 1, true) or tostring(entity.id) == term then
+        matches[#matches + 1] = {id = entity.id, kind = entity.type,
+          name = label, category = entity.category, confidence = entity.confidence}
+      end
+      if #matches >= limit then break end
+    end
+  end
+  return matches
+end
+function C.byCategory(category, limit)
+  local output = {}
+  limit = math.min(tonumber(limit) or 20, 100)
+  for _, entity in ipairs(data.entities or {}) do
+    if entity.category == category then
+      output[#output + 1] = {id = entity.id, name = C.name(entity.type, entity.id),
+        confidence = entity.confidence}
+      if #output >= limit then break end
+    end
+  end
+  return output
+end
+function C.zones()
+  return data.zones or {}
+end
