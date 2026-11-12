@@ -14,6 +14,12 @@
       "build": "1.60.1.70888",
       "extractedAt": "2026-11-10T17:17:03.601Z",
       "credit": "Game data © Blizzard Entertainment, Inc.; extraction from Everloot; see docs/DATABASE-IMPORTS.md"
+    },
+    "clientMapSource": {
+      "source": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+      "build": "1.60.1.70888",
+      "extractedAt": "2026-11-10T17:17:03.601Z",
+      "credit": "Game data (c) Blizzard Entertainment, Inc.; extracted by Everloot"
     }
   },
   "entities": [
@@ -5875,6 +5881,696 @@
           "verifiedInForever": false
         }
       ]
+    },
+    {
+      "type": "zone",
+      "id": 1411,
+      "name": "Durotar",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1412,
+      "name": "Mulgore",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1413,
+      "name": "The Barrens",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1416,
+      "name": "Alterac Mountains",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1417,
+      "name": "Arathi Highlands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1418,
+      "name": "Badlands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1419,
+      "name": "Blasted Lands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1420,
+      "name": "Tirisfal Glades",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1421,
+      "name": "Silverpine Forest",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1422,
+      "name": "Western Plaguelands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1423,
+      "name": "Eastern Plaguelands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1424,
+      "name": "Hillsbrad Foothills",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1425,
+      "name": "The Hinterlands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1426,
+      "name": "Dun Morogh",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1427,
+      "name": "Searing Gorge",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1428,
+      "name": "Burning Steppes",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1429,
+      "name": "Elwynn Forest",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1430,
+      "name": "Deadwind Pass",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1431,
+      "name": "Duskwood",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1432,
+      "name": "Loch Modan",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1433,
+      "name": "Redridge Mountains",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1434,
+      "name": "Stranglethorn Vale",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1435,
+      "name": "Swamp of Sorrows",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1436,
+      "name": "Westfall",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1437,
+      "name": "Wetlands",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1438,
+      "name": "Teldrassil",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1439,
+      "name": "Darkshore",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1440,
+      "name": "Ashenvale",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1441,
+      "name": "Thousand Needles",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1442,
+      "name": "Stonetalon Mountains",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1443,
+      "name": "Desolace",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1444,
+      "name": "Feralas",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1445,
+      "name": "Dustwallow Marsh",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1446,
+      "name": "Tanaris",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1447,
+      "name": "Azshara",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1448,
+      "name": "Felwood",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1449,
+      "name": "Un'Goro Crater",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1450,
+      "name": "Moonglade",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1451,
+      "name": "Silithus",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1452,
+      "name": "Winterspring",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1453,
+      "name": "Stormwind City",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1454,
+      "name": "Orgrimmar",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1455,
+      "name": "Ironforge",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1456,
+      "name": "Thunder Bluff",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1457,
+      "name": "Darnassus",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "zone",
+      "id": 1458,
+      "name": "Undercity",
+      "category": "map",
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
     }
   ],
   "recipes": [
@@ -9844,7 +10540,928 @@
   ],
   "vendors": [],
   "schools": [],
-  "zones": [],
+  "zones": [
+    {
+      "mapId": 1411,
+      "continentId": 1,
+      "name": "Durotar",
+      "bounds": {
+        "left": -1962.5,
+        "top": 1808.3,
+        "right": -7250,
+        "bottom": -1716.7
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1412,
+      "continentId": 1,
+      "name": "Mulgore",
+      "bounds": {
+        "left": 2479.2,
+        "top": 266.7,
+        "right": -3675,
+        "bottom": -3835.4
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1413,
+      "continentId": 1,
+      "name": "The Barrens",
+      "bounds": {
+        "left": 2622.9,
+        "top": 1612.5,
+        "right": -7510.4,
+        "bottom": -5143.7
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1416,
+      "continentId": 0,
+      "name": "Alterac Mountains",
+      "bounds": {
+        "left": 783.3,
+        "top": 1500,
+        "right": -2016.7,
+        "bottom": -366.7
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1417,
+      "continentId": 0,
+      "name": "Arathi Highlands",
+      "bounds": {
+        "left": -866.7,
+        "top": -133.3,
+        "right": -4466.7,
+        "bottom": -2533.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1418,
+      "continentId": 0,
+      "name": "Badlands",
+      "bounds": {
+        "left": -2079.2,
+        "top": -5889.6,
+        "right": -4566.7,
+        "bottom": -7547.9
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1419,
+      "continentId": 0,
+      "name": "Blasted Lands",
+      "bounds": {
+        "left": -1241.7,
+        "top": -10566.7,
+        "right": -4591.7,
+        "bottom": -12800
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1420,
+      "continentId": 0,
+      "name": "Tirisfal Glades",
+      "bounds": {
+        "left": 3033.3,
+        "top": 3837.5,
+        "right": -1485.4,
+        "bottom": 825
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1421,
+      "continentId": 0,
+      "name": "Silverpine Forest",
+      "bounds": {
+        "left": 3450,
+        "top": 1666.7,
+        "right": -750,
+        "bottom": -1133.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1422,
+      "continentId": 0,
+      "name": "Western Plaguelands",
+      "bounds": {
+        "left": 416.7,
+        "top": 3366.7,
+        "right": -3883.3,
+        "bottom": 500
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1423,
+      "continentId": 0,
+      "name": "Eastern Plaguelands",
+      "bounds": {
+        "left": -2256.2,
+        "top": 3691.7,
+        "right": -6558.3,
+        "bottom": 825
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1424,
+      "continentId": 0,
+      "name": "Hillsbrad Foothills",
+      "bounds": {
+        "left": 1066.7,
+        "top": 400,
+        "right": -2133.3,
+        "bottom": -1733.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1425,
+      "continentId": 0,
+      "name": "The Hinterlands",
+      "bounds": {
+        "left": -1575,
+        "top": 1466.7,
+        "right": -5425,
+        "bottom": -1100
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1426,
+      "continentId": 0,
+      "name": "Dun Morogh",
+      "bounds": {
+        "left": 1802.1,
+        "top": -3877.1,
+        "right": -3122.9,
+        "bottom": -7160.4
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1427,
+      "continentId": 0,
+      "name": "Searing Gorge",
+      "bounds": {
+        "left": -322.9,
+        "top": -6100,
+        "right": -2554.2,
+        "bottom": -7587.5
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1428,
+      "continentId": 0,
+      "name": "Burning Steppes",
+      "bounds": {
+        "left": -266.7,
+        "top": -7031.2,
+        "right": -3195.8,
+        "bottom": -8983.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1429,
+      "continentId": 0,
+      "name": "Elwynn Forest",
+      "bounds": {
+        "left": 1535.4,
+        "top": -7939.6,
+        "right": -1935.4,
+        "bottom": -10254.2
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1430,
+      "continentId": 0,
+      "name": "Deadwind Pass",
+      "bounds": {
+        "left": -833.3,
+        "top": -9866.7,
+        "right": -3333.3,
+        "bottom": -11533.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1431,
+      "continentId": 0,
+      "name": "Duskwood",
+      "bounds": {
+        "left": 833.3,
+        "top": -9716.7,
+        "right": -1866.7,
+        "bottom": -11516.7
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1432,
+      "continentId": 0,
+      "name": "Loch Modan",
+      "bounds": {
+        "left": -1993.7,
+        "top": -4487.5,
+        "right": -4752.1,
+        "bottom": -6327.1
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1433,
+      "continentId": 0,
+      "name": "Redridge Mountains",
+      "bounds": {
+        "left": -1681.2,
+        "top": -8575,
+        "right": -3852.1,
+        "bottom": -10022.9
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1434,
+      "continentId": 0,
+      "name": "Stranglethorn Vale",
+      "bounds": {
+        "left": 2220.8,
+        "top": -11168.7,
+        "right": -4160.4,
+        "bottom": -15422.9
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1435,
+      "continentId": 0,
+      "name": "Swamp of Sorrows",
+      "bounds": {
+        "left": -2222.9,
+        "top": -9620.8,
+        "right": -4516.7,
+        "bottom": -11150
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1436,
+      "continentId": 0,
+      "name": "Westfall",
+      "bounds": {
+        "left": 3016.7,
+        "top": -9400,
+        "right": -483.3,
+        "bottom": -11733.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1437,
+      "continentId": 0,
+      "name": "Wetlands",
+      "bounds": {
+        "left": -389.6,
+        "top": -2147.9,
+        "right": -4525,
+        "bottom": -4904.2
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1438,
+      "continentId": 1,
+      "name": "Teldrassil",
+      "bounds": {
+        "left": 3814.6,
+        "top": 11831.3,
+        "right": -1277.1,
+        "bottom": 8437.5
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1439,
+      "continentId": 1,
+      "name": "Darkshore",
+      "bounds": {
+        "left": 2941.7,
+        "top": 8333.3,
+        "right": -3608.3,
+        "bottom": 3966.7
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1440,
+      "continentId": 1,
+      "name": "Ashenvale",
+      "bounds": {
+        "left": 1700,
+        "top": 4672.9,
+        "right": -4066.7,
+        "bottom": 829.2
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1441,
+      "continentId": 1,
+      "name": "Thousand Needles",
+      "bounds": {
+        "left": -433.3,
+        "top": -3966.7,
+        "right": -4833.3,
+        "bottom": -6900
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1442,
+      "continentId": 1,
+      "name": "Stonetalon Mountains",
+      "bounds": {
+        "left": 3245.8,
+        "top": 2916.7,
+        "right": -1637.5,
+        "bottom": -339.6
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1443,
+      "continentId": 1,
+      "name": "Desolace",
+      "bounds": {
+        "left": 4233.3,
+        "top": 452.1,
+        "right": -262.5,
+        "bottom": -2545.8
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1444,
+      "continentId": 1,
+      "name": "Feralas",
+      "bounds": {
+        "left": 5441.7,
+        "top": -2366.7,
+        "right": -1508.3,
+        "bottom": -7000
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1445,
+      "continentId": 1,
+      "name": "Dustwallow Marsh",
+      "bounds": {
+        "left": -975,
+        "top": -2033.3,
+        "right": -6225,
+        "bottom": -5533.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1446,
+      "continentId": 1,
+      "name": "Tanaris",
+      "bounds": {
+        "left": -218.7,
+        "top": -5875,
+        "right": -7118.7,
+        "bottom": -10475
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1447,
+      "continentId": 1,
+      "name": "Azshara",
+      "bounds": {
+        "left": -3277.1,
+        "top": 5341.7,
+        "right": -8347.9,
+        "bottom": 1960.4
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1448,
+      "continentId": 1,
+      "name": "Felwood",
+      "bounds": {
+        "left": 1641.7,
+        "top": 7133.3,
+        "right": -4108.3,
+        "bottom": 3300
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1449,
+      "continentId": 1,
+      "name": "Un'Goro Crater",
+      "bounds": {
+        "left": 533.3,
+        "top": -5966.7,
+        "right": -3166.7,
+        "bottom": -8433.3
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1450,
+      "continentId": 1,
+      "name": "Moonglade",
+      "bounds": {
+        "left": -1381.2,
+        "top": 8491.7,
+        "right": -3689.6,
+        "bottom": 6952.1
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1451,
+      "continentId": 1,
+      "name": "Silithus",
+      "bounds": {
+        "left": 2537.5,
+        "top": -5958.3,
+        "right": -945.8,
+        "bottom": -8281.2
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1452,
+      "continentId": 1,
+      "name": "Winterspring",
+      "bounds": {
+        "left": -316.7,
+        "top": 8533.3,
+        "right": -7416.7,
+        "bottom": 3800
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1453,
+      "continentId": 0,
+      "name": "Stormwind City",
+      "bounds": {
+        "left": 1722.9,
+        "top": -7995.8,
+        "right": -14.6,
+        "bottom": -9154.2
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1454,
+      "continentId": 1,
+      "name": "Orgrimmar",
+      "bounds": {
+        "left": -3680.6,
+        "top": 2273.9,
+        "right": -5083.2,
+        "bottom": 1338.5
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1455,
+      "continentId": 0,
+      "name": "Ironforge",
+      "bounds": {
+        "left": -713.6,
+        "top": -4569.2,
+        "right": -1504.2,
+        "bottom": -5096.8
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1456,
+      "continentId": 1,
+      "name": "Thunder Bluff",
+      "bounds": {
+        "left": 516.7,
+        "top": -850,
+        "right": -527.1,
+        "bottom": -1545.8
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1457,
+      "continentId": 1,
+      "name": "Darnassus",
+      "bounds": {
+        "left": 2938.4,
+        "top": 10238.3,
+        "right": 1880,
+        "bottom": 9532.6
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "mapId": 1458,
+      "continentId": 0,
+      "name": "Undercity",
+      "bounds": {
+        "left": 873.2,
+        "top": 1877.9,
+        "right": -86.2,
+        "bottom": 1237.8
+      },
+      "confidence": "verified_client",
+      "provenance": [
+        {
+          "source": "wow_forever_client_map_extract",
+          "build": "1.60.1.70888",
+          "url": "https://github.com/Everloot/everloot/blob/374ec8362bbbbc4aac39082ffc0d7348e5746a7d/web/src/data/game-data/map.json",
+          "verifiedInForever": false
+        }
+      ]
+    }
+  ],
   "equipment": [],
   "observations": []
 }
