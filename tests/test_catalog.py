@@ -32,6 +32,14 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Orphaned"):
             catalog.validate(broken)
 
+    def test_baseline_coverage(self):
+        fish = [e for e in self.data["entities"] if e.get("category") == "fish"]
+        self.assertGreaterEqual(len(fish), 23)
+        self.assertEqual(len(self.data["equipment"]), 11)
+        self.assertEqual(len(self.data["zones"]), 46)
+        self.assertEqual(len(self.data["recipes"]), 136)
+        self.assertEqual(len(self.data["schools"]), 0)
+
     def test_equipment_referential_integrity(self):
         broken = copy.deepcopy(self.data)
         broken["equipment"][0]["itemId"] = 9999999
