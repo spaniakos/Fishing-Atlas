@@ -57,7 +57,8 @@ function commands.run(raw)
     local node = ns.storage.latest()
     if not node then say("No observations yet"); return end
     if TomTom and type(TomTom.AddWaypoint) == "function" then
-      local ok = pcall(TomTom.AddWaypoint, TomTom, node.mapID, node.x, node.y, { title = "Fishing Atlas: " .. (node.label or "Spot"), persistent = false })
+      local opts = { title = "Fishing Atlas: " .. (node.label or "Spot"), persistent = false }
+      local ok = pcall(TomTom.AddWaypoint, TomTom, node.mapID, node.x, node.y, opts)
       if ok then say("TomTom waypoint created"); return end
     end
     say("TomTom is unavailable or rejected this waypoint")
