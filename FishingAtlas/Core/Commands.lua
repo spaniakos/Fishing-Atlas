@@ -48,6 +48,9 @@ function commands.run(raw)
     say(ns.storage.count() .. " observations saved account-wide")
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
+  elseif command == "fishing" then
+    local ok, message = ns.fishing.setEnabled(rest == "on")
+    say(message)
   elseif command == "notify" then
     if rest == "on" or rest == "off" then
       ns.storage.db.settings.notifications = rest == "on"
@@ -63,6 +66,6 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
+    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off, fishing on|off")
   end
 end
