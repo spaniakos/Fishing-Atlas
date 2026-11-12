@@ -92,7 +92,8 @@ def merge(base, raw):
 
     obj["entities"].sort(key=lambda x: (x["type"], x["id"]))
     obj["recipes"].sort(key=lambda x: x["spellId"])
-    obj["meta"]["status"] = "client_recipes_imported_partial"
+    if obj["meta"].get("status") == "seed_only":
+        obj["meta"]["status"] = "client_recipes_imported_partial"
     obj["meta"]["clientRecipeSource"] = {
         "source": raw["sourceUrl"],
         "build": "1.60.1.70888",
