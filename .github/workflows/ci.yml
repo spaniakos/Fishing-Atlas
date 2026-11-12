@@ -19,6 +19,7 @@ jobs:
       - name: Validate generated database
         run: |
           python3 scripts/build_catalog.py --check
+          python3 scripts/catalog_coverage.py
           python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Lua syntax validation
         run: |
