@@ -17,6 +17,8 @@ jobs:
           sudo luarocks install luacheck
       - name: Validate and test
         run: |
+          python3 scripts/build_catalog.py --check
+          python3 -m unittest discover -s tests -p 'test_*.py'
           find FishingAtlas tests -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
           luacheck FishingAtlas tests --config .luacheckrc
           lua5.1 tests/test_storage.lua

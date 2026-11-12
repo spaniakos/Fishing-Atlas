@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "formatVersion": 1,
+    "target": {
+      "product": "WoW Forever",
+      "version": "1.60.1.70888",
+      "interface": 16001,
+      "buildDate": "2026-11-09"
+    },
+    "status": "seed_only",
+    "license": "Original Fishing Atlas curated metadata; external reference links are attribution, not copied bulk datasets"
+  },
+  "entities": [
+    {
+      "type": "item",
+      "id": 13759,
+      "name": "Raw Nightfin Snapper",
+      "category": "fish",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13759",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 13931,
+      "name": "Nightfin Soup",
+      "category": "cooked_food",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13931",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 13945,
+      "name": "Recipe: Nightfin Soup",
+      "category": "recipe_item",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=13945",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "id": 159,
+      "name": "Refreshing Spring Water",
+      "category": "ingredient",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/item=159",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    },
+    {
+      "type": "spell",
+      "id": 18243,
+      "name": "Nightfin Soup",
+      "category": "cooking",
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/spell=18243",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "spellId": 18243,
+      "recipeItemId": 13945,
+      "outputItemId": 13931,
+      "cookingSkill": 250,
+      "ingredients": [
+        {
+          "itemId": 13759,
+          "amount": 1
+        },
+        {
+          "itemId": 159,
+          "amount": 1
+        }
+      ],
+      "confidence": "reference",
+      "provenance": [
+        {
+          "source": "wowhead_classic",
+          "url": "https://www.wowhead.com/classic/spell=18243",
+          "build": "classic",
+          "verifiedInForever": false
+        }
+      ]
+    }
+  ],
+  "vendors": [],
+  "schools": [],
+  "zones": [],
+  "equipment": [],
+  "observations": []
+}
