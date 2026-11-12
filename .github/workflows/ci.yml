@@ -43,5 +43,16 @@ jobs:
           lua5.1 tests/test_map_pins.lua
           lua5.1 tests/test_catalog_planner.lua
           lua5.1 tests/test_browser.lua
+          lua5.1 tests/test_diagnostics.lua
+          lua5.1 tests/test_migration.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py
+      - name: Package installable ZIP
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        run: python3 scripts/package.py --tag ci
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        with:
+          name: fishing-atlas-ci-zip
+          path: dist/*
+

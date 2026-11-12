@@ -16,7 +16,9 @@ function S.record(mapID, x, y, label)
   if label == "Fishing spot" then return nil, "Specify the visible school name" end
   local now = type(time) == "function" and time() or 0
   for _, rec in ipairs(db.schoolCandidates) do
-    if rec.mapID == mapID and rec.label == label and math.abs(rec.x - x) <= MERGE
+    if type(rec) == "table" and rec.mapID == mapID and rec.label == label
+      and ns.util.validCoordinate(rec.x) and ns.util.validCoordinate(rec.y)
+      and math.abs(rec.x - x) <= MERGE
       and math.abs(rec.y - y) <= MERGE then
       rec.lastSeen = now
       rec.sightings = (rec.sightings or 1) + 1

@@ -28,6 +28,14 @@ function commands.run(raw)
   command = (command or ""):lower()
   if command == "" or command == "ui" then
     if not ns.ui.toggle() then say("Explorer unavailable in this client") end
+  elseif command == "diagnose" then
+    local d = ns.diagnostics.report()
+    say("Client: " .. d.version .. ", build " .. d.build .. ", interface " .. tostring(d.interface))
+    say("Target match: " .. tostring(d.targetMatch) ..
+      "; map API: " .. tostring(d.mapAPI) .. "; world map: " .. tostring(d.gameMap))
+    say("Item: " .. tostring(d.itemAPI) .. "; spell: " .. tostring(d.spellAPI) ..
+      "; bags: " .. tostring(d.bagAPI) .. "; secure cast: " .. tostring(d.secureCast) ..
+      "; TomTom: " .. tostring(d.tomtom))
   elseif command == "plan" then
     local id, count = rest:match("^(%d+)%s*(%d*)$")
     local plan, err = ns.kitchen.catalogPlan(id, count ~= "" and count or 1)
@@ -191,7 +199,7 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Explorer: /fa or /fa ui; Fish-to-Table: /fa plan <spellID> [crafts]")
+    say("Explorer: /fa or /fa ui; Fish-to-Table: /fa plan <spellID> [crafts]; /fa diagnose")
     say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")

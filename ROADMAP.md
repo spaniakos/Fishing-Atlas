@@ -41,10 +41,10 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 **Gate:** No missing-link crashes, usable UI, documented user flows.
 
 ## v0.98.0: Hardening
-- [ ] SavedVariables migrations, fuzz tests, data generator consistency and regression tests.
-- [ ] Compatibility checks (TomTom, BagBrother, other fishing addons).
-- [ ] Original icons/map pin art where necessary, localization support.
-- [ ] GitHub Action ZIP, changelog, checksums and installation documentation.
+- [x] SavedVariables schema-v3 migration and corruption regression tests; generator consistency checked in CI.
+- [x] Read-only /fa diagnose probes client API, map, secure casting and TomTom; conflict testing with other addons remains manual.
+- [x] Reuse built-in UI art and client API names, with no bundled third-party assets; localization remains client-dependent.
+- [x] Deterministic, installable ZIP with GPL license and SHA256 checksums; main CI artifact and tag-based release workflow.
 
 **Gate:** CI green, package reproducible, no known release-blocking static defects.
 

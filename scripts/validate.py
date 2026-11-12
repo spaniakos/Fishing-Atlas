@@ -18,5 +18,8 @@ for entry in files:
 assert (root / "LICENSE").is_file()
 assert (root / "README.md").is_file()
 assert (root / "ROADMAP.md").is_file()
-assert re.search(r"## Version: \d+\.\d+\.\d+", body)
+m = re.search(r"## Version: (\d+\.\d+\.\d+)", body)
+assert m, "Missing TOC version"
+namespace = (root / "FishingAtlas" / "Core" / "Namespace.lua").read_text(encoding="utf-8")
+assert f'ns.version = "{m.group(1)}"' in namespace, "Namespace and TOC version disagree"
 print(f"manifest validated: {len(files)} Lua files")
