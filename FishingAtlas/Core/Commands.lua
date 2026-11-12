@@ -49,7 +49,7 @@ function commands.run(raw)
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
   elseif command == "fishing" then
-    local ok, message = ns.fishing.setEnabled(rest == "on")
+    local _, message = ns.fishing.setEnabled(rest == "on")
     say(message)
   elseif command == "notify" then
     if rest == "on" or rest == "off" then
