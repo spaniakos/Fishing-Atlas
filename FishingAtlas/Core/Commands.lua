@@ -89,6 +89,7 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off, radius <percent>, fishing on|off, recipes [search], cook <id>")
+    say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
+    say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
   end
 end
