@@ -48,6 +48,13 @@ function commands.run(raw)
     say(ns.storage.count() .. " observations saved account-wide")
   elseif command == "list" then
     for _, fish in ipairs(ns.data.fish or {}) do say(fish.name .. " (" .. fish.confidence .. ")") end
+  elseif command == "caught" then
+    local count, name = rest:match("^(%d+)%s+(.+)$")
+    name = name or rest
+    local item, err = ns.journal.record(nil, name, tonumber(count) or 1, "manual")
+    if item then say("Recorded " .. item.count .. " total: " .. item.name) else say(err) end
+  elseif command == "collection" then
+    say("Collected " .. ns.journal.total() .. " catches across " .. ns.journal.unique() .. " item types")
   elseif command == "recipes" then
     local matches = ns.kitchen.search(rest)
     say(#matches .. " matching cooking recipes (reference data)")
@@ -91,5 +98,6 @@ function commands.run(raw)
   else
     say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
     say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
+    say("Journal: caught [quantity] <item name>, collection")
   end
 end
