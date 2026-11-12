@@ -11,6 +11,7 @@ Core/Storage.lua
 Data/Fish.lua
 Data/Recipes.lua
 Data/Catalog.lua
+Data/CatalogRuntime.lua
 Kitchen/Planner.lua
 Collect/Journal.lua
 Collect/Loot.lua

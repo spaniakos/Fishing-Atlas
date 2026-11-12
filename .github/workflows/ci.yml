@@ -37,5 +37,6 @@ jobs:
           lua5.1 tests/test_journal.lua
           lua5.1 tests/test_guides.lua
           lua5.1 tests/test_vendor.lua
+          lua5.1 tests/test_catalog_runtime.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py

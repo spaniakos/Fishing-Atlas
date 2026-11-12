@@ -31,6 +31,7 @@ jobs:
           lua5.1 tests/test_journal.lua
           lua5.1 tests/test_guides.lua
           lua5.1 tests/test_vendor.lua
+          lua5.1 tests/test_catalog_runtime.lua
           python3 scripts/validate.py
       - name: Package
         run: |

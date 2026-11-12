@@ -71,6 +71,21 @@ function commands.run(raw)
     if item then say("Recorded " .. item.count .. " total: " .. item.name) else say(err) end
   elseif command == "collection" then
     say("Collected " .. ns.journal.total() .. " catches across " .. ns.journal.unique() .. " item types")
+  elseif command == "catalog" then
+    local s = ns.catalog.stats()
+    say(string.format("Build 70888: %d items, %d spells, %d recipes (%d cooking, %d fishing)",
+      s.items, s.spells, s.recipes, s.cooking, s.fishing))
+  elseif command == "recipeid" then
+    local id = tonumber(rest)
+    local recipe = id and ns.catalog.recipe(id) or nil
+    if not recipe then say("Unknown recipe spell ID: " .. tostring(rest)); return end
+    say(ns.catalog.name("spell", id) .. " [" .. id .. "], " .. tostring(recipe.profession))
+    if recipe.outputItemId then
+      say("Output: " .. ns.catalog.name("item", recipe.outputItemId) .. " [" .. recipe.outputItemId .. "]")
+    end
+    for _, item in ipairs(recipe.ingredients or {}) do
+      say("  " .. item.amount .. " x " .. ns.catalog.name("item", item.itemId) .. " [" .. item.itemId .. "]")
+    end
   elseif command == "recipes" then
     local matches = ns.kitchen.search(rest)
     say(#matches .. " matching cooking recipes (reference data)")
@@ -115,5 +130,6 @@ function commands.run(raw)
     say("Commands: /fa add [label], nearby, list, stats, waypoint, notify on|off")
     say("Also: radius <percent>, fishing on|off, recipes [search], cook <id>")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
+    say("Database: catalog, recipeid <spell ID>")
   end
 end
