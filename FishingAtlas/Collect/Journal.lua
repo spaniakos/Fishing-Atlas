@@ -38,7 +38,7 @@ end
 
 function J.total()
   local total = 0
-  for _, entry in pairs(data() or {}) do total = total + (entry.count or 0) end
+  for _, entry in pairs(data() or {}) do total = total + (type(entry) == 'table' and tonumber(entry.count) or 0 or 0) end
   return total
 end
 

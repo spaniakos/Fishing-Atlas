@@ -1,7 +1,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 local _, ns = ...
 local Store = ns.storage
-local SCHEMA_VERSION = 2
+local SCHEMA_VERSION = 3
 local MAX_NODES = 4000
 local MERGE_DISTANCE = 0.003 -- Map-normalized approximation, not a world-distance claim
 
@@ -20,7 +20,11 @@ function Store.init()
   if type(db.schoolCandidates) ~= "table" then db.schoolCandidates = {} end
   if type(db.gearProfile) ~= "table" then db.gearProfile = {} end
   if type(db.settings) ~= "table" then db.settings = {} end
-  if db.settings.notifications == nil then db.settings.notifications = true end
+  if type(db.settings.notifications) ~= "boolean" then db.settings.notifications = true end
+  if type(db.settings.radiusPercent) ~= "number" or db.settings.radiusPercent < 0.1
+     or db.settings.radiusPercent > 5 then db.settings.radiusPercent = 1 end
+  if type(db.vendorObservations) ~= "table" then db.vendorObservations = {} end
+  if type(db.catches) ~= "table" then db.catches = {} end
   db.schemaVersion = SCHEMA_VERSION
   Store.db = db
   return db

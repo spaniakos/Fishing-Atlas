@@ -28,6 +28,7 @@
 Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Live game-client UI compatibility is still pending player testing.
 
 ## Installation
+Follow [the step-by-step installation guide](docs/INSTALLATION.md). The CI pipeline generates a reproducible addon ZIP (including the GPL license and SHA256SUMS) for `main`.
 Copy the `FishingAtlas` folder into `World of Warcraft/_forever_/Interface/AddOns/` (adjust the client installation folder if different). Enable the addon and enter `/fa`.
 
 The TOC targets interface `16001`. Verify the interface number on your Forever installation; this client is evolving.

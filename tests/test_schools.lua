@@ -7,7 +7,7 @@ load("FishingAtlas/Atlas/Schools.lua")
 FishingAtlasDB = {schemaVersion = 1, observations = {{mapID = 1411, x = 0.1, y = 0.2}}}
 time = function() return 1700000100 end
 assert(ns.storage.init())
-assert(ns.storage.db.schemaVersion == 2)
+assert(ns.storage.db.schemaVersion == 3)
 assert(ns.storage.count() == 1)
 assert(ns.schools.total() == 0)
 assert(not ns.schools.record(1411, -1, 0.3, "Test"))

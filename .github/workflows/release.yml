@@ -37,13 +37,11 @@ jobs:
           lua5.1 tests/test_map_pins.lua
           lua5.1 tests/test_catalog_planner.lua
           lua5.1 tests/test_browser.lua
+          lua5.1 tests/test_diagnostics.lua
+          lua5.1 tests/test_migration.lua
           python3 scripts/validate.py
       - name: Package
-        run: |
-          mkdir -p dist
-          zip -qr dist/FishingAtlas-${GITHUB_REF_NAME}.zip FishingAtlas
-          cd dist
-          sha256sum *.zip > SHA256SUMS
+        run: python3 scripts/package.py --tag "${GITHUB_REF_NAME}"
       - uses: actions/upload-artifact@v4
         with:
           name: fishing-atlas-package

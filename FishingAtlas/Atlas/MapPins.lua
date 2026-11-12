@@ -70,7 +70,7 @@ function M.start()
   local frame = CreateFrame("Frame")
   frame:SetScript("OnUpdate", function(_, delta)
     elapsed = elapsed + (delta or 0)
-    if elapsed >= 0.75 then
+    if elapsed >= 2 then
       elapsed = 0
       lastMap, lastCount = nil, -1
       M.refresh()
