@@ -3,7 +3,6 @@ local addonName, ns = ...
 if not CreateFrame then return end
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:SetScript("OnEvent", function(_, event, arg)
   if event == "ADDON_LOADED" and arg == addonName then
     local _, err = ns.storage.init()
@@ -14,7 +13,5 @@ frame:SetScript("OnEvent", function(_, event, arg)
     SLASH_FISHINGATLAS1 = "/fa"
     SLASH_FISHINGATLAS2 = "/fishingatlas"
     SlashCmdList["FISHINGATLAS"] = ns.commands.run
-  elseif event == "PLAYER_ENTERING_WORLD" and ns.storage.db and ns.storage.db.settings.notifications then
-    -- Deliberately avoids positional scanning until reliable distance APIs are verified.
   end
 end)
