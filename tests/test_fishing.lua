@@ -5,7 +5,7 @@ local enabled, message = ns.fishing.setEnabled(true)
 assert(not enabled and message)
 local cleared, clearMsg = ns.fishing.setEnabled(false)
 assert(cleared and clearMsg)
-local calls, button = 0
+local calls = 0
 UIParent = {}
 CreateFrame = function() return {SetAttribute = function() calls = calls + 1 end} end
 SetOverrideBindingClick = function() calls = calls + 1 end
