@@ -33,10 +33,10 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 **Gate:** mocked API tests plus explicit manual client tests; no unattended botting.
 
 ## v0.95.0: User experience
-- [ ] Searchable compact in-game GUI, category filters and navigation.
-- [ ] Fish-to-Table planner with recipes, vendors, missing ingredients and fishing routes.
-- [ ] Collection journal, statistics and accessible notification settings.
-- [ ] Distinct offline database and account-wide observed data.
+- [x] Add on-demand searchable in-game explorer with category tabs, pagination and details (client UI verification pending).
+- [x] Build-70888 recipe ingredient planner and inventory deficits; vendor acquisition links remain unknown until verified.
+- [x] Browser tabs for catch journal, school candidates and vendor observations; alert toggle and existing statistics.
+- [x] Keep build-matched offline encyclopedia separate from SavedVariables observations.
 
 **Gate:** No missing-link crashes, usable UI, documented user flows.
 

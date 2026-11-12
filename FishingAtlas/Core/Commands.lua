@@ -26,7 +26,18 @@ end
 function commands.run(raw)
   local command, rest = (raw or ""):match("^%s*(%S*)%s*(.-)%s*$")
   command = (command or ""):lower()
-  if command == "add" then
+  if command == "" or command == "ui" then
+    if not ns.ui.toggle() then say("Explorer unavailable in this client") end
+  elseif command == "plan" then
+    local id, count = rest:match("^(%d+)%s*(%d*)$")
+    local plan, err = ns.kitchen.catalogPlan(id, count ~= "" and count or 1)
+    if not plan then say(err); return end
+    say(plan.name .. " -> " .. plan.output .. " (" .. plan.crafts .. " crafts)")
+    for _, ing in ipairs(plan.reagents) do
+      say(ing.name .. " [" .. ing.itemId .. "]: need " .. ing.need ..
+        ", owned " .. ing.owned .. ", missing " .. ing.missing)
+    end
+  elseif command == "add" then
     local mapID, x, y = location()
     if not mapID then say(x); return end
     local node, created = ns.storage.add(mapID, x, y, rest, "manual")
@@ -180,7 +191,8 @@ function commands.run(raw)
     end
     say("TomTom is unavailable or rejected this waypoint")
   else
-    say("Commands: /fa add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
+    say("Explorer: /fa or /fa ui; Fish-to-Table: /fa plan <spellID> [crafts]")
+    say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>")
