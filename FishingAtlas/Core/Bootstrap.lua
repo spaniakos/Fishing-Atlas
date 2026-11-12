@@ -13,5 +13,6 @@ frame:SetScript("OnEvent", function(_, event, arg)
     SLASH_FISHINGATLAS1 = "/fa"
     SLASH_FISHINGATLAS2 = "/fishingatlas"
     SlashCmdList["FISHINGATLAS"] = ns.commands.run
+    ns.nearby.start()
   end
 end)
