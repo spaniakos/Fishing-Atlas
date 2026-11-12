@@ -20,6 +20,15 @@ function V.capture(guid, links, when)
   if type(db.vendorObservations) ~= "table" then db.vendorObservations = {} end
   local vendors = db.vendorObservations
   local current = vendors[npcId]
+  local found, seen = {}, {}
+  for _, link in ipairs(links) do
+    local itemId = type(link) == "string" and tonumber(link:match("|Hitem:(%d+)")) or nil
+    if itemId and itemId > 0 and not seen[itemId] and #found < MAX_ITEMS then
+      seen[itemId] = true
+      found[#found + 1] = itemId
+    end
+  end
+  if #found == 0 then return false, "No identified item links" end
   if not current then
     local total = 0
     for _ in pairs(vendors) do total = total + 1 end
@@ -27,15 +36,6 @@ function V.capture(guid, links, when)
     current = {npcId = npcId, items = {}, sightings = 0, source = "client_merchant", build = "1.60.1.70888"}
     vendors[npcId] = current
   end
-  local found = {}
-  for _, link in ipairs(links) do
-    local itemId = type(link) == "string" and tonumber(link:match("|Hitem:(%d+)")) or nil
-    if itemId and itemId > 0 and not found[itemId] and #found < MAX_ITEMS then
-      found[itemId] = true
-      found[#found + 1] = itemId
-    end
-  end
-  if #found == 0 then return false, "No identified item links" end
   table.sort(found)
   current.items = found
   current.lastSeen = tonumber(when) or 0
