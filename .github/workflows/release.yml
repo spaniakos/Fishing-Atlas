@@ -1,0 +1,39 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 luarocks zip
+          sudo luarocks install luacheck
+      - name: Validate and test
+        run: |
+          find FishingAtlas tests -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+          luacheck FishingAtlas tests --config .luacheckrc
+          lua5.1 tests/test_storage.lua
+          lua5.1 tests/test_commands.lua
+          python3 scripts/validate.py
+      - name: Package
+        run: |
+          mkdir -p dist
+          zip -qr dist/FishingAtlas-${GITHUB_REF_NAME}.zip FishingAtlas
+          cd dist
+          sha256sum *.zip > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fishing-atlas-package
+          path: dist/*
+      - name: Publish GitHub release for version tags
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/* --generate-notes --verify-tag

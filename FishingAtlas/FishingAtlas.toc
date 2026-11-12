@@ -1,0 +1,13 @@
+## Interface: 16001
+## Title: Fishing Atlas
+## Notes: Fishing discovery journal and guide for WoW Forever
+## Version: 0.1.0
+## Author: Georgios Spanos and contributors
+## SavedVariables: FishingAtlasDB
+## OptionalDeps: TomTom
+## X-License: GPL-3.0-or-later
+Core/Namespace.lua
+Core/Storage.lua
+Data/Fish.lua
+Core/Commands.lua
+Core/Bootstrap.lua

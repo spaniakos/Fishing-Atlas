@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+*.zip
+*.luac
+*.log
+.vscode/
+.idea/
+__pycache__/

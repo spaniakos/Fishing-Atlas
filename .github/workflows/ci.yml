@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.1 and LuaCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 luarocks
+          sudo luarocks install luacheck
+      - name: Lua syntax validation
+        run: |
+          find FishingAtlas tests -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+      - name: Lua static analysis
+        run: luacheck FishingAtlas tests --config .luacheckrc
+      - name: Unit tests
+        run: |
+          lua5.1 tests/test_storage.lua
+          lua5.1 tests/test_commands.lua
+      - name: Validate manifest and documentation
+        run: python3 scripts/validate.py

@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible Fishing Atlas issue
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: input
+    id: client
+    attributes:
+      label: WoW Forever client build
+      placeholder: "Interface 16001, build ..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
