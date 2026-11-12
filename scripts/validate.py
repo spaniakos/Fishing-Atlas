@@ -18,6 +18,7 @@ for entry in files:
 assert (root / "LICENSE").is_file()
 assert (root / "README.md").is_file()
 assert (root / "ROADMAP.md").is_file()
+assert (root / "CHANGELOG.md").is_file()
 m = re.search(r"## Version: (\d+\.\d+\.\d+)", body)
 assert m, "Missing TOC version"
 namespace = (root / "FishingAtlas" / "Core" / "Namespace.lua").read_text(encoding="utf-8")

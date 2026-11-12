@@ -27,6 +27,11 @@ class PackageTests(unittest.TestCase):
                 self.assertTrue(all(p.startswith("FishingAtlas/") for p in files))
                 self.assertTrue(all(not p.endswith(".pyc") for p in files))
 
+    def test_current_version_package(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            artifact, _ = build(Path(tmp), "v0.99.0")
+            self.assertTrue(artifact.is_file())
+
     def test_reject_mismatched_tag(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(ValueError, "Tag must match"):

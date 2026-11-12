@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> Pre-release development: v0.8 provides an initial build-70888 fishing/cooking catalog with source attribution. **Live-client behavior remains untested; zone-specific school spawns and vendor acquisitions are incomplete.**
+> **v0.99 pre-v1 candidate:** built for Forever 1.60.1.70888/interface 16001, with automated CI coverage. **Client-side acceptance testing remains pending**; full school-spawn/vendor datasets are incomplete.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
@@ -24,7 +24,7 @@
 - Merchant-window item ID observations saved account-wide.
 - **Not complete:** fishing-school coordinates, vendor guides, equipment acquisition locations and full acquisition paths remain outstanding. 23 reference fish and 11 gear IDs are indexed.
 
-## v0.95 Explorer (development)
+## v0.99 Explorer
 Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Live game-client UI compatibility is still pending player testing.
 
 ## Installation
@@ -39,6 +39,9 @@ A location is an observation of a **player standing near water**, not proof a fi
 ## Database baseline
 
 The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog contains extracted recipes/maps and selected reference fish/gear IDs but **is not an exhaustive Forever database**; see [coverage](docs/DATABASE-COVERAGE.md). See [ROADMAP.md](ROADMAP.md).
+
+## Acceptance testing
+See [the 12-case manual test plan](docs/ACCEPTANCE-v0.99.md), [test results](docs/TEST-RESULTS-v0.99.md), and [candidate notes](docs/RELEASE-v0.99.md). Do not treat automated CI as a substitute for in-game verification.
 
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests

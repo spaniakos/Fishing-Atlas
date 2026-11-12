@@ -49,10 +49,10 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 **Gate:** CI green, package reproducible, no known release-blocking static defects.
 
 ## v0.99.0: Pre-v1 acceptance candidate
-- [ ] Publish a tagged release with downloadable ZIP, matching TOC version and checksums.
-- [ ] Complete T01-T12 scripted acceptance checklist with expected results.
-- [ ] Mark in-game checks *pending player verification*, not falsely passed.
-- [ ] Fix blockers through versioned patches, update change log and reissue candidate.
+- [x] Generate the v0.99.0 installable ZIP and checksums on the main CI pipeline; official GitHub Release tag remains pending.
+- [x] Document T01–T12 scripted acceptance procedures with expected results.
+- [x] Mark every in-game acceptance check NOT TESTED until the player confirms it.
+- [ ] Fix any blockers discovered during live testing and reissue candidate as necessary.
 
 **Gate:** Candidate is ready for the player's step-by-step in-game testing. v1.0 requires the player's confirmed results.
 
