@@ -25,6 +25,7 @@ jobs:
           lua5.1 tests/test_nearby.lua
           lua5.1 tests/test_kitchen.lua
           lua5.1 tests/test_journal.lua
+          lua5.1 tests/test_guides.lua
           python3 scripts/validate.py
       - name: Package
         run: |
