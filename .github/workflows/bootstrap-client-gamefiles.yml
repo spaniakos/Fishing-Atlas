@@ -1,0 +1,43 @@
+name: Bootstrap build-matched client game files
+on:
+  push:
+    branches: [feature/explorer-linked-records]
+    paths:
+      - .github/workflows/bootstrap-client-gamefiles.yml
+permissions:
+  contents: write
+jobs:
+  build-client-pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/explorer-linked-records
+      - name: Import pinned public 1.60.1.70888 client sources
+        run: python3 scripts/import_everloot_client_git.py --write
+      - name: Verify clean data and client catalog
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("database/game-files/everloot-gamefiles.json").read_text())
+          meta=data["meta"]
+          assert meta["build"]=="1.60.1.70888"
+          assert meta["status"]=="game_files_unconfirmed"
+          assert len(data["recipes"]) >= 136
+          assert len(data["relations"]) > 0
+          print("Client game file snapshot:",meta["upstreamCommit"])
+          print("Recipes:",len(data["recipes"]))
+          print("Item categories:",len(data["categories"]))
+          print("Relations:",len(data["relations"]))
+          PY
+      - name: Commit build-specific offline game-file Lua data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add FishingAtlas/Data/EverlootGameFiles.lua database/game-files/everloot-gamefiles.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: bundle independently credited build-70888 client recipe and item graph'
+          git push origin HEAD:feature/explorer-linked-records
