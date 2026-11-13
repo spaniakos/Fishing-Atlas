@@ -95,6 +95,29 @@ function V.mapPoints(item)
       end
     end
     return results
+  elseif item.kind == "fishing_pole" or item.kind == "lure" then
+    for _, vendor in ipairs(ns.data.referenceVendors or {}) do
+      for _, id in ipairs(vendor.items or {}) do
+        if id == item.id then
+          for _, place in ipairs(vendor.spots or {}) do
+            if validPlace(place) then
+              results[#results + 1] = {mapID = place.mapID, x = place.x, y = place.y,
+                kind = "vendor", label = vendor.name,
+                source = "mixed_source_reference"}
+            end
+          end
+          break
+        end
+      end
+    end
+    return results
+  elseif item.kind == "merchant_observation" then
+    if validPlace(item.extra) then
+      local rec = item.extra
+      results[1] = {mapID = rec.mapID, x = rec.x, y = rec.y,
+        kind = "vendor", label = item.name, source = "client_observed"}
+    end
+    return results
   elseif item.kind == "school_type" then
     for _, school in ipairs(B.schoolSightings(item.name)) do
       if validPlace(school) then
@@ -115,6 +138,10 @@ end
 function V.mapID(item)
   if not item then return nil end
   if item.kind == "zone" then return item.id end
+  if item.kind == "fish" then
+    local zones = V.fishZones(item.id)
+    return zones[1] and zones[1].mapID or nil
+  end
   local points = V.mapPoints(item)
   return points[1] and points[1].mapID or nil
 end
