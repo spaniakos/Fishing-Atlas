@@ -690,14 +690,14 @@ local function build()
   button(footer, "Source link", 883, -6, 106, 30, function()
     if not sourcePopup then return end
     local url = ns.sources and ns.sources.linkFor(active) or nil
-    if not url then url = "https://everloot.app/" end
+    if not url then url = "No documented upstream page for this record" end
     sourceField:SetText(url)
     sourceField:HighlightText()
     sourceField:SetFocus()
     local meta = ns.sources and ns.sources.metadata() or {}
-    sourceCaption:SetText("Everloot lookup (not proof of origin) | " ..
-      tostring(meta.dataAsOf or "No observed snapshot imported") ..
-      "\\n" .. (ns.sources and ns.sources.credit() or "No observed pack"))
+    sourceCaption:SetText("Record source: " .. tostring(active and active.confidence or "unknown")
+      .. " | Observed snapshot: " .. tostring(meta.dataAsOf or "Not imported")
+      .. "\\n" .. (ns.sources and ns.sources.creditFor(active) or "No source metadata"))
     sourcePopup:Show()
   end)
   footerStatus = label(footer, "GameFontHighlightSmall", 180, 30, 999, -7)
