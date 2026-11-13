@@ -27,6 +27,8 @@ local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {},
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
 local uiBusy = false
+UI.mapOverride, UI.selectedPoint = nil, nil
+local sourcePopup, sourceField, sourceCaption
 local renderDetails
 
 local function label(parent, font, width, height, x, y)
@@ -125,7 +127,7 @@ end
 
 local function waypoint()
   if not active then return end
-  local wp = ns.browser.waypoint(active)
+  local wp = UI.selectedPoint or ns.browser.waypoint(active)
   if not wp then
     ns.commands.say("No sourced location available for this entry")
     return
@@ -200,6 +202,9 @@ local function tooltip(item, anchor)
   elseif kind == "spell" and type(GameTooltip.SetSpellByID) == "function" then
     found = pcall(GameTooltip.SetSpellByID, GameTooltip, id)
   end
+  if not found and kind and id and type(GameTooltip.SetHyperlink) == "function" then
+    found = pcall(GameTooltip.SetHyperlink, GameTooltip, kind .. ":" .. id)
+  end
   if not found then GameTooltip:AddLine(item.name) end
   GameTooltip:AddLine("Evidence: " .. (item.confidence or "unknown"), 0.6, 0.85, 0.9)
   GameTooltip:Show()
@@ -207,7 +212,7 @@ end
 
 local function renderMap()
   if not mapSurface then return end
-  local mapID = ns.viewModel.mapID(active)
+  local mapID = UI.mapOverride or ns.viewModel.mapID(active)
   ns.zoneMap.render(mapSurface, mapID, ns.viewModel.mapPoints(active))
   mapCaption:SetText(mapID and ("MAP " .. mapID .. " | pins are sourced observations")
     or "Select a zone or mapped vendor")
@@ -238,6 +243,20 @@ local function updateRight()
   elseif item.kind == "fish" then
     relatedTitle:SetText("REFERENCE ZONES")
     related = ns.viewModel.fishZones(item.id)
+  elseif item.kind == "item" then
+    relatedTitle:SetText("SELLERS / ACQUISITION")
+    related = ns.viewModel.itemVendors(item.id)
+  elseif item.kind == "school_type" then
+    relatedTitle:SetText("OBSERVED ZONES")
+    local points = ns.viewModel.mapPoints(item)
+    related = {}
+    local seen = {}
+    for _, point in ipairs(points) do
+      if not seen[point.mapID] then
+        seen[point.mapID] = true
+        related[#related + 1] = {name = "Map " .. point.mapID, mapID = point.mapID}
+      end
+    end
   else
     relatedTitle:SetText("RELATED INFORMATION")
     related = {}
@@ -245,10 +264,17 @@ local function updateRight()
   for i, btn in ipairs(rightRows) do
     local record = related[i]
     if record then
+      btn.record = record
       btn.text:SetText(record.name:sub(1, 33))
       btn:SetScript("OnClick", function()
-        if item.kind == "zone" then UI.selectCategory("vendors", record.id)
-        elseif item.kind == "fish" then UI.selectCategory("zones", record.mapID) end
+        if item.kind == "zone" or item.kind == "item" then
+          UI.selectCategory("vendors", record.id)
+        elseif item.kind == "fish" then
+          UI.selectCategory("zones", record.mapID)
+        elseif item.kind == "school_type" then
+          UI.mapOverride = record.mapID
+          renderMap()
+        end
       end)
       btn:Show()
     else
@@ -267,6 +293,9 @@ local function rowTooltip(record, owner)
   elseif record.spellId and type(GameTooltip.SetSpellByID) == "function" then
     shown = pcall(GameTooltip.SetSpellByID, GameTooltip, record.spellId)
   end
+  if not shown and record.itemId and type(GameTooltip.SetHyperlink) == "function" then
+    shown = pcall(GameTooltip.SetHyperlink, GameTooltip, "item:" .. record.itemId)
+  end
   if not shown then GameTooltip:AddLine(record.title or "Fishing Atlas") end
   if record.detail and record.detail ~= "" then
     GameTooltip:AddLine(record.detail, 1, 1, 1, true)
@@ -283,7 +312,13 @@ local function rowClick(record)
   if not record then return end
   if record.vendorId then
     UI.selectCategory("vendors", record.vendorId)
+  elseif record.recipeId then
+    UI.selectCategory("recipes", record.recipeId)
   elseif record.mapID then
+    UI.mapOverride = record.mapID
+    UI.selectedPoint = record.x and record.y and {mapID = record.mapID,
+      x = record.x, y = record.y, label = record.title or "Fishing Atlas"} or nil
+    renderMap()
     local opened = inGameMap(record.mapID)
     if not opened then ns.commands.say("Map unavailable for this location") end
     if record.x and record.y and type(TomTom) == "table"
@@ -292,14 +327,7 @@ local function rowClick(record)
         {title = "Fishing Atlas: " .. tostring(record.title), persistent = false})
     end
   elseif record.itemId then
-    for _, category in ipairs({"fish", "gear"}) do
-      for _, candidate in ipairs(ns.browser.list(category, "")) do
-        if candidate.id == record.itemId then
-          UI.selectCategory(category, candidate.id)
-          return
-        end
-      end
-    end
+    UI.openItem(record.itemId)
   end
 end
 
@@ -358,6 +386,7 @@ end
 
 local function select(item)
   active = item
+  UI.mapOverride, UI.selectedPoint = nil, nil
   UI.detailsTab = "Overview"
   renderDetails()
   UI.draw()
@@ -426,6 +455,7 @@ function UI.refresh(reset)
 end
 
 function UI.selectCategory(category, id, topPage)
+  UI.mapOverride, UI.selectedPoint = nil, nil
   UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
   UI.topPage = topPage or "Explorer"
   search:SetText("")
@@ -435,6 +465,17 @@ function UI.selectCategory(category, id, topPage)
     for _, item in ipairs(results) do
       if item.id == id then select(item); break end
     end
+  end
+end
+
+function UI.openItem(id)
+  if type(id) ~= "number" or id <= 0 then return end
+  UI.selectCategory("items", id)
+  if not active or active.id ~= id then
+    active = {id = id, kind = "item", name = ns.catalog.name("item", id),
+      confidence = "source_relationship"}
+    UI.detailsTab = "Overview"
+    renderDetails()
   end
 end
 
@@ -611,6 +652,18 @@ local function build()
   for i = 1, 3 do
     rightRows[i] = button(related, "", 9, -30 - (i - 1) * 25, 255, 24,
       function() end)
+    rightRows[i]:SetScript("OnEnter", function(self)
+      if not GameTooltip or not self.record then return end
+      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+      GameTooltip:AddLine(self.record.name or "Source")
+      GameTooltip:AddLine(self.record.confidence or
+        self.record.evidence or "Source reference", 0.5, 0.9, 0.85)
+      GameTooltip:AddLine("Click to navigate", 1, 1, 1)
+      GameTooltip:Show()
+    end)
+    rightRows[i]:SetScript("OnLeave", function()
+      if GameTooltip then GameTooltip:Hide() end
+    end)
   end
 
   local footer = panel(frame, 13, -699, 1184, 44)
@@ -634,8 +687,34 @@ local function build()
   button(footer, "Report issue on GitHub", 642, -6, 237, 30, function()
     if ns.issues then ns.issues.open() end
   end)
-  footerStatus = label(footer, "GameFontHighlightSmall", 260, 30, 895, -7)
-  footerStatus:SetText("Data sources: client + reference + yours")
+  button(footer, "Source link", 883, -6, 106, 30, function()
+    if not sourcePopup then return end
+    local url = ns.sources and ns.sources.linkFor(active) or nil
+    if not url then url = "https://everloot.app/" end
+    sourceField:SetText(url)
+    sourceField:HighlightText()
+    sourceField:SetFocus()
+    local meta = ns.sources and ns.sources.metadata() or {}
+    sourceCaption:SetText("Everloot lookup (not proof of origin) | " ..
+      tostring(meta.dataAsOf or "No observed snapshot imported") ..
+      "\\n" .. (ns.sources and ns.sources.credit() or "No observed pack"))
+    sourcePopup:Show()
+  end)
+  footerStatus = label(footer, "GameFontHighlightSmall", 180, 30, 999, -7)
+  footerStatus:SetText("Client + references + yours")
+  sourcePopup = panel(frame, 290, -272, 635, 175, {0.03, 0.10, 0.14, 0.99})
+  sourcePopup:SetFrameStrata("TOOLTIP")
+  label(sourcePopup, "GameFontNormal", 595, 25, 13, -10):SetText("SOURCE AND ATTRIBUTION")
+  sourceCaption = label(sourcePopup, "GameFontHighlightSmall", 605, 49, 13, -40)
+  sourceCaption:SetJustifyV("TOP")
+  sourceField = CreateFrame("EditBox", nil, sourcePopup, "InputBoxTemplate")
+  sourceField:SetSize(580, 25)
+  sourceField:SetPoint("TOPLEFT", sourcePopup, "TOPLEFT", 20, -100)
+  sourceField:SetAutoFocus(false)
+  sourceField:SetScript("OnEscapePressed", function() sourcePopup:Hide() end)
+  button(sourcePopup, "Close", 520, -134, 90, 29,
+    function() sourcePopup:Hide() end)
+  sourcePopup:Hide()
   context = panel(frame, 480, -345, 215, 150, {0.04, 0.10, 0.13, 0.99})
   context:SetFrameStrata("TOOLTIP")
   contextButtons = {
