@@ -5,6 +5,7 @@ on:
       - feature/explorer-linked-records
     paths:
       - .github/workflows/seed-offline-v0996.yml
+      - scripts/seed_offline.py
   workflow_dispatch:
 permissions:
   contents: write
