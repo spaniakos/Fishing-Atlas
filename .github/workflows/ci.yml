@@ -56,12 +56,12 @@ jobs:
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py
       - name: Package installable ZIP
-        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         run: |
           VERSION=$(sed -n 's/^## Version: //p' FishingAtlas/FishingAtlas.toc)
           python3 scripts/package.py --tag "v${VERSION}"
       - uses: actions/upload-artifact@v4
-        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         with:
           name: fishing-atlas-ci-zip
           path: dist/*
