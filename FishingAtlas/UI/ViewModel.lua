@@ -576,15 +576,16 @@ function V.section(item, section)
         "Interface\\Icons\\INV_Misc_Map_01", "observed")
       local seen = {}
       for _, place in ipairs(places) do seen[place.mapID] = true end
+      for _, place in ipairs(observations) do seen[place.mapID] = true end
       local zoneNames = {}
       for mapID in pairs(seen) do
         local zone = findZone(mapID)
         zoneNames[#zoneNames + 1] = zone and zone.name or ("Map " .. mapID)
       end
       table.sort(zoneNames)
-      add("Observed zones", #zoneNames > 0 and table.concat(zoneNames, ", ")
-        or "No player-confirmed areas recorded", "Interface\\Icons\\INV_Misc_Map_01",
-        "user_observation")
+      add("Recorded areas", #zoneNames > 0 and table.concat(zoneNames, ", ")
+        or "No observed areas yet", "Interface\\Icons\\INV_Misc_Map_01",
+        "mixed_observation")
     else
       for _, place in ipairs(observations) do
         local zone = findZone(place.mapID)
