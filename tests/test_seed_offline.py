@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from seed_offline import CREDIT, latest_index_path, select_corpus  # noqa: E402
+from seed_offline import CREDIT, NoBulkData, latest_index_path, select_corpus  # noqa: E402
 
 
 class OfflineSeedTest(unittest.TestCase):
@@ -41,7 +41,8 @@ class OfflineSeedTest(unittest.TestCase):
             select_corpus(invalid)
         invalid = self.index()
         invalid["files"][0]["rows"] = 0
-        with self.assertRaises(ValueError):
+        invalid["files"][0]["bytes"] = 0
+        with self.assertRaises(NoBulkData):
             select_corpus(invalid)
 
 
