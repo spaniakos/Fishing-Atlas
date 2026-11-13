@@ -62,3 +62,12 @@ Licensed under **GNU GPL-3.0-or-later**. See [LICENSE](LICENSE). External game a
 - Settings > AddOns > Fishing Atlas: minimap launcher, map markers, proximity alerts.
 - Browser item/recipe icons from the game client, hover tooltips, larger click targets and Options shortcut.
 - Tooltips and client textures are capability-dependent; report unsupported APIs during acceptance.
+
+## v0.99.2 feedback: atlas UI
+- Mousewheel/scrollbar replaces recipe pagination; two-pane explorer and larger item artwork.
+- Category list has a selection inspector with sourced relationships.
+- School tab now includes a **small, named Classic reference taxonomy** plus the player's observations; it is not a complete build-verified school database.
+- Zones show school sightings and saved fishing positions when observed, not imaginary spawn tables.
+- Vendors show recorded merchant inventories; the offline vendor directory remains incomplete.
+- Right-click a school/zone with recorded coordinates to create a TomTom waypoint. No coordinate means the action is disabled.
+- Notifications and map-pin toggles display their actual saved on/off state.
