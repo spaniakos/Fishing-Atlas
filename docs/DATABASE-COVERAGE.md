@@ -58,6 +58,12 @@ All imported evidence is from the Everloot public corpus under **CC BY-SA 4.0** 
 
 The existing 136 client recipe definitions, 46 map records, 23 reference fish, 12 Classic school names, 96 Finddon mixed-reference vendors, and 11 gear records remain available offline. They are not automatically promoted to live verified facts.
 
-**Still missing:** a separate build-matching full game-file export, eligible observed school-object locations, exhaustive client item names/icons, and actual WoW Forever client acceptance. An absent source relation remains **unknown** rather than zero or unavailable.
+**Still missing:** eligible observed school-object locations, exhaustive client item names/icons, and in-game WoW Forever acceptance. The relevant build-70888 game-file catalog has now been imported separately (unconfirmed). An absent source relation remains **unknown** rather than zero or unavailable.
 
 Refresh: scripts/seed_offline.py selects a checksum-verified immutable bulk file where available, otherwise a complete keyed API pagination snapshot. scripts/import_everloot.py generates the Lua with source SHA and snapshot date. Scheduled changes are proposed for review before packaging.
+
+## Matching build-70888 client game-file layer
+
+The separately credited Everloot public client game-file catalogs have also been imported: 136 Cooking/Fishing recipe definitions, 1,854 relevant item-category entries and 3,356 selected item/spell/skill relations. This is **not** Everloot's CC BY-SA observation layer; it is Blizzard game-file-derived data labelled game_files_unconfirmed. The exact upstream commit is 8dad8fcf15ed2aa7f6360fa553901002244d8884. Source-file SHA-256 digests and the extracted build configuration are embedded in the generated game-file metadata. The import is intentionally restricted to relevant item IDs; it is not an exhaustive export of all 31,981 upstream item-category rows.
+
+Future client snapshots are independently reviewable through the weekly game-file refresh workflow; new build IDs fail the build-match gate rather than silently mixing incompatible data.
