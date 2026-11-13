@@ -55,9 +55,17 @@ function B.list(category, term)
       end
     end
   elseif category == "recipes" then
+    local seenRecipes = {}
     for _, r in ipairs(ns.catalog.recipeList()) do
+      seenRecipes[r.spellId] = true
       push(out, row(r.spellId, ns.catalog.name("spell", r.spellId),
         r.profession or "Cooking", r.confidence, r), term)
+    end
+    for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+      if not seenRecipes[id] then
+        push(out, row(id, ns.catalog.name("spell", id),
+          "gamefile_recipe", "game_files_unconfirmed", recipe), term)
+      end
     end
   elseif category == "zones" then
     for _, z in ipairs(ns.catalog.zones()) do
@@ -264,8 +272,10 @@ function B.icon(item)
   if not item then return unknownIcon end
   if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
     return ns.catalog.icon("item", item.id)
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
-    local recipe = ns.catalog.recipe(item.id)
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
+    local recipe = ns.catalog.recipe(item.id) or
+      ((ns.data.gameFiles or {}).recipes or {})[item.id]
     if recipe and recipe.outputItemId then return ns.catalog.icon("item", recipe.outputItemId) end
     return ns.catalog.icon("spell", item.id)
   elseif item.kind == "catch" and item.extra and item.extra.id then
@@ -283,7 +293,8 @@ function B.tooltip(item)
   if not item then return nil end
   if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
     return "item", tonumber(item.id)
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
     return "spell", tonumber(item.id)
   end
   return nil
