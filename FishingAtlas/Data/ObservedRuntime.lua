@@ -1,0 +1,120 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Read-only source graph for sourced, offline Forever observations.
+-- The CC BY-SA 4.0 observed dataset is stored in EverlootObserved.lua, separately licensed.
+local _, ns = ...
+ns.sources = {}
+local S = ns.sources
+local O = ns.data.everloot or {}
+local function tableOrEmpty(v) return type(v) == "table" and v or {} end
+local function isPositive(n) return type(n) == "number" and n > 0 end
+local function support(n) return (tonumber(n) or 0) >= 3 and "observed_confirmed" or "observed_provisional" end
+function S.metadata() return O.meta or {} end
+function S.credit()
+  return (O.meta and O.meta.credit) or "Data from Everloot (https://everloot.app), CC BY-SA 4.0."
+end
+function S.itemName(id)
+  local rec = tableOrEmpty(O.itemNames)[tonumber(id)]
+  return type(rec) == "table" and rec.name or nil
+end
+function S.vendor(id) return tableOrEmpty(O.npcs)[tonumber(id)] end
+function S.vendorLocations(id)
+  local npc = S.vendor(id)
+  return npc and tableOrEmpty(npc.spots) or {}
+end
+function S.vendorsForItem(id)
+  local found = {}
+  for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.vendorItems)[tonumber(id)])) do
+    if isPositive(rec.npcId) then
+      local npc = S.vendor(rec.npcId) or {}
+      found[#found + 1] = {kind = "vendor", npcId = rec.npcId,
+        title = npc.name or ("NPC " .. rec.npcId), installs = rec.installs or 0,
+        reports = rec.reports or 0, confidence = support(rec.installs),
+        url = "https://everloot.app/database/npc/" .. rec.npcId}
+    end
+  end
+  return found
+end
+function S.dropsForItem(id)
+  local found = {}
+  for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.drops)[tonumber(id)])) do
+    if isPositive(rec.npcId) then
+      local npc = S.vendor(rec.npcId) or {}
+      found[#found + 1] = {kind = "drop", npcId = rec.npcId,
+        title = npc.name or ("NPC " .. rec.npcId), installs = rec.installs or 0,
+        reports = rec.windows or 0, confidence = support(rec.installs)}
+    end
+  end
+  for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.poolItems)[tonumber(id)])) do
+    found[#found + 1] = {kind = "pool", objectId = rec.objectId,
+      title = rec.name or ("Object " .. tostring(rec.objectId)),
+      installs = rec.installs or 0, reports = rec.windows or 0,
+      confidence = support(rec.installs), mapID = rec.mapID,
+      x = rec.x, y = rec.y}
+  end
+  return found
+end
+function S.fishingForItem(id)
+  local found = {}
+  for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.fishing)[tonumber(id)])) do
+    if rec.mapID then
+      found[#found + 1] = {mapID = rec.mapID, installs = rec.installs or 0,
+        reports = rec.windows or 0, confidence = support(rec.installs)}
+    end
+  end
+  return found
+end
+function S.craftedItem(id)
+  local out = {}
+  for spellId, rec in pairs(tableOrEmpty(O.recipes)) do
+    if rec.productItemId == tonumber(id) then
+      out[#out + 1] = {kind = "craft", spellId = spellId,
+        title = rec.name or ("Spell " .. spellId), installs = rec.installs or 0,
+        confidence = support(rec.installs)}
+    end
+  end
+  table.sort(out, function(a, b) return a.spellId < b.spellId end)
+  return out
+end
+function S.trainersForRecipe(spellId)
+  local out = {}
+  for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.trainers)[tonumber(spellId)])) do
+    if isPositive(rec.npcId) then
+      local npc = S.vendor(rec.npcId) or {}
+      out[#out + 1] = {kind = "trainer", npcId = rec.npcId,
+        title = npc.name or ("Trainer " .. rec.npcId),
+        installs = rec.installs or 0, confidence = support(rec.installs)}
+    end
+  end
+  return out
+end
+function S.schools()
+  return tableOrEmpty(O.schools)
+end
+function S.schoolLocations(name)
+  local out = {}
+  for _, school in ipairs(S.schools()) do
+    if school.name == name then
+      for _, loc in ipairs(tableOrEmpty(school.spots)) do
+        if isPositive(loc.mapID) and ns.util.validCoordinate(loc.x)
+            and ns.util.validCoordinate(loc.y) then
+          out[#out + 1] = {mapID = loc.mapID, x = loc.x, y = loc.y,
+            kind = "school", label = name, exact = true,
+            source = support(loc.installs), installs = loc.installs or 0}
+        end
+      end
+    end
+  end
+  return out
+end
+function S.linkFor(item)
+  if not item then return nil end
+  if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole"
+      or item.kind == "lure" then
+    return "https://everloot.app/database/item/" .. tostring(item.id)
+  end
+  if item.kind == "vendor_reference" or item.kind == "merchant_observation"
+      or item.kind == "observed_vendor" then
+    return "https://everloot.app/database/npc/" .. tostring(item.id)
+  end
+  return nil
+end
