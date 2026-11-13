@@ -129,7 +129,7 @@ function B.details(item)
       lines[#lines + 1] = "Produces: " .. plan.output
       for _, i in ipairs(plan.reagents) do
         lines[#lines + 1] = string.format("%d x %s | owned %d | missing %d",
-          i.need, i.name, i.owned, i.missing)
+          i.need or 0, i.name or "Unknown", i.owned or 0, i.missing or 0)
       end
       lines[#lines + 1] = "Recipe acquisition/vendor: not yet verified."
     end
