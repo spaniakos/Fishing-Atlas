@@ -62,3 +62,17 @@ Licensed under **GNU GPL-3.0-or-later**. See [LICENSE](LICENSE). External game a
 - Settings > AddOns > Fishing Atlas: minimap launcher, map markers, proximity alerts.
 - Browser item/recipe icons from the game client, hover tooltips, larger click targets and Options shortcut.
 - Tooltips and client textures are capability-dependent; report unsupported APIs during acceptance.
+
+## v0.99.2 feedback: atlas UI
+- Mousewheel/scrollbar replaces recipe pagination; two-pane explorer and larger item artwork.
+- Category list has a selection inspector with sourced relationships.
+- School tab now includes a **small, named Classic reference taxonomy** plus the player's observations; it is not a complete build-verified school database.
+- Zones show school sightings and saved fishing positions when observed, not imaginary spawn tables.
+- Vendors show recorded merchant inventories; the offline vendor directory remains incomplete.
+- Right-click a school/zone with recorded coordinates to create a TomTom waypoint. No coordinate means the action is disabled.
+- Notifications and map-pin toggles display their actual saved on/off state.
+
+### Zone fishing skills and vendor reference labels
+Zone details now show the minimum and reliable-catch Fishing skill using the [Wowhead Forever Fishing guide](https://www.wowhead.com/forever/guide/professions/fishing/overview-leveling), with special-water caveats. Unknown zones remain unknown. Reference vendor names, areas and starter fishing supplies come from [WoW Professions Forever](https://www.wow-professions.com/forever/how-to-fish). These are not confirmed live inventory snapshots; your client can record merchant item IDs and player coordinates on visiting a merchant. TomTom is available only for actual observed coordinates.
+
+Zone details also show a **selected, reference-only list** of indicative fish from Classic-baseline Forever guides. It does not constitute a complete or live-verified spawn table. Sources: [The Forever Tavern](https://theforevertavern.com/professions/fishing) and [Icy Veins Forever](https://www.icy-veins.com/wow-forever/fishing/).

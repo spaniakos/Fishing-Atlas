@@ -1,66 +1,179 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Basic FrameXML explorer; built only on demand to avoid login/UI conflicts.
+-- Read-only, scrollable atlas explorer. This avoids inferred game-world facts.
 local _, ns = ...
 ns.ui = {}
 local UI = ns.ui
-local categories = {"fish", "gear", "recipes", "zones", "journal", "schools", "vendors"}
-local pageSize = 10
-UI.category, UI.query, UI.page = "fish", "", 1
-local frame, search, summary, details
-local rows, tabButtons = {}, {}
+local categories = {"fish", "gear", "recipes", "zones", "schools", "vendors", "journal"}
+local visibleRows, rowHeight = 13, 31
+UI.category, UI.query, UI.offset = "fish", "", 0
+local frame, search, countText, detailTitle, detailInfo, detailIcon, statusText
+local listSlider, detailScroll, detailChild, results = nil, nil, nil, {}
+local rows, tabs, contextButtons = {}, {}, {}
+local selected, context, alertButton, pinButton
+local refreshBusy = false
 
-local function font(parent, x, y, width, height, size)
-  local label = parent:CreateFontString(nil, "OVERLAY", size or "GameFontNormal")
-  label:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
+local function makeLabel(parent, fontName, width, height)
+  local label = parent:CreateFontString(nil, "OVERLAY", fontName or "GameFontHighlight")
   label:SetSize(width, height)
   label:SetJustifyH("LEFT")
-  label:SetJustifyV("MIDDLE")
+  label:SetJustifyV("TOP")
   return label
 end
 
-local function control(parent, title, w, h, x, y, click)
-  local button = CreateFrame("Button", nil, parent)
-  button:SetSize(w, h)
-  button:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
-  local bg = button:CreateTexture(nil, "BACKGROUND")
+local function panel(parent, width, height, x, y, r, g, b)
+  local child = CreateFrame("Frame", nil, parent)
+  child:SetSize(width, height)
+  child:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
+  local bg = child:CreateTexture(nil, "BACKGROUND")
   bg:SetAllPoints()
   bg:SetTexture("Interface\\Buttons\\WHITE8X8")
-  bg:SetVertexColor(0.16, 0.26, 0.31, 0.95)
-  button.title = font(button, 8, -2, w - 12, h - 4, "GameFontNormalSmall")
-  button.title:SetText(title)
-  button:SetScript("OnClick", click)
-  return button
+  bg:SetVertexColor(r or 0.09, g or 0.15, b or 0.18, 0.96)
+  return child
 end
 
-function UI.refresh()
-  if not frame then return end
-  local data = ns.browser.list(UI.category, UI.query)
-  local pages = math.max(1, math.ceil(#data / pageSize))
-  UI.page = math.min(UI.page, pages)
-  summary:SetText(UI.category .. ": " .. #data .. " entries, page " .. UI.page .. "/" .. pages)
-  for i, btn in ipairs(rows) do
-    local item = data[(UI.page - 1) * pageSize + i]
+local function button(parent, name, x, y, width, height, click)
+  local control = CreateFrame("Button", nil, parent)
+  control:SetSize(width, height)
+  control:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
+  local bg = control:CreateTexture(nil, "BACKGROUND")
+  bg:SetAllPoints()
+  bg:SetTexture("Interface\\Buttons\\WHITE8X8")
+  bg:SetVertexColor(0.16, 0.27, 0.32, 0.96)
+  control.background = bg
+  local label = makeLabel(control, "GameFontNormalSmall", width - 15, height - 5)
+  label:SetPoint("LEFT", control, "LEFT", 8, 0)
+  label:SetJustifyV("MIDDLE")
+  label:SetText(name)
+  control.label = label
+  control:SetScript("OnClick", click)
+  return control
+end
+
+local function tooltip(row, anchor)
+  if not GameTooltip or not row then return end
+  GameTooltip:SetOwner(anchor, "ANCHOR_RIGHT")
+  local kind, id = ns.browser.tooltip(row)
+  local ok = false
+  if kind == "item" and type(GameTooltip.SetItemByID) == "function" then
+    ok = pcall(GameTooltip.SetItemByID, GameTooltip, id)
+  elseif kind == "spell" and type(GameTooltip.SetSpellByID) == "function" then
+    ok = pcall(GameTooltip.SetSpellByID, GameTooltip, id)
+  end
+  if not ok then GameTooltip:AddLine(row.name) end
+  GameTooltip:AddLine("Atlas source: " .. tostring(row.confidence), 0.3, 0.85, 0.8)
+  GameTooltip:Show()
+end
+
+local function updateSettings()
+  local settings = ns.storage.db and ns.storage.db.settings or {}
+  if alertButton then
+    alertButton.label:SetText("Alerts: " .. (settings.notifications and "ON" or "OFF"))
+  end
+  if pinButton then
+    pinButton.label:SetText("Map pins: " .. (settings.mapPins and "ON" or "OFF"))
+  end
+end
+
+local function sendWaypoint(target)
+  if not target then return false end
+  if type(TomTom) ~= "table" or type(TomTom.AddWaypoint) ~= "function" then
+    ns.commands.say("TomTom is not available"); return false
+  end
+  local ok = pcall(TomTom.AddWaypoint, TomTom, target.mapID, target.x, target.y,
+    {title = "Fishing Atlas: " .. target.label, persistent = false})
+  if ok then ns.commands.say("Waypoint added for a saved player location") end
+  return ok
+end
+
+local function renderDetail(row)
+  selected = row
+  if not row then
+    detailTitle:SetText("Select a record")
+    detailInfo:SetText("Scroll to browse. Right-click for available context actions.")
+    detailIcon:SetTexture("Interface\\Icons\\Trade_Fishing")
+    return
+  end
+  detailTitle:SetText(row.name)
+  detailIcon:SetTexture(ns.browser.icon(row))
+  local info = table.concat(ns.browser.details(row), "\n\n")
+  detailInfo:SetText(info)
+  local height = math.max(300, detailInfo:GetStringHeight() + 20)
+  detailChild:SetHeight(height)
+  detailScroll:SetVerticalScroll(0)
+end
+
+local function hideContext()
+  if context then context:Hide() end
+end
+
+local function showContext(row, anchor)
+  if not context then return end
+  local waypoint = ns.browser.waypoint(row)
+  context:ClearAllPoints()
+  context:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 10, 2)
+  contextButtons[1].label:SetText("View details")
+  contextButtons[1]:SetScript("OnClick", function()
+    hideContext()
+    renderDetail(row)
+  end)
+  local button2 = contextButtons[2]
+  button2.label:SetText(waypoint and "TomTom: saved location" or "No verified waypoint")
+  if waypoint then
+    button2:SetScript("OnClick", function() hideContext(); sendWaypoint(waypoint) end)
+    button2:Enable()
+  else
+    button2:SetScript("OnClick", function() hideContext() end)
+    button2:Disable()
+  end
+  context:Show()
+end
+
+function UI.scroll(delta)
+  local maxOffset = math.max(0, #results - visibleRows)
+  UI.offset = math.min(maxOffset, math.max(0, UI.offset - delta))
+  UI.draw()
+end
+
+function UI.draw()
+  if not frame or refreshBusy then return end
+  refreshBusy = true
+  countText:SetText(UI.category .. "  |  " .. #results .. " records  |  scroll to browse")
+  local maxOffset = math.max(0, #results - visibleRows)
+  UI.offset = math.min(maxOffset, UI.offset)
+  for i, control in ipairs(rows) do
+    local item = results[UI.offset + i]
+    control.item = item
     if item then
-      btn.title:SetText(item.name:sub(1, 42) .. "  [" .. tostring(item.id) .. "]")
-      if btn.icon then btn.icon:SetTexture(ns.browser.icon(item)) end
-      btn.item = item
-      btn:SetScript("OnClick", function()
-        details:SetText(table.concat(ns.browser.details(item), "\n"))
-      end)
-      btn:Show()
+      control.label:SetText(item.name:sub(1, 34))
+      control.icon:SetTexture(ns.browser.icon(item))
+      control:Show()
+      if selected == item then control.background:SetVertexColor(0.24, 0.4, 0.44, 1)
+      else control.background:SetVertexColor(0.14, 0.24, 0.28, 0.97) end
     else
-      btn:Hide()
+      control:Hide()
     end
   end
-  for _, btn in ipairs(tabButtons) do
-    btn.title:SetText((btn.category == UI.category and "> " or "") .. btn.category)
+  listSlider:SetMinMaxValues(0, maxOffset)
+  listSlider:SetValue(UI.offset)
+  for _, tab in ipairs(tabs) do
+    tab.label:SetText((UI.category == tab.category and "> " or "") .. tab.category)
   end
+  updateSettings()
+  refreshBusy = false
+end
+
+function UI.refresh(reset)
+  if not frame then return end
+  if reset then UI.offset = 0 end
+  results = ns.browser.list(UI.category, UI.query)
+  hideContext()
+  UI.draw()
 end
 
 local function build()
   if frame or type(CreateFrame) ~= "function" or not UIParent then return end
-  frame = CreateFrame("Frame", "FishingAtlasExplorer", UIParent)
-  frame:SetSize(660, 670)
+  frame = panel(UIParent, 900, 665, 0, 0, 0.04, 0.07, 0.09)
+  frame:ClearAllPoints()
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:SetFrameStrata("DIALOG")
   frame:SetMovable(true)
@@ -68,91 +181,131 @@ local function build()
   frame:RegisterForDrag("LeftButton")
   frame:SetScript("OnDragStart", function(self) self:StartMoving() end)
   frame:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-  local bg = frame:CreateTexture(nil, "BACKGROUND")
-  bg:SetAllPoints()
-  bg:SetTexture("Interface\\Buttons\\WHITE8X8")
-  bg:SetVertexColor(0.035, 0.065, 0.075, 0.96)
-  local heading = font(frame, 18, -12, 550, 25, "GameFontNormalLarge")
-  heading:SetText("Fishing Atlas  |  Explorer  |  Data build 70888")
-  control(frame, "X", 32, 28, 609, -12, function() frame:Hide() end)
+  local title = makeLabel(frame, "GameFontNormalLarge", 740, 26)
+  title:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -16)
+  title:SetText("Fishing Atlas  |  Forever  |  data baseline 70888")
+  button(frame, "X", 851, -13, 30, 26, function() frame:Hide() end)
+
   for i, category in ipairs(categories) do
-    local btn = control(frame, category, 85, 29, 17 + (i - 1) * 90, -53, function()
-      UI.category, UI.page = category, 1
-      UI.refresh()
+    local tab = button(frame, category, 18 + (i - 1) * 124, -56, 119, 30, function()
+      UI.category, UI.query, UI.offset = category, "", 0
+      search:SetText("")
+      renderDetail(nil)
+      UI.refresh(true)
     end)
-    btn.category = category
-    tabButtons[#tabButtons + 1] = btn
+    tab.category = category
+    tabs[#tabs + 1] = tab
   end
-  local prompt = font(frame, 18, -94, 80, 28, "GameFontNormalSmall")
-  prompt:SetText("Search:")
+
+  local label = makeLabel(frame, "GameFontNormalSmall", 60, 22)
+  label:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -107)
+  label:SetText("Search:")
   search = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-  search:SetSize(450, 25)
-  search:SetPoint("TOPLEFT", frame, "TOPLEFT", 91, -97)
+  search:SetSize(550, 24)
+  search:SetPoint("TOPLEFT", frame, "TOPLEFT", 93, -105)
   search:SetAutoFocus(false)
-  search:SetMaxLetters(60)
+  search:SetMaxLetters(70)
   search:SetScript("OnTextChanged", function(self)
-    UI.query, UI.page = self:GetText() or "", 1
-    UI.refresh()
+    UI.query = self:GetText() or ""
+    UI.refresh(true)
   end)
   search:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
-  summary = font(frame, 18, -133, 590, 25, "GameFontNormal")
-  for i = 1, pageSize do
-    local rowButton = control(frame, "", 623, 25, 19, -167 - (i - 1) * 27, function() end)
-    rowButton.title:ClearAllPoints()
-    rowButton.title:SetPoint("LEFT", rowButton, "LEFT", 39, 0)
-    rowButton.title:SetSize(570, 23)
-    local icon = rowButton:CreateTexture(nil, "ARTWORK")
-    icon:SetSize(22, 22)
-    icon:SetPoint("LEFT", rowButton, "LEFT", 8, 0)
-    rowButton.icon = icon
-    rowButton:SetScript("OnEnter", function(self)
-      if not self.item or not GameTooltip then return end
-      local kind, id = ns.browser.tooltip(self.item)
-      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-      local displayed = false
-      if kind == "item" and type(GameTooltip.SetItemByID) == "function" then
-        displayed = pcall(GameTooltip.SetItemByID, GameTooltip, id)
-      elseif kind == "spell" and type(GameTooltip.SetSpellByID) == "function" then
-        displayed = pcall(GameTooltip.SetSpellByID, GameTooltip, id)
-      end
-      if not displayed then
-        GameTooltip:AddLine(self.item.name)
-      end
-      GameTooltip:AddLine("Fishing Atlas: " .. tostring(self.item.confidence), 0.3, 0.85, 0.8)
-      GameTooltip:AddLine("Click for details; client presence does not confirm live availability.", 1, 1, 1, true)
-      GameTooltip:Show()
+
+  countText = makeLabel(frame, "GameFontHighlightSmall", 400, 22)
+  countText:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -145)
+  local left = panel(frame, 410, 414, 18, -174)
+  local right = panel(frame, 439, 414, 442, -174, 0.08, 0.12, 0.15)
+
+  local listArea = CreateFrame("Frame", nil, left)
+  listArea:SetSize(385, 404)
+  listArea:SetPoint("TOPLEFT", left, "TOPLEFT", 2, -4)
+  listArea:EnableMouseWheel(true)
+  listArea:SetScript("OnMouseWheel", function(_, delta) UI.scroll(delta * 3) end)
+
+  for i = 1, visibleRows do
+    local control = button(listArea, "", 0, -(i - 1) * rowHeight, 375, 29, function() end)
+    control.label:ClearAllPoints()
+    control.label:SetPoint("LEFT", control, "LEFT", 40, 0)
+    control.label:SetSize(327, 25)
+    control.icon = control:CreateTexture(nil, "ARTWORK")
+    control.icon:SetSize(25, 25)
+    control.icon:SetPoint("LEFT", control, "LEFT", 7, 0)
+    control:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    control:SetScript("OnClick", function(self, key)
+      if not self.item then return end
+      if key == "RightButton" then showContext(self.item, self)
+      else hideContext(); renderDetail(self.item); UI.draw() end
     end)
-    rowButton:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
-    rows[i] = rowButton
+    control:SetScript("OnEnter", function(self) tooltip(self.item, self) end)
+    control:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+    rows[i] = control
   end
-  control(frame, "< Prev", 92, 27, 19, -443, function()
-    UI.page = math.max(1, UI.page - 1); UI.refresh()
-  end)
-  control(frame, "Next >", 92, 27, 116, -443, function()
-    UI.page = UI.page + 1; UI.refresh()
-  end)
-  local toggle = control(frame, "Alerts", 90, 27, 551, -443, function()
-    if ns.storage.db and ns.storage.db.settings then
-      local settings = ns.storage.db.settings
-      settings.notifications = not settings.notifications
-      ns.commands.say("Proximity alerts " .. (settings.notifications and "on" or "off"))
+  listSlider = CreateFrame("Slider", nil, left, "OptionsSliderTemplate")
+  listSlider:SetOrientation("VERTICAL")
+  listSlider:SetSize(14, 390)
+  listSlider:SetPoint("TOPRIGHT", left, "TOPRIGHT", -7, -11)
+  listSlider:SetMinMaxValues(0, 0)
+  listSlider:SetValueStep(1)
+  listSlider:SetScript("OnValueChanged", function(_, value)
+    local newOffset = math.floor(value + 0.5)
+    if newOffset ~= UI.offset then
+      UI.offset = newOffset
+      UI.draw()
     end
   end)
-  toggle:Show()
-  details = font(frame, 20, -486, 615, 160, "GameFontHighlightSmall")
-  details:SetJustifyV("TOP")
-  details:SetText("Click an entry for details, or hover for the client item/spell tooltip.")
-  control(frame, "Options", 94, 27, 448, -443, function()
-    if ns.options then ns.options.open() end
+
+  detailIcon = right:CreateTexture(nil, "ARTWORK")
+  detailIcon:SetSize(58, 58)
+  detailIcon:SetPoint("TOPLEFT", right, "TOPLEFT", 14, -12)
+  detailTitle = makeLabel(right, "GameFontNormalLarge", 335, 58)
+  detailTitle:SetPoint("TOPLEFT", right, "TOPLEFT", 82, -12)
+  detailScroll = CreateFrame("ScrollFrame", nil, right, "UIPanelScrollFrameTemplate")
+  detailScroll:SetPoint("TOPLEFT", right, "TOPLEFT", 15, -82)
+  detailScroll:SetPoint("BOTTOMRIGHT", right, "BOTTOMRIGHT", -30, 13)
+  detailChild = CreateFrame("Frame", nil, detailScroll)
+  detailChild:SetSize(375, 300)
+  detailScroll:SetScrollChild(detailChild)
+  detailInfo = makeLabel(detailChild, "GameFontHighlight", 366, 300)
+  detailInfo:SetPoint("TOPLEFT", detailChild, "TOPLEFT", 0, 0)
+  detailInfo:SetWordWrap(true)
+
+  context = panel(frame, 226, 69, 0, 0, 0.08, 0.13, 0.17)
+  context:ClearAllPoints()
+  context:SetFrameStrata("TOOLTIP")
+  contextButtons[1] = button(context, "View details", 3, -3, 219, 29, function() end)
+  contextButtons[2] = button(context, "TomTom", 3, -35, 219, 29, function() end)
+  context:Hide()
+
+  local hint = makeLabel(frame, "GameFontHighlightSmall", 615, 18)
+  hint:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -605)
+  hint:SetText("Right click: actions  |  Waypoints only for saved coordinates  |  Unverified data stays labeled")
+  alertButton = button(frame, "Alerts", 625, -600, 124, 30, function()
+    if ns.storage.db then
+      local s = ns.storage.db.settings
+      s.notifications = not s.notifications
+      updateSettings()
+    end
   end)
+  pinButton = button(frame, "Map pins", 753, -600, 125, 30, function()
+    if ns.storage.db then
+      local s = ns.storage.db.settings
+      s.mapPins = not s.mapPins
+      ns.mapPins.refresh()
+      updateSettings()
+    end
+  end)
+  statusText = makeLabel(frame, "GameFontHighlightSmall", 840, 20)
+  statusText:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -640)
+  statusText:SetText("Atlas data is partial. School spawns and vendor stock require verified observations.")
   frame:Hide()
+  renderDetail(nil)
 end
 
 function UI.show()
   build()
   if not frame then return false end
   frame:Show()
-  UI.refresh()
+  UI.refresh(true)
   return true
 end
 

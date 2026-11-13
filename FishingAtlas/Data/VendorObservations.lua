@@ -11,7 +11,7 @@ function V.npcId(guid)
   return tonumber(guid:match("^Creature%-%d+%-%d+%-%d+%-%d+%-(%d+)%-"))
 end
 
-function V.capture(guid, links, when)
+function V.capture(guid, links, when, position, npcName)
   local npcId = V.npcId(guid)
   if not npcId then return false, "Merchant NPC ID unavailable" end
   if type(links) ~= "table" then return false, "Missing merchant items" end
@@ -38,8 +38,17 @@ function V.capture(guid, links, when)
   end
   table.sort(found)
   current.items = found
+  if type(npcName) == "string" and npcName ~= "" then
+    current.name = ns.util.safeText(npcName)
+  end
   current.lastSeen = tonumber(when) or 0
   current.sightings = current.sightings + 1
+  if type(position) == "table" and type(position.mapID) == "number"
+      and ns.util.validCoordinate(position.x) and ns.util.validCoordinate(position.y) then
+    current.mapID = position.mapID
+    current.x, current.y = position.x, position.y
+    current.precision = "player_position_at_merchant"
+  end
   return true, npcId
 end
 
@@ -56,7 +65,19 @@ function V.scan()
     if link then links[#links + 1] = link end
   end
   local now = type(time) == "function" and time() or 0
-  V.capture(guid, links, now)
+  local position
+  if type(C_Map) == "table" and type(C_Map.GetBestMapForUnit) == "function"
+      and type(C_Map.GetPlayerMapPosition) == "function" then
+    local mapID = C_Map.GetBestMapForUnit("player")
+    if mapID then
+      local p = C_Map.GetPlayerMapPosition(mapID, "player")
+      if p and type(p.GetXY) == "function" then
+        local x, y = p:GetXY()
+        position = {mapID = mapID, x = x, y = y}
+      end
+    end
+  end
+  V.capture(guid, links, now, position, type(UnitName) == "function" and UnitName("npc") or nil)
 end
 
 function V.start()

@@ -40,6 +40,7 @@ jobs:
           lua5.1 tests/test_diagnostics.lua
           lua5.1 tests/test_migration.lua
           lua5.1 tests/test_ui_features.lua
+          lua5.1 tests/test_skill.lua
           python3 scripts/validate.py
       - name: Package
         run: python3 scripts/package.py --tag "${GITHUB_REF_NAME}"
