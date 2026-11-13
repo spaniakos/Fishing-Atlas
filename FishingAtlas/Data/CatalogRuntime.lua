@@ -28,6 +28,10 @@ function C.name(kind, id)
       return info.name, true
     end
   end
+  if kind == "item" and ns.sources and ns.sources.itemName then
+    local fromObserved = ns.sources.itemName(id)
+    if type(fromObserved) == "string" and fromObserved ~= "" then return fromObserved, false end
+  end
   local item = C.entity(kind, id)
   if item and type(item.name) == "string" and not item.name:match("^Item #")
     and not item.name:match("^Spell #") then return item.name, false end
@@ -75,6 +79,13 @@ function C.byCategory(category, limit)
     end
   end
   return output
+end
+function C.itemList()
+  local out = {}
+  for _, entity in ipairs(data.entities or {}) do
+    if entity.type == "item" then out[#out + 1] = entity end
+  end
+  return out
 end
 function C.recipeList()
   return data.recipes or {}
