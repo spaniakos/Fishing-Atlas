@@ -29,7 +29,7 @@ def read_file(export, filename, manifest):
         raise ValueError("Missing client dataset: " + str(path))
     raw = path.read_bytes()
     for info in manifest.get("files", []):
-        if info.get("name") == filename and info.get("layer") == "game-files":
+        if info.get("path") == "game-files/" + filename + ".ndjson" and info.get("layer") == "game-files":
             if info.get("sha256") != hashlib.sha256(raw).hexdigest():
                 raise ValueError("Client export checksum mismatch: " + filename)
             break
@@ -41,8 +41,7 @@ def read_file(export, filename, manifest):
 def build(export, all_professions=False):
     manifest = json.loads((export / "manifest.json").read_text(encoding="utf-8"))
     game = manifest.get("gameFiles", {})
-    game_build = game.get("build") if isinstance(game, dict) else None
-    game_build = game_build or manifest.get("build")
+    game_build = game.get("version") if isinstance(game, dict) else None
     if game_build != TARGET:
         raise ValueError("Wrong client build, expected " + TARGET + ", got " + str(game_build))
     catalog = json.loads((ROOT / "database" / "catalog.json").read_text(encoding="utf-8"))
