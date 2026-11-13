@@ -23,6 +23,7 @@ class PackageTests(unittest.TestCase):
                 files = zipped.namelist()
                 self.assertIn("FishingAtlas/FishingAtlas.toc", files)
                 self.assertIn("FishingAtlas/LICENSE", files)
+                self.assertIn("FishingAtlas/DATA-LICENSES.txt", files)
                 self.assertIn("FishingAtlas/Data/Catalog.lua", files)
                 self.assertIn("FishingAtlas/Art/atlas-emblem.tga", files)
                 self.assertIn("FishingAtlas/Art/deepwater-background.tga", files)
