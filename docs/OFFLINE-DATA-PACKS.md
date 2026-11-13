@@ -16,7 +16,7 @@ The installable FishingAtlas folder includes every Lua data pack listed by
 | `Data/EverlootGameFiles.lua` | Blizzard game files, not CC BY-SA observed data | Build-specific **unconfirmed** client metadata |
 | `DATA-LICENSES.txt` | Complete shipped credits | Read this when redistributing or modifying the data |
 
-The initial observed pack is now populated from the complete public corpus (snapshot 2026-11-13T14:10:21.029Z). Raw SHA-256: b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915ecd. The separate full game-file pack is still empty, and a missing school-object observation is unknown rather than evidence that none exist. Never edit generated Lua by hand.
+The initial observed pack is now populated from the complete public corpus (snapshot 2026-11-13T14:10:21.029Z). Raw SHA-256: b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915ecd. The matching build-70888 client-file pack is now populated separately. It includes 136 Cooking/Fishing recipes, 1,854 item categories and 3,356 item/spell edges, credited as Blizzard game-file data and never labelled live observed. A missing school-object observation remains unknown rather than evidence that none exist. Never edit generated Lua by hand.
 
 ## Bootstrap once and refresh repeatedly
 A release builder (not the user) runs:
@@ -61,6 +61,8 @@ a fishing pool is not an exact pool location.
 6. Merge reviewed data and package the addon. Git commit/tag preserves the snapshot checksum and provenance of each version.
 7. For later Everloot updates, the scheduled `everloot-refresh.yml` opens a data PR. It never silently rewrites a released addon.
 8. Users update **FishingAtlas** itself to receive new data, regardless of whether they have Everloot.
+
+The version-gated import script scripts/import_everloot_client_git.py reconstructs the independent game-file pack from an immutable public upstream Git commit. The weekly forever-client-refresh.yml proposes a review PR when files change and refuses incompatible builds.
 
 A new client build requires revalidating the separate game-file pack;
 do not promote an observation from one game build into a newer build without
