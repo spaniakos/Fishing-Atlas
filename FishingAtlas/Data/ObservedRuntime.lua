@@ -106,15 +106,49 @@ function S.schoolLocations(name)
   end
   return out
 end
+local function provenanceUrl(entries)
+  for _, entry in ipairs(type(entries) == "table" and entries or {}) do
+    if entry.verifiedInForever and type(entry.url) == "string" then return entry.url end
+  end
+  for _, entry in ipairs(type(entries) == "table" and entries or {}) do
+    if entry.source == "wow_forever_client_recipe_extract"
+        and type(entry.url) == "string" then return entry.url end
+  end
+  for _, entry in ipairs(type(entries) == "table" and entries or {}) do
+    if type(entry.url) == "string" then return entry.url end
+  end
+  return nil
+end
+
 function S.linkFor(item)
   if not item then return nil end
   if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole"
       or item.kind == "lure" then
-    return "https://everloot.app/database/items/" .. tostring(item.id)
+    local id = tonumber(item.id)
+    if tableOrEmpty(O.itemNames)[id] or tableOrEmpty(O.vendorItems)[id]
+        or tableOrEmpty(O.drops)[id] or tableOrEmpty(O.fishing)[id] then
+      return "https://everloot.app/database/items/" .. tostring(id)
+    end
+    local entity = ns.catalog.entity("item", id)
+    return entity and provenanceUrl(entity.provenance) or nil
   end
-  if item.kind == "vendor_reference" or item.kind == "merchant_observation"
-      or item.kind == "observed_vendor" then
+  if item.kind == "vendor_reference" then
+    if tableOrEmpty(O.npcs)[tonumber(item.id)] then
+      return "https://everloot.app/database/npcs/" .. tostring(item.id)
+    end
+    return "https://github.com/WoW-Forever-Addons/finddon"
+  end
+  if item.kind == "merchant_observation" or item.kind == "observed_npc" then
     return "https://everloot.app/database/npcs/" .. tostring(item.id)
+  end
+  if item.kind == "Cooking" or item.kind == "Fishing" then
+    local recipe = ns.catalog.recipe(item.id)
+    return recipe and provenanceUrl(recipe.provenance) or nil
+  end
+  if item.kind == "zone" then
+    local catalog = ns.data.catalog or {}
+    local meta = catalog.meta or {}
+    return meta.clientMapSource and meta.clientMapSource.source or nil
   end
   return nil
 end
