@@ -1,5 +1,15 @@
 # Fishing Atlas changelog
 
+## v0.99.6 — Evidence-linked explorer, source pipelines (draft)
+- Clickable/hoverable item, recipe, vendor and map relationships; explicit acquisition sections.
+- Sourced observed fish, vendors, trainer recipes, drops and school-object sightings, without treating old Classic references as Forever-confirmed.
+- Map preview aspect-ratio/pin alignment changes, optional TomTom path, and larger minimap button with contextual icons.
+- Offline Everloot corpus and client-file export adapters, distinct CC BY-SA/Blizzard attribution, stable snapshot verification, source checksums and diff report.
+- Daily/dispatch Everloot data-refresh PR workflow, and import unit fixtures for three independent installs, privacy, checksum and build gates.
+- **Not yet shipped:** a populated full Everloot snapshot, in-game validation, or claim of exhaustive Forever content. Empty placeholders are explicitly marked not imported.
+
+
+
 ## v0.99.0 — Pre-v1 candidate (client acceptance pending)
 - Complete CLI and on-demand searchable explorer window across seven categories.
 - Offline catalog: 136 extracted Cooking/Fishing recipe relationships; 46 client maps;
