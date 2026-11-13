@@ -24,7 +24,7 @@ UI.filterFish, UI.filterLocations, UI.detailsTab = false, false, "Overview"
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
-local results, details, actions = {}, {}, {}
+local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel
 local uiBusy = false
 
