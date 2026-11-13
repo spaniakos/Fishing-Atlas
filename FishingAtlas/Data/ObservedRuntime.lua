@@ -145,10 +145,51 @@ function S.linkFor(item)
     local recipe = ns.catalog.recipe(item.id)
     return recipe and provenanceUrl(recipe.provenance) or nil
   end
+  if item.kind == "gamefile_recipe" then
+    return "https://everloot.app/database/download"
+  end
   if item.kind == "zone" then
     local catalog = ns.data.catalog or {}
     local meta = catalog.meta or {}
     return meta.clientMapSource and meta.clientMapSource.source or nil
   end
   return nil
+end
+
+function S.creditFor(item)
+  if not item then return "Select a record to see its provenance." end
+  local kind = item.kind
+  if kind == "vendor_reference" then
+    return "Finddon / ForeverDB / CMaNGOS mixed reference. Unverified stock."
+  end
+  if kind == "merchant_observation" then
+    return "Observed locally by this game client; merchant stock may change."
+  end
+  if kind == "observed_npc" then
+    return S.credit()
+  end
+  if kind == "school_type" then
+    if #S.schoolLocations(item.name) > 0 then return S.credit() end
+    return "Classic school taxonomy; existence on Forever unverified."
+  end
+  if kind == "gamefile_recipe" then
+    return (ns.data.gameFiles and ns.data.gameFiles.meta
+      and ns.data.gameFiles.meta.credit)
+      or "Blizzard game-file data; unconfirmed."
+  end
+  if kind == "Cooking" or kind == "Fishing" then
+    return "Blizzard game-file recipe metadata; unconfirmed acquisition."
+  end
+  if kind == "zone" then
+    return "Client map data © Blizzard Entertainment, Inc.; fishing sources separate."
+  end
+  if kind == "item" or kind == "fish" or kind == "fishing_pole" or kind == "lure" then
+    local id = tonumber(item.id)
+    if tableOrEmpty(O.itemNames)[id] or tableOrEmpty(O.drops)[id]
+        or tableOrEmpty(O.vendorItems)[id] or tableOrEmpty(O.fishing)[id] then
+      return S.credit()
+    end
+    return "Client-derived or reference metadata; not Forever-observed evidence."
+  end
+  return "Locally recorded or mixed reference; inspect the evidence label."
 end
