@@ -19,10 +19,11 @@ local topTabs = {"Explorer", "Journal", "Recipes", "Zones", "Schools", "Vendors"
 local categoryFor = {Explorer = "zones", Journal = "journal", Recipes = "recipes",
   Zones = "zones", Schools = "schools", Vendors = "vendors", Gear = "gear"}
 UI.category, UI.query, UI.offset = "zones", "", 0
+UI.topPage = "Explorer"
 UI.filterFish, UI.filterLocations, UI.detailsTab = false, false, "Overview"
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
-local closeMenu, active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, nil, {}, {}, {}, {}, {}, {}
+local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details, actions = {}, {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel
 local uiBusy = false
@@ -314,8 +315,7 @@ function UI.draw()
     setActive(btn, btn.category == UI.category)
   end
   for _, btn in ipairs(tabs) do
-    setActive(btn, btn.category == UI.category
-      or (btn.caption == "Explorer" and UI.category == "zones"))
+    setActive(btn, btn.caption == UI.topPage)
   end
   updateFooter()
   uiBusy = false
@@ -344,8 +344,9 @@ function UI.refresh(reset)
   renderDetails()
 end
 
-function UI.selectCategory(category, id)
+function UI.selectCategory(category, id, topPage)
   UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
+  UI.topPage = topPage or "Explorer"
   search:SetText("")
   active = nil
   UI.refresh(true)
@@ -404,7 +405,7 @@ local function build()
       if definition[1] == itemCategory then icon = definition[3]; break end
     end
     local btn = button(frame, title, 15 + (i - 1) * 169, -101, 163, 51, function()
-      UI.selectCategory(itemCategory)
+      UI.selectCategory(itemCategory, nil, title)
     end, icon)
     btn.caption, btn.category = title, itemCategory
     tabs[#tabs + 1] = btn
@@ -556,8 +557,6 @@ local function build()
   end)
   footerStatus = label(footer, "GameFontHighlightSmall", 260, 30, 895, -7)
   footerStatus:SetText("Data sources: client + reference + yours")
-  closeMenu = button(frame, "X", 1166, -6, 29, 29, function() frame:Hide() end)
-  closeMenu:Hide()
   frame:Hide()
   fitFrame()
 end

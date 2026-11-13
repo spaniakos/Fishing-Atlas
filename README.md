@@ -86,3 +86,6 @@ Fishing-related vendor NPCs, inventory candidates and map locations are now sour
 - In the explorer click **Report issue**, or enter `/fa issue`. A selectable link to GitHub opens for copying (WoW cannot reliably launch a browser).
 - [Submit a bug or feature request on GitHub](https://github.com/spaniakos/Fishing-Atlas/issues/new/choose).
 - [Browse open issues](https://github.com/spaniakos/Fishing-Atlas/issues).
+
+## v0.99.5 | Image-3 atlas explorer
+The Explorer was redesigned around the third approved concept: branded panorama header, icon navigation, category sidebar, search/filters, sorted record list, dedicated section inspector, native zone map-art preview (when the Forever client exposes C_Map map layers), source-marked points, quick zone skill information and contextual vendor/fish links. Layout auto-scales to the available game viewport. The pictured concept's illustrative fish/school counts and "verified" flags are **not** treated as proof of live spawns. The actual client UI still requires acceptance testing.
