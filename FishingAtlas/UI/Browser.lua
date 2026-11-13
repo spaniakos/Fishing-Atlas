@@ -65,9 +65,7 @@ function B.list(category, term)
     end
   elseif category == "schools" then
     local seen = {}
-    local observedNames = {}
     for _, school in ipairs(ns.sources and ns.sources.schools() or {}) do
-      observedNames[school.name:lower()] = true
       push(out, row(school.name, school.name, "school_type",
         "observed_provisional"), term)
       seen[school.name:lower()] = true
