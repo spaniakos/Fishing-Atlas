@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Fishing Atlas
 ## Notes: Fishing discovery journal and guide for WoW Forever
-## Version: 0.99.5
+## Version: 0.99.6
 ## Author: Georgios Spanos and contributors
 ## SavedVariables: FishingAtlasDB
 ## OptionalDeps: TomTom
@@ -12,6 +12,8 @@ Data/Fish.lua
 Data/Recipes.lua
 Data/Catalog.lua
 Data/CatalogRuntime.lua
+Data/EverlootObserved.lua
+Data/ObservedRuntime.lua
 Kitchen/Planner.lua
 Kitchen/CatalogPlanner.lua
 Collect/Journal.lua
