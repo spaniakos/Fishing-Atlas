@@ -15,8 +15,8 @@ local categories = {
   {"gear", "Gear", "Interface\\Icons\\Trade_Fishing"},
   {"journal", "Journal", "Interface\\Icons\\INV_Misc_Book_09"}
 }
-local topTabs = {"Explorer", "Journal", "Recipes", "Zones", "Schools", "Vendors", "Gear"}
-local categoryFor = {Explorer = "zones", Journal = "journal", Recipes = "recipes",
+local topTabs = {"Explorer", "Items", "Journal", "Recipes", "Zones", "Schools", "Vendors", "Gear"}
+local categoryFor = {Explorer = "zones", Items = "items", Journal = "journal", Recipes = "recipes",
   Zones = "zones", Schools = "schools", Vendors = "vendors", Gear = "gear"}
 UI.category, UI.query, UI.offset = "zones", "", 0
 UI.topPage = "Explorer"
@@ -526,7 +526,8 @@ local function build()
     for _, definition in ipairs(categories) do
       if definition[1] == itemCategory then icon = definition[3]; break end
     end
-    local btn = button(frame, title, 15 + (i - 1) * 169, -101, 163, 51, function()
+    if title == "Items" then icon = "Interface\\Icons\\INV_Misc_Bag_10" end
+    local btn = button(frame, title, 15 + (i - 1) * 148, -101, 142, 51, function()
       UI.selectCategory(itemCategory, nil, title)
     end, icon)
     btn.caption, btn.category = title, itemCategory
