@@ -105,12 +105,21 @@ local function setActive(btn, yes)
 end
 
 local function inGameMap(mapID)
-  if type(mapID) ~= "number" or not WorldMapFrame then return false end
-  if type(WorldMapFrame.SetMapID) == "function" then
-    local success = pcall(WorldMapFrame.SetMapID, WorldMapFrame, mapID)
-    if not success then return false end
+  if type(mapID) ~= "number" then return false end
+  if type(OpenWorldMap) == "function" then
+    local ok = pcall(OpenWorldMap, mapID)
+    if ok then return true end
   end
-  if type(WorldMapFrame.Show) == "function" then WorldMapFrame:Show(); return true end
+  if not WorldMapFrame then
+    if type(ToggleWorldMap) == "function" then pcall(ToggleWorldMap) end
+  end
+  if not WorldMapFrame then return false end
+  local map = WorldMapFrame
+  if type(map.Show) == "function" then map:Show() end
+  if type(map.SetMapID) == "function" then
+    local ok = pcall(map.SetMapID, map, mapID)
+    return ok
+  end
   return false
 end
 
@@ -249,6 +258,51 @@ local function updateRight()
   renderMap()
 end
 
+local function rowTooltip(record, owner)
+  if not record or not GameTooltip then return end
+  GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+  local shown = false
+  if record.itemId and type(GameTooltip.SetItemByID) == "function" then
+    shown = pcall(GameTooltip.SetItemByID, GameTooltip, record.itemId)
+  elseif record.spellId and type(GameTooltip.SetSpellByID) == "function" then
+    shown = pcall(GameTooltip.SetSpellByID, GameTooltip, record.spellId)
+  end
+  if not shown then GameTooltip:AddLine(record.title or "Fishing Atlas") end
+  if record.detail and record.detail ~= "" then
+    GameTooltip:AddLine(record.detail, 1, 1, 1, true)
+  end
+  GameTooltip:AddLine("Evidence: " .. tostring(record.confidence or "unknown"),
+    0.6, 0.85, 0.9)
+  if record.vendorId or record.mapID then
+    GameTooltip:AddLine("Click to navigate", 0.3, 0.9, 0.65)
+  end
+  GameTooltip:Show()
+end
+
+local function rowClick(record)
+  if not record then return end
+  if record.vendorId then
+    UI.selectCategory("vendors", record.vendorId)
+  elseif record.mapID then
+    local opened = inGameMap(record.mapID)
+    if not opened then ns.commands.say("Map unavailable for this location") end
+    if record.x and record.y and type(TomTom) == "table"
+        and type(TomTom.AddWaypoint) == "function" then
+      pcall(TomTom.AddWaypoint, TomTom, record.mapID, record.x, record.y,
+        {title = "Fishing Atlas: " .. tostring(record.title), persistent = false})
+    end
+  elseif record.itemId then
+    for _, category in ipairs({"fish", "gear"}) do
+      for _, candidate in ipairs(ns.browser.list(category, "")) do
+        if candidate.id == record.itemId then
+          UI.selectCategory(category, candidate.id)
+          return
+        end
+      end
+    end
+  end
+end
+
 renderDetails = function()
   if not detailsScroll then return end
   local summary = ns.viewModel.summary(active)
@@ -272,7 +326,7 @@ renderDetails = function()
   for i, item in ipairs(details) do
     local card = detailRows[i]
     if not card then
-      card = CreateFrame("Frame", nil, detailsChild)
+      card = CreateFrame("Button", nil, detailsChild)
       card:SetSize(375, 47)
       local bg = paint(card, {0.06, 0.15, 0.19, 0.82})
       bg:SetVertexColor(0.06, 0.14, 0.18, 0.84)
@@ -281,13 +335,20 @@ renderDetails = function()
       card.icon:SetPoint("LEFT", card, "LEFT", 7, 0)
       card.title = label(card, "GameFontNormal", 325, 20, 45, -4)
       card.detail = label(card, "GameFontHighlightSmall", 325, 17, 45, -26)
+      card:RegisterForClicks("LeftButtonUp")
+      card:SetScript("OnEnter", function(self) rowTooltip(self.record, self) end)
+      card:SetScript("OnLeave", function()
+        if GameTooltip then GameTooltip:Hide() end
+      end)
+      card:SetScript("OnClick", function(self) rowClick(self.record) end)
       detailRows[i] = card
     end
     card:ClearAllPoints()
     card:SetPoint("TOPLEFT", detailsChild, "TOPLEFT", 0, -(i - 1) * 50)
+    card.record = item
     card.title:SetText(item.title)
     card.detail:SetText(item.detail)
-    card.icon:SetTexture(item.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+    card.icon:SetTexture(item.icon or "Interface\\Icons\\INV_Misc_Note_01")
     card:Show()
   end
   for i = #details + 1, #detailRows do detailRows[i]:Hide() end
