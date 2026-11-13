@@ -30,6 +30,7 @@ API = "https://everloot.app/api/corpus/public"
 CREDIT = "Data from Everloot (https://everloot.app), CC BY-SA 4.0."
 LUA = ROOT / "FishingAtlas" / "Data" / "EverlootObserved.lua"
 JSON = ROOT / "database" / "observed" / "everloot-normalized.json"
+DIFF = ROOT / "database" / "observed" / "last-diff.json"
 TARGET = "1.60.1.70888"
 
 
@@ -290,6 +291,29 @@ def normalize(records, data_asof, digest):
     return result
 
 
+def diff_summary(before, after):
+    """An absent relation in a new snapshot is NOT an in-game deletion."""
+    sections = ("itemNames", "npcs", "vendorItems", "drops", "fishing",
+                "poolItems", "schools", "recipes", "trainers")
+    summary = {
+        "previousSnapshot": before.get("meta", {}).get("sourceSha256"),
+        "currentSnapshot": after["meta"]["sourceSha256"],
+        "dataAsOf": after["meta"].get("dataAsOf"),
+        "sections": {},
+        "note": "missingFromSnapshot is NOT proof that a game entity was removed"
+    }
+    for section in sections:
+        old, new = before.get(section, {}), after.get(section, {})
+        if isinstance(old, list) or isinstance(new, list):
+            old = {str(x.get("objectId", i)): x for i, x in enumerate(old)}
+            new = {str(x.get("objectId", i)): x for i, x in enumerate(new)}
+        a, b = set(old), set(new)
+        summary["sections"][section] = {
+            "added": len(b - a), "missingFromSnapshot": len(a - b),
+            "changed": sum(old[k] != new[k] for k in a & b)}
+    return summary
+
+
 def lua_pack(result):
     return ("-- Data from Everloot (https://everloot.app), CC BY-SA 4.0.\n"
             "-- https://creativecommons.org/licenses/by-sa/4.0/\n"
@@ -303,11 +327,16 @@ def main():
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--input", type=Path)
     source.add_argument("--fetch", action="store_true")
+    parser.add_argument("--as-of", help="Corpus snapshot timestamp (for NDJSON input)")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--write", action="store_true")
     mode.add_argument("--check", action="store_true")
     args = parser.parse_args()
     records, asof, digest = load_live() if args.fetch else load_file(args.input)
+    if not records:
+        raise ValueError("Empty input is not proof of an empty Forever database")
+    if args.as_of:
+        asof = args.as_of
     result = normalize(records, asof, digest)
     output = lua_pack(result)
     normalized = json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
@@ -317,9 +346,13 @@ def main():
         if not JSON.is_file() or JSON.read_text(encoding="utf-8") != normalized:
             raise ValueError("Everloot JSON pack is stale; regenerate from the same corpus")
     else:
+        previous = json.loads(JSON.read_text(encoding="utf-8")) if JSON.is_file() else {}
+        diff = diff_summary(previous, result)
         JSON.parent.mkdir(parents=True, exist_ok=True)
         JSON.write_text(normalized, encoding="utf-8")
         LUA.write_text(output, encoding="utf-8")
+        DIFF.write_text(json.dumps(diff, indent=2, sort_keys=True) + "\\n",
+                        encoding="utf-8")
     print("Everloot records:", len(records), "| observed items:", len(result["itemNames"]),
           "| vendors:", len(result["vendorItems"]), "| schools:", len(result["schools"]))
     print(CREDIT)
