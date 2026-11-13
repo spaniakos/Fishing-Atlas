@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> **v0.99.6 pre-v1 candidate:** targeting Forever 1.60.1.70888/interface 16001. Static CI passes; **in-client acceptance and the full Everloot import remain pending**. Packaged empty observed-data placeholders mean missing upstream data is **unknown**, never a verified zero.
+> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Client-game-file export and in-game acceptance remain outstanding; absence of observed evidence means unknown, not zero.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
@@ -99,14 +99,9 @@ needs Everloot installed, an API key or Internet access. See
 [Offline data packs](docs/OFFLINE-DATA-PACKS.md).
 
 The initial v0.99.6 bundle contains the existing client and reference catalog;
-the Everloot-observed layer is **not yet populated**. On 13 November 2026 the
-published bulk corpus contained no rows, the alternative open-data endpoint
-returned HTTP 403, and the unauthenticated corpus API reached its hourly limit.
-This is an upstream acquisition limitation, not a requirement for players.
+the Everloot observed layer has been populated from the complete public corpus via the keyed API. Snapshot 2026-11-13T14:10:21.029Z (60,550 public observations), independently labeled per edge. The separately sourced game-file pack remains unpopulated; neither component requires Everloot on the player's computer.
 
-For a full initial observed-data import, create an optional **free Everloot API
-key** at https://everloot.app/docs/api/keys and configure it as the repository
-Actions secret `EVERLOOT_API_KEY`. The scheduled/dispatchable
+For future refreshed observation snapshots, the configured `EVERLOOT_API_KEY` repository secret is used by the offline build runner only. Keep the key out of source files and installable releases. The scheduled/dispatchable
 `everloot-refresh.yml` builds a reviewed, versioned source-data PR with proper
 CC BY-SA attribution. It will never silently replace released data.
 The key is used only by the builder, never embedded in the addon.
@@ -126,7 +121,7 @@ The key is used only by the builder, never embedded in the addon.
 
 ### Importing the open database
 
-The importers are implemented, but **the repository has not yet checked in a nonempty Forever observation snapshot**. Their empty placeholders are intentional and must not be called complete coverage.
+The repository now includes a nonempty, attributed Everloot public observation snapshot (2026-11-13T14:10:21.029Z). It is not an exhaustive game-file database. The independent game-file pack is still an empty, explicitly unconfirmed placeholder.
 
 ```sh
 # Existing corpus.ndjson or a saved public API response (preferred for reproducibility)
