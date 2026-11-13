@@ -1,0 +1,19 @@
+Data licensing and credits for Fishing Atlas 0.99.6
+
+Addon code: GPL-3.0-or-later. See FishingAtlas/LICENSE.
+Everloot observed-data pack: CC BY-SA 4.0, if populated.
+Data from Everloot (https://everloot.app), CC BY-SA 4.0.
+License: https://creativecommons.org/licenses/by-sa/4.0/
+Source snapshots: https://everloot.app/docs/addon-authors
+The observed pack contains no installation identifiers.
+
+Blizzard game-file metadata: Game data (c) Blizzard Entertainment, Inc.
+Read from the public WoW: Forever client for a stated build; unconfirmed
+until seen in play. These materials are not covered by Everloot's data license.
+
+Other reference data: Finddon (https://github.com/WoW-Forever-Addons/finddon),
+CMaNGOS and ForeverDB, labeled as mixed source with unverified acquisition.
+Historical Classic records are never represented as Forever-confirmed.
+
+The Fishing Atlas name and artwork are independent of Everloot.
+The CC BY-SA observed pack is distributed as a separately licensed data file.
