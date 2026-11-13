@@ -1,6 +1,6 @@
 # Everloot ingestion contract for Fishing Atlas
 
-Status: offline source adapters and UI graph implemented in the v0.99.6 draft. **No nonempty release corpus imported yet.** Fishing Atlas must never describe the current mixed-source catalog as a complete Forever-verified database.
+Status: v0.99.6 draft includes a complete public Everloot observation corpus snapshot imported 2026-11-13T14:10:21.029Z and shipped as attributed offline Lua. The separate matching-build full game-file export and actual WoW client acceptance are still pending. A complete observation corpus is **not** an exhaustive verified game database.
 
 ## Upstream
 - Project: https://everloot.app/
@@ -41,7 +41,7 @@ Observed contributor records are CC BY-SA 4.0. Game-file derived data is **not**
 4. `.github/workflows/everloot-refresh.yml` fetches and opens a review PR with source changes after integration to main. It is not an automatic release.
 5. `FishingAtlas/DATA-LICENSES.txt` and the in-game Source link popup carry attribution.
 
-**Unfinished content gate:** the branch currently ships non-populated placeholders, not the entirety of Everloot. Review a complete corpus for availability, lineage, licensing and performance before generating a release. A game-file item category is not proof of existence or availability on the current server.
+**Remaining content gate:** the branch now ships 60,550 source observation events normalized into indexed fishing/vendor/recipe/NPC relationships. The independent full game-file export is not populated, 0 eligible school-object positions are present in this snapshot, and client UI compatibility remains untested. Review future snapshots for availability, lineage, licensing and performance. A game-file item category is not proof of server availability.
 
 ## Acceptance gate
 - Stable snapshot pagination and/or bulk checksum checks.
@@ -51,4 +51,4 @@ Observed contributor records are CC BY-SA 4.0. Game-file derived data is **not**
 - User testing for maps, TomTom calls, and tooltip API behavior on interface 16001.
 - Regression test on a representative set of fish, recipes, schools, vendors and zones.
 
-The full database is not shipped by this document. Its import requires a coverage report and legally cleared data export.
+The full public observation snapshot is now bundled and documented in docs/DATABASE-COVERAGE.md. Full build-matched game-file data is still unavailable in this release candidate and cannot be inferred from observed records.
