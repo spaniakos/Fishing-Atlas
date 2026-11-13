@@ -1,6 +1,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 local ns = {
- data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{name="Vendor", mapID=1411, area="Durotar", items={6256}, side="Horde"}},
+ data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{name="Vendor", mapID=1411, area="Durotar",
+    items={6256}, side="Horde"}},
  zoneFishingSkill={[1411]={minimum=1,reliable=25}}},
  util = {validCoordinate = function(n) return type(n) == "number" and n >= 0 and n <= 1 end},
  storage = {db = {
