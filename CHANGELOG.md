@@ -8,7 +8,8 @@
 - Daily/dispatch Everloot data-refresh PR workflow, and import unit fixtures for three independent installs, privacy, checksum and build gates.
 - Imported the complete public Everloot observation corpus as a separately licensed offline Lua snapshot (2026-11-13T14:10:21.029Z).
 - Added Items Explorer navigation for the offline observed item relationships.
-- **Pending:** matching-build full game-file export, client verification and exhaustive coverage.
+- Bundled a separate build-1.60.1.70888 client game-file pack (136 recipes, 1,854 item categories, 3,356 selected relation edges), with pinned upstream commit/checksums and Blizzard credit.
+- **Pending:** in-game client verification, eligible school-object positions and exhaustive server-side coverage.
 
 
 
