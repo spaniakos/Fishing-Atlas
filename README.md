@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Client-game-file export and in-game acceptance remain outstanding; absence of observed evidence means unknown, not zero.
+> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
@@ -99,7 +99,7 @@ needs Everloot installed, an API key or Internet access. See
 [Offline data packs](docs/OFFLINE-DATA-PACKS.md).
 
 The initial v0.99.6 bundle contains the existing client and reference catalog;
-the Everloot observed layer has been populated from the complete public corpus via the keyed API. Snapshot 2026-11-13T14:10:21.029Z (60,550 public observations), independently labeled per edge. The separately sourced game-file pack remains unpopulated; neither component requires Everloot on the player's computer.
+the Everloot observed layer has been populated from the complete public corpus via the keyed API. Snapshot 2026-11-13T14:10:21.029Z (60,550 public observations), independently labeled per edge. The separately credited build-70888 game-file pack is now populated with 136 Cooking/Fishing recipes, 1,854 item categories and 3,356 selected item-spell relations. Neither pack requires Everloot on the player's computer.
 
 For future refreshed observation snapshots, the configured `EVERLOOT_API_KEY` repository secret is used by the offline build runner only. Keep the key out of source files and installable releases. The scheduled/dispatchable
 `everloot-refresh.yml` builds a reviewed, versioned source-data PR with proper
@@ -121,14 +121,16 @@ The key is used only by the builder, never embedded in the addon.
 
 ### Importing the open database
 
-The repository now includes a nonempty, attributed Everloot public observation snapshot (2026-11-13T14:10:21.029Z). It is not an exhaustive game-file database. The independent game-file pack is still an empty, explicitly unconfirmed placeholder.
+The repository now includes a nonempty, attributed Everloot public observation snapshot (2026-11-13T14:10:21.029Z). It is not an exhaustive game-file database. The matching client-game-file pack is also populated, but deliberately marked game_files_unconfirmed (Blizzard data, not the observed-data CC BY-SA license).
 
 ```sh
 # Existing corpus.ndjson or a saved public API response (preferred for reproducibility)
 python3 scripts/import_everloot.py --input /path/to/corpus.ndjson --write
 # Or page the public API. Optional free key stays on the builder, never in game.
 EVERLOOT_API_KEY=... python3 scripts/import_everloot.py --fetch --write
-# Optional: separately imported client game-file export, from the matching build
+# Refresh the pinned, build-matched public client catalogs (separate game-file credit)
+python3 scripts/import_everloot_client_git.py --write
+# Alternative if Everloot publishes a validated open-data export folder
 python3 scripts/import_everloot_gamefiles.py --export /path/to/everloot-open-export --write
 python3 scripts/build_catalog.py --check
 python3 -m unittest discover -s tests -p 'test_*.py'
