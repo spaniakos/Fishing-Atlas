@@ -8,9 +8,10 @@ local function settings()
   return ns.storage.db and ns.storage.db.settings
 end
 
-function M.coordinates(angle)
+function M.coordinates(angle, radius)
   local r = math.rad(tonumber(angle) or 210)
-  return math.cos(r) * 80, math.sin(r) * 80
+  radius = tonumber(radius) or 80
+  return math.cos(r) * radius, math.sin(r) * radius
 end
 
 function M.update()
@@ -19,7 +20,12 @@ function M.update()
   if saved and saved.showMinimap == false then button:Hide(); return end
   if not Minimap then button:Hide(); return end
   button:ClearAllPoints()
-  local x, y = M.coordinates(saved and saved.minimapAngle)
+  local radius = 80
+  if type(Minimap.GetWidth) == "function" and type(Minimap.GetHeight) == "function" then
+    local extent = math.max(Minimap:GetWidth() or 0, Minimap:GetHeight() or 0)
+    if extent > 0 then radius = extent / 2 + 17 end
+  end
+  local x, y = M.coordinates(saved and saved.minimapAngle, radius)
   button:SetPoint("CENTER", Minimap, "CENTER", x, y)
   button:Show()
 end
@@ -47,17 +53,17 @@ end
 function M.start()
   if button or type(CreateFrame) ~= "function" or not Minimap then return end
   button = CreateFrame("Button", "FishingAtlasMinimapButton", Minimap)
-  button:SetSize(32, 32)
+  button:SetSize(39, 39)
   button:SetFrameStrata("MEDIUM")
   button:SetFrameLevel(8)
-  local icon = button:CreateTexture(nil, "BACKGROUND")
-  icon:SetSize(20, 20)
+  local icon = button:CreateTexture(nil, "ARTWORK")
+  icon:SetSize(36, 36)
   icon:SetTexture("Interface\\AddOns\\FishingAtlas\\Art\\atlas-emblem")
-  icon:SetPoint("CENTER", button, "CENTER", 0, 1)
+  icon:SetPoint("CENTER", button, "CENTER", 0, 0)
   local border = button:CreateTexture(nil, "OVERLAY")
   border:SetSize(52, 52)
   border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-  border:SetPoint("TOPLEFT", button, "TOPLEFT")
+  border:SetPoint("CENTER", button, "CENTER", 0, 0)
   button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
   button:SetScript("OnClick", function(_, which)
     if which == "RightButton" then
@@ -71,6 +77,10 @@ function M.start()
     GameTooltip:AddLine("Left click: explorer", 1, 1, 1)
     GameTooltip:AddLine("Right click: settings", 1, 1, 1)
     GameTooltip:AddLine("Drag: reposition", 0.8, 0.8, 0.8)
+    local meta = ns.sources and ns.sources.metadata() or {}
+    if meta.dataAsOf then
+      GameTooltip:AddLine("Observed data as of " .. meta.dataAsOf, 0.6, 0.9, 1)
+    end
     GameTooltip:Show()
   end)
   button:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
