@@ -1,8 +1,8 @@
-# Fishing Atlas database coverage: v0.8 baseline
+# Fishing Atlas database coverage: historical baseline and v0.99.6
 
 Target: WoW Forever `1.60.1.70888`, interface `16001`.
 
-## Included offline content
+## Historical v0.8 client and reference baseline
 
 | Content | Count | Evidence | Limitation |
 | --- | ---: | --- | --- |
@@ -12,9 +12,9 @@ Target: WoW Forever `1.60.1.70888`, interface `16001`.
 | Named reference fish | 23 | Classic item-ID references | Live Forever drops unconfirmed |
 | Poles and lures | 11 | Classic item-ID references | Stock/acquisition unconfirmed |
 | All typed catalog entities | 449 | Mixed sources | Many unresolved item/spell names |
-| Confirmed school spawn coordinates | 0 | No build-matched observation export | Stored player locations are **not** school spawns |
-| Confirmed live vendor locations | 0 | No verified ingestion | In-game merchant scans begin accumulating local observations |
-| Independently verified player-observed records | 0 | No player exports imported | Game file presence != live spawn |
+| Historical catalog school spawn coordinates | 0 | No object observations in v0.8 base | Stored player locations are **not** school spawns |
+| Historical catalog confirmed vendor locations | 0 | Reference locations only | Read newer observed source layer separately |
+| Historical catalog observations | 0 | v0.8 baseline | Not the separate Everloot v0.99.6 observation pack |
 
 ## Supported user actions
 
@@ -38,10 +38,26 @@ The pre-v1 release candidate can include this curated but partial content as lon
 as coverage is disclosed and missing facts are not advertised as verified.
 
 
-## v0.99.6 observed/source ingestion status
+## v0.99.6: full public observed corpus, offline snapshot
 
-The 0.99.6 source graph and client export pipeline are implemented, **but neither a complete Everloot observed corpus nor a matching full open game-file export has been imported into this branch**. The bundled `EverlootObserved.lua` and `EverlootGameFiles.lua` contain explicit empty placeholders. They do **not** show that zero schools or sellers exist on Forever.
+A complete public Everloot observation corpus was imported from the keyed corpus API and bundled into FishingAtlas/Data/EverlootObserved.lua. This is an **offline snapshot** with source attribution, not a live network dependency. Snapshot date: **2026-11-13T14:10:21.029Z**. Raw source SHA-256: **b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915ecd**. Total source events read: **60,550** including unrelated event categories.
 
-The current static base remains 136 build-70888 Cooking/Fishing recipe relationships, 46 map entries, 23 reference fish, 12 Classic school-type names, 96 mixed-reference vendors and 11 poles/lures. Those are not new independently confirmed sightings.
+| Indexed relationship/category | Count | Qualification |
+| --- | ---: | --- |
+| NPC IDs referenced | 2,747 | Not every NPC/name/location is independently confirmed |
+| Independently corroborated item names | 96 | Names, not proof of availability |
+| Item IDs with vendor-offer edges | 562 | Each edge has distinct-install evidence |
+| Item IDs with NPC-drop edges | 1,115 | Each edge has distinct-install evidence |
+| Item IDs with fishing-source edges | 27 | May include non-fish fishing loot |
+| Item IDs with fishing-pool-source edges | 27 | Pool source edges require evidence review |
+| Observed numeric recipe IDs | 1,380 | Recipe observation does not establish acquisition |
+| Recipe IDs with trainer edges | 190 | Evidence may be provisional |
+| Observed eligible school-object entries | 0 | No valid matching object positions in this snapshot |
 
-Once a full source is available, `scripts/import_everloot.py` generates normalized CC BY-SA observation data with distinct-install support, a source checksum and a last-diff report. The separate `scripts/import_everloot_gamefiles.py` filters build-70888 client metadata and marks it unconfirmed. This page must be regenerated with *real* counts before advertising complete coverage.
+All imported evidence is from the Everloot public corpus under **CC BY-SA 4.0** (https://everloot.app); install identifiers were removed. Only three independently corroborating installations justify observed_confirmed on a specific edge; weaker evidence is observed_provisional. Reference catalogs and client-derived facts retain their separate provenance.
+
+The existing 136 client recipe definitions, 46 map records, 23 reference fish, 12 Classic school names, 96 Finddon mixed-reference vendors, and 11 gear records remain available offline. They are not automatically promoted to live verified facts.
+
+**Still missing:** a separate build-matching full game-file export, eligible observed school-object locations, exhaustive client item names/icons, and actual WoW Forever client acceptance. An absent source relation remains **unknown** rather than zero or unavailable.
+
+Refresh: scripts/seed_offline.py selects a checksum-verified immutable bulk file where available, otherwise a complete keyed API pagination snapshot. scripts/import_everloot.py generates the Lua with source SHA and snapshot date. Scheduled changes are proposed for review before packaging.
