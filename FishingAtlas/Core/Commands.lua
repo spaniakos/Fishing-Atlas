@@ -28,6 +28,8 @@ function commands.run(raw)
   command = (command or ""):lower()
   if command == "" or command == "ui" then
     if not ns.ui.toggle() then say("Explorer unavailable in this client") end
+  elseif command == "issue" or command == "bug" or command == "feedback" then
+    ns.issues.open()
   elseif command == "diagnose" then
     local d = ns.diagnostics.report()
     say("Client: " .. d.version .. ", build " .. d.build .. ", interface " .. tostring(d.interface))
@@ -205,5 +207,6 @@ function commands.run(raw)
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>")
+    say("Feedback: /fa issue opens a copyable GitHub Issues URL")
   end
 end

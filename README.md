@@ -79,3 +79,10 @@ Zone details also show a **selected, reference-only list** of indicative fish fr
 
 ## v0.99.3 provenance-backed references
 Fishing-related vendor NPCs, inventory candidates and map locations are now sourced from Finddon, with required ForeverDB.net attribution. Fish-by-zone and skill brackets come from Luredon with Classic/observed distinctions. These are **indexed, license-tracked reference records**, not 100% live-verified facts. See [source audit](docs/SOURCED-DATABASE-v0.99.3.md).
+
+
+## Artwork and support (v0.99.4)
+- The addon now includes original Fishing Atlas **TGA artwork**: compass/fish emblem, lakeshore header, deep-water panel background and bronze-blue buttons. [Artwork documentation](docs/ARTWORK.md).
+- In the explorer click **Report issue**, or enter `/fa issue`. A selectable link to GitHub opens for copying (WoW cannot reliably launch a browser).
+- [Submit a bug or feature request on GitHub](https://github.com/spaniakos/Fishing-Atlas/issues/new/choose).
+- [Browse open issues](https://github.com/spaniakos/Fishing-Atlas/issues).
