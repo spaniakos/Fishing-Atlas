@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
-local ns = {storage = {db = {settings = {showMinimap = true, minimapAngle = 0}}}}
+local ns = {data = {schoolTypes={}}, storage = {db = {settings = {showMinimap = true, minimapAngle = 0}}}}
 assert(loadfile("FishingAtlas/UI/Minimap.lua"))("FishingAtlas", ns)
 local x, y = ns.minimap.coordinates(0)
 assert(math.abs(x - 80) < 0.0001 and math.abs(y) < 0.0001)

@@ -71,3 +71,6 @@ Licensed under **GNU GPL-3.0-or-later**. See [LICENSE](LICENSE). External game a
 - Vendors show recorded merchant inventories; the offline vendor directory remains incomplete.
 - Right-click a school/zone with recorded coordinates to create a TomTom waypoint. No coordinate means the action is disabled.
 - Notifications and map-pin toggles display their actual saved on/off state.
+
+### Zone fishing skills and vendor reference labels
+Zone details now show the minimum and reliable-catch Fishing skill using the [Wowhead Forever Fishing guide](https://www.wowhead.com/forever/guide/professions/fishing/overview-leveling), with special-water caveats. Unknown zones remain unknown. Reference vendor names, areas and starter fishing supplies come from [WoW Professions Forever](https://www.wow-professions.com/forever/how-to-fish). These are not confirmed live inventory snapshots; your client can record merchant item IDs and player coordinates on visiting a merchant. TomTom is available only for actual observed coordinates.

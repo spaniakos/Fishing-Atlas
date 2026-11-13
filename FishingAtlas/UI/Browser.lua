@@ -59,6 +59,9 @@ function B.list(category, term)
       end
     end
   elseif category == "vendors" then
+    for _, vendor in ipairs(ns.data.referenceVendors or {}) do
+      push(out, row(vendor.name, vendor.name, "vendor_reference", "forever_guide_reference", vendor), term)
+    end
     for id, r in pairs(db.vendorObservations or {}) do
       if type(r) == "table" then
         push(out, row(id, "Merchant NPC #" .. tostring(id),
@@ -141,6 +144,16 @@ function B.details(item)
       lines[#lines + 1] = "No recorded locations yet. Use /fa school <name> when observed."
     end
   elseif item.kind == "zone" then
+    local skill = ns.data.zoneFishingSkill and ns.data.zoneFishingSkill[item.id]
+    if skill then
+      lines[#lines + 1] = "Minimum fishing skill: " .. skill.minimum
+      lines[#lines + 1] = "Skill for reliable catches: " .. skill.reliable
+      if skill.exceptions then lines[#lines + 1] = "Exceptions: " .. skill.exceptions end
+      lines[#lines + 1] = "Source: Forever fishing guide (not personally verified)"
+    else
+      lines[#lines + 1] = "Minimum fishing skill: Unknown"
+      lines[#lines + 1] = "Reliable-catch skill: Unknown"
+    end
     local rec = B.zoneSightings(item.id)
     lines[#lines + 1] = "Your recorded school sightings: " .. #rec.schools
     for i = 1, math.min(#rec.schools, 15) do appendPlace(lines, rec.schools[i], "School proximity") end
@@ -149,6 +162,16 @@ function B.details(item)
     if #rec.schools == 0 and #rec.positions == 0 and #rec.catches == 0 then
       lines[#lines + 1] = "No verified zone-specific fish or school data yet."
     end
+  elseif item.kind == "vendor_reference" then
+    local ref = item.extra
+    lines[#lines + 1] = "Faction: " .. tostring(ref.side)
+    lines[#lines + 1] = "Known area: " .. tostring(ref.area)
+    lines[#lines + 1] = "Zone map ID: " .. tostring(ref.mapID)
+    lines[#lines + 1] = "Reference vendor goods (not live-verified):"
+    for _, itemID in ipairs(ref.items or {}) do
+      lines[#lines + 1] = "  " .. ns.catalog.name("item", itemID) .. " [" .. itemID .. "]"
+    end
+    lines[#lines + 1] = "No confirmed coordinates yet; visit and open merchant to record a position."
   elseif item.kind == "merchant_observation" then
     local rec = item.extra
     lines[#lines + 1] = "Last observed inventory: " .. #(rec.items or {}) .. " item IDs"

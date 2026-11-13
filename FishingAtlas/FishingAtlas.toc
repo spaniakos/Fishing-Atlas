@@ -25,6 +25,8 @@ Atlas/Schools.lua
 Atlas/Nearby.lua
 Atlas/MapPins.lua
 Data/ReferenceSchools.lua
+Data/ReferenceVendors.lua
+Data/ZoneSkill.lua
 UI/Browser.lua
 UI/Window.lua
 UI/Options.lua

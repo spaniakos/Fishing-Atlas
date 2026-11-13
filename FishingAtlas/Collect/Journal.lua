@@ -32,6 +32,11 @@ function J.record(itemID, name, amount, source)
     catches[key] = item
   end
   item.count = (item.count or 0) + amount
+  if source == "fishing_loot" and type(C_Map) == "table"
+      and type(C_Map.GetBestMapForUnit) == "function" then
+    local mapID = C_Map.GetBestMapForUnit("player")
+    if type(mapID) == "number" and mapID > 0 then item.mapID = mapID end
+  end
   if type(time) == "function" then item.lastCaught = time() end
   return item
 end
