@@ -10,7 +10,10 @@ Raw corpus SHA-256 b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915
 The observed pack contains no installation identifiers.
 
 Blizzard game-file metadata: Game data (c) Blizzard Entertainment, Inc.
-Read from the public WoW: Forever client for a stated build; unconfirmed
+Relevant client file catalogs drawn from the pinned Everloot public repository
+commit 8dad8fcf15ed2aa7f6360fa553901002244d8884 for WoW: Forever
+build 1.60.1.70888. Raw file checksums are embedded in EverlootGameFiles.lua.
+These are Blizzard game-file facts only, unconfirmed
 until seen in play. These materials are not covered by Everloot's data license.
 
 Other reference data: Finddon (https://github.com/WoW-Forever-Addons/finddon),
