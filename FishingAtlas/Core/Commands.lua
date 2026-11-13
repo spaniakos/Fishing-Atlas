@@ -31,7 +31,8 @@ function commands.run(raw)
   elseif command == "diagnose" then
     local d = ns.diagnostics.report()
     say("Client: " .. d.version .. ", build " .. d.build .. ", interface " .. tostring(d.interface))
-    say("Target match: " .. tostring(d.targetMatch) ..
+    say("Forever interface match: " .. tostring(d.targetMatch) ..
+      "; data build 70888 match: " .. tostring(d.dataBuildMatch) ..
       "; map API: " .. tostring(d.mapAPI) .. "; world map: " .. tostring(d.gameMap))
     say("Item: " .. tostring(d.itemAPI) .. "; spell: " .. tostring(d.spellAPI) ..
       "; bags: " .. tostring(d.bagAPI) .. "; secure cast: " .. tostring(d.secureCast) ..

@@ -10,8 +10,12 @@ assert(ns.catalog.recipe(18243).profession == "Cooking")
 assert(ns.catalog.entity("item", 13759).id == 13759)
 assert(not ns.catalog.entity("item", 999999))
 assert(ns.catalog.name("item", 13759) == "Unresolved item #13759")
-GetItemInfo = function(id) if id == 13759 then return "Raw Nightfin Snapper" end end
-GetSpellInfo = function(id) if id == 18243 then return "Nightfin Soup" end end
+C_Item = {GetItemInfo = function(id)
+  if id == 13759 then return "Raw Nightfin Snapper" end
+end}
+C_Spell = {GetSpellInfo = function(id)
+  if id == 18243 then return {name = "Nightfin Soup"} end
+end}
 assert(ns.catalog.name("item", 13759) == "Raw Nightfin Snapper")
 assert(ns.catalog.name("spell", 18243) == "Nightfin Soup")
 assert(ns.catalog.stats().recipes == 1)

@@ -19,12 +19,14 @@ end
 function C.name(kind, id)
   id = tonumber(id)
   if not id then return "Unknown" end
-  if kind == "item" and type(GetItemInfo) == "function" then
-    local name = GetItemInfo(id)
+  if kind == "item" and type(C_Item) == "table" and type(C_Item.GetItemInfo) == "function" then
+    local name = C_Item.GetItemInfo(id)
     if type(name) == "string" and name ~= "" then return name, true end
-  elseif kind == "spell" and type(GetSpellInfo) == "function" then
-    local name = GetSpellInfo(id)
-    if type(name) == "string" and name ~= "" then return name, true end
+  elseif kind == "spell" and type(C_Spell) == "table" and type(C_Spell.GetSpellInfo) == "function" then
+    local info = C_Spell.GetSpellInfo(id)
+    if type(info) == "table" and type(info.name) == "string" and info.name ~= "" then
+      return info.name, true
+    end
   end
   local item = C.entity(kind, id)
   if item and type(item.name) == "string" and not item.name:match("^Item #")

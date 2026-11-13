@@ -1,6 +1,6 @@
 std = "lua51"
 globals = {
-  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "TomTom",
+  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "C_Item", "C_Spell", "TomTom",
   "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
 }
 max_line_length = 140
