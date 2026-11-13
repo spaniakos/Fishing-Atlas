@@ -2,7 +2,7 @@
 local addonName, ns = ...
 ns = ns or {}
 ns.name = addonName or "FishingAtlas"
-ns.version = "0.99.0"
+ns.version = "0.99.1"
 ns.storage = ns.storage or {}
 ns.data = ns.data or {}
 ns.util = ns.util or {}

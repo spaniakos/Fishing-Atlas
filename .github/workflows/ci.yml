@@ -45,6 +45,7 @@ jobs:
           lua5.1 tests/test_browser.lua
           lua5.1 tests/test_diagnostics.lua
           lua5.1 tests/test_migration.lua
+          lua5.1 tests/test_ui_features.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py
       - name: Package installable ZIP

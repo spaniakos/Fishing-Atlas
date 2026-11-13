@@ -23,6 +23,11 @@ function Store.init()
   if type(db.settings.notifications) ~= "boolean" then db.settings.notifications = true end
   if type(db.settings.radiusPercent) ~= "number" or db.settings.radiusPercent < 0.1
      or db.settings.radiusPercent > 5 then db.settings.radiusPercent = 1 end
+  if type(db.settings.showMinimap) ~= "boolean" then db.settings.showMinimap = true end
+  if type(db.settings.mapPins) ~= "boolean" then db.settings.mapPins = true end
+  if type(db.settings.minimapAngle) ~= "number" or db.settings.minimapAngle ~= db.settings.minimapAngle then
+    db.settings.minimapAngle = 210
+  end
   if type(db.vendorObservations) ~= "table" then db.vendorObservations = {} end
   if type(db.catches) ~= "table" then db.catches = {} end
   db.schemaVersion = SCHEMA_VERSION
