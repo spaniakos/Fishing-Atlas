@@ -45,6 +45,7 @@ jobs:
           lua5.1 tests/test_issues.lua
           lua5.1 tests/test_view_model.lua
           lua5.1 tests/test_zone_map.lua
+          lua5.1 tests/test_window_smoke.lua
           python3 scripts/validate.py
       - name: Package
         run: python3 scripts/package.py --tag "${GITHUB_REF_NAME}"
