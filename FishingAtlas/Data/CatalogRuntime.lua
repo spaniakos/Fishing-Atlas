@@ -10,6 +10,55 @@ for _, entity in ipairs(data.entities or {}) do
 end
 for _, recipe in ipairs(data.recipes or {}) do bySpell[recipe.spellId] = recipe end
 
+
+-- Resolve optional, independently installed libraries without making them required.
+-- A library may have no Forever dataset yet, be loading, or throw on a stale API.
+local function optionalLibrary(name)
+  if type(LibStub) ~= "table" and type(LibStub) ~= "function" then return nil end
+  local ok, lib = pcall(LibStub, name, true)
+  if not ok or type(lib) ~= "table" then return nil end
+  if type(lib.IsReady) == "function" then
+    local good, ready = pcall(lib.IsReady, lib)
+    if not good or ready ~= true then return nil end
+  end
+  return lib
+end
+
+function C.externalLibraryAvailable(name)
+  if name ~= "LibItemDB-1.0" and name ~= "LibProfessionDB-1.0" then return false end
+  return optionalLibrary(name) ~= nil
+end
+
+function C.itemLink(id)
+  id = tonumber(id)
+  if not id then return nil end
+  local lib = optionalLibrary("LibItemDB-1.0")
+  if lib and type(lib.GetLink) == "function" then
+    local ok, link = pcall(lib.GetLink, lib, id)
+    if ok and type(link) == "string" and link ~= "" then return link end
+  end
+  return nil
+end
+
+-- A library recipe can supplement our canonical recipe, never silently overwrite
+-- its client-extracted fields or claim a borrowed Vanilla source is live verified.
+function C.professionRecord(spellID)
+  local own = C.recipe(spellID)
+  local id = tonumber(spellID)
+  local skillLineID = own and tonumber(own.professionId)
+  if not id or not skillLineID then return nil end
+  local lib = optionalLibrary("LibProfessionDB-1.0")
+  if not lib or type(lib.GetRecipe) ~= "function" then return nil end
+  local ok, record = pcall(lib.GetRecipe, lib, skillLineID, id)
+  if not ok or type(record) ~= "table" then return nil end
+  local meta = {source = "libprofessiondb_offline_reference", verifiedInForever = false}
+  if type(lib.GetBorrowed) == "function" then
+    local good, borrowed = pcall(lib.GetBorrowed, lib, id)
+    if good and type(borrowed) == "table" then meta.borrowed = borrowed end
+  end
+  return record, meta
+end
+
 function C.entity(kind, id)
   return byKind[kind] and byKind[kind][tonumber(id)] or nil
 end
@@ -26,6 +75,15 @@ function C.name(kind, id)
     local info = C_Spell.GetSpellInfo(id)
     if type(info) == "table" and type(info.name) == "string" and info.name ~= "" then
       return info.name, true
+    end
+  end
+  if kind == "item" then
+    local lib = optionalLibrary("LibItemDB-1.0")
+    if lib and type(lib.GetName) == "function" then
+      local ok, resolved = pcall(lib.GetName, lib, id)
+      if ok and type(resolved) == "string" and resolved ~= "" then
+        return resolved, false -- offline record, not a live client verification
+      end
     end
   end
   local item = C.entity(kind, id)

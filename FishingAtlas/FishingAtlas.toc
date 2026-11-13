@@ -4,7 +4,7 @@
 ## Version: 0.99.5
 ## Author: Georgios Spanos and contributors
 ## SavedVariables: FishingAtlasDB
-## OptionalDeps: TomTom
+## OptionalDeps: TomTom, LibItemDB, LibProfessionDB
 ## X-License: GPL-3.0-or-later
 Core/Namespace.lua
 Core/Storage.lua

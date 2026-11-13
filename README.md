@@ -89,3 +89,6 @@ Fishing-related vendor NPCs, inventory candidates and map locations are now sour
 
 ## v0.99.5 | Image-3 atlas explorer
 The Explorer was redesigned around the third approved concept: branded panorama header, icon navigation, category sidebar, search/filters, sorted record list, dedicated section inspector, native zone map-art preview (when the Forever client exposes C_Map map layers), source-marked points, quick zone skill information and contextual vendor/fish links. Layout auto-scales to the available game viewport. The pictured concept's illustrative fish/school counts and "verified" flags are **not** treated as proof of live spawns. The actual client UI still requires acceptance testing.
+
+## v0.99.6 offline data integration (in development)
+Fishing Atlas can optionally consult separately installed [LibItemDB](https://www.curseforge.com/wow/addons/libitemdb) for cache-cold item names and links, and [LibProfessionDB](https://www.curseforge.com/wow/addons/libprofessiondb) for supplementary recipe metadata, with guarded fallbacks. **Neither library is required.** The canonical client-recipe catalog remains authoritative for its build, and borrowed Vanilla recipe source fields remain unverified. See [source decision](docs/OFFLINE-LIBRARIES-v0.99.6.md).
