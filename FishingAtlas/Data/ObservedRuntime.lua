@@ -29,7 +29,7 @@ function S.vendorsForItem(id)
       found[#found + 1] = {kind = "vendor", npcId = rec.npcId,
         title = npc.name or ("NPC " .. rec.npcId), installs = rec.installs or 0,
         reports = rec.reports or 0, confidence = support(rec.installs),
-        url = "https://everloot.app/database/npc/" .. rec.npcId}
+        url = "https://everloot.app/database/npcs/" .. rec.npcId}
     end
   end
   return found
@@ -110,11 +110,11 @@ function S.linkFor(item)
   if not item then return nil end
   if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole"
       or item.kind == "lure" then
-    return "https://everloot.app/database/item/" .. tostring(item.id)
+    return "https://everloot.app/database/items/" .. tostring(item.id)
   end
   if item.kind == "vendor_reference" or item.kind == "merchant_observation"
       or item.kind == "observed_vendor" then
-    return "https://everloot.app/database/npc/" .. tostring(item.id)
+    return "https://everloot.app/database/npcs/" .. tostring(item.id)
   end
   return nil
 end
