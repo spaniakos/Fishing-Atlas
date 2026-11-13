@@ -16,6 +16,7 @@ import collections
 import hashlib
 import json
 import os
+import re
 import statistics
 import sys
 import time
@@ -129,7 +130,7 @@ def normalize(records, data_asof, digest):
             continue
         install = row.get("installId")
         # Refuse to call anonymous/invalid rows independent evidence.
-        if not isinstance(install, str) or len(install) < 8:
+        if not isinstance(install, str) or not re.fullmatch(r"pub-[0-9a-f]{32}", install):
             continue
         event = row.get("eventId")
         if event:
