@@ -155,6 +155,11 @@ function B.details(item)
       lines[#lines + 1] = "Reliable-catch skill: Unknown"
     end
     local rec = B.zoneSightings(item.id)
+    local reference = ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}
+    lines[#lines + 1] = "Indicative fish (Classic-reference, not live verified): " .. #reference
+    for _, fishID in ipairs(reference) do
+      lines[#lines + 1] = "  " .. ns.catalog.name("item", fishID)
+    end
     lines[#lines + 1] = "Your recorded school sightings: " .. #rec.schools
     for i = 1, math.min(#rec.schools, 15) do appendPlace(lines, rec.schools[i], "School proximity") end
     lines[#lines + 1] = "Saved fishing positions: " .. #rec.positions

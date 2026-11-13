@@ -2,7 +2,7 @@
 local ns = {
  data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{name="Vendor", mapID=1411, area="Durotar",
     items={6256}, side="Horde"}},
- zoneFishingSkill={[1411]={minimum=1,reliable=25}}},
+ zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={6303}}},
  util = {validCoordinate = function(n) return type(n) == "number" and n >= 0 and n <= 1 end},
  storage = {db = {
   catches = {fish = {name = "Nightfin", count = 8, mapID = 1411}},
@@ -35,6 +35,7 @@ assert(#ns.browser.list("vendors", "") == 2)
 assert(#ns.browser.details(ns.browser.list("recipes", "")[1]) >= 4)
 local zone = ns.browser.list("zones", "")[1]
 assert(table.concat(ns.browser.details(zone)," "):find("Minimum fishing skill: 1",1,true))
+assert(table.concat(ns.browser.details(zone)," "):find("Indicative fish",1,true))
 assert(#ns.browser.zoneSightings(1411).schools == 1)
 assert(#ns.browser.zoneSightings(1411).catches == 1)
 assert(ns.browser.waypoint(ns.browser.list("vendors", "100")[1]).mapID == 1411)
