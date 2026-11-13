@@ -6,7 +6,9 @@
 - Map preview aspect-ratio/pin alignment changes, optional TomTom path, and larger minimap button with contextual icons.
 - Offline Everloot corpus and client-file export adapters, distinct CC BY-SA/Blizzard attribution, stable snapshot verification, source checksums and diff report.
 - Daily/dispatch Everloot data-refresh PR workflow, and import unit fixtures for three independent installs, privacy, checksum and build gates.
-- **Not yet shipped:** a populated full Everloot snapshot, in-game validation, or claim of exhaustive Forever content. Empty placeholders are explicitly marked not imported.
+- Imported the complete public Everloot observation corpus as a separately licensed offline Lua snapshot (2026-11-13T14:10:21.029Z).
+- Added Items Explorer navigation for the offline observed item relationships.
+- **Pending:** matching-build full game-file export, client verification and exhaustive coverage.
 
 
 
