@@ -329,6 +329,8 @@ def main():
     source.add_argument("--input", type=Path)
     source.add_argument("--fetch", action="store_true")
     parser.add_argument("--as-of", help="Corpus snapshot timestamp (for NDJSON input)")
+    parser.add_argument("--source-url", default=API,
+                        help="Canonical URL of the exact observed corpus used for this build")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--write", action="store_true")
     mode.add_argument("--check", action="store_true")
@@ -339,6 +341,9 @@ def main():
     if args.as_of:
         asof = args.as_of
     result = normalize(records, asof, digest)
+    if not args.source_url.startswith("https://"):
+        raise ValueError("Source URL must be HTTPS")
+    result["meta"]["sourceUrl"] = args.source_url
     output = lua_pack(result)
     normalized = json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
     if args.check:
