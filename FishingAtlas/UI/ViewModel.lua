@@ -148,6 +148,14 @@ function V.itemCrafts(itemID)
         confidence = "verified_client"}
     end
   end
+  for spellId, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+    if recipe.outputItemId == itemID and not seen[spellId] then
+      out[#out + 1] = {kind = "craft", spellId = spellId,
+        title = ns.catalog.name("spell", spellId),
+        confidence = "game_files_unconfirmed"}
+      seen[spellId] = true
+    end
+  end
   return out
 end
 
@@ -269,8 +277,10 @@ function V.mapPoints(item)
         kind = "vendor", label = item.name, source = "client_observed"}
     end
     return results
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
-    local recipe = ns.catalog.recipe(item.id)
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
+    local recipe = ns.catalog.recipe(item.id) or
+      ((ns.data.gameFiles or {}).recipes or {})[item.id]
     if recipe and recipe.recipeItemId then
       return V.itemMapPoints(recipe.recipeItemId)
     end
@@ -346,7 +356,8 @@ function V.summary(item)
   elseif item.kind == "school_type" then
     summary.subtitle = "SCHOOL TYPE"
     summary.note = "Locations are player observations only, not exact pool spawns."
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
     summary.subtitle = "RECIPE  |  Spell " .. item.id
     summary.note = "Client-defined ingredient relationships; acquisition unverified."
   end
@@ -359,7 +370,8 @@ function V.tabs(item)
     return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
   if item and item.kind == "observed_npc" then return {"Overview", "Goods", "Map"} end
-  if item and (item.kind == "Cooking" or item.kind == "Fishing") then
+  if item and (item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe") then
     return {"Overview", "Ingredients", "Sources", "Map"}
   end
   if item and item.kind == "fish" then return {"Overview", "Zones", "Recipes", "Map"} end
@@ -620,10 +632,12 @@ function V.section(item, section)
         end
       end
     end
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     if section == "Sources" then
-      local recipe = ns.catalog.recipe(item.id)
+      local recipe = ns.catalog.recipe(item.id) or
+        ((ns.data.gameFiles or {}).recipes or {})[item.id]
       local found = 0
       for _, trainer in ipairs(source() and source().trainersForRecipe(item.id) or {}) do
         found = found + 1
@@ -665,6 +679,26 @@ function V.section(item, section)
       for _, ing in ipairs(plan.reagents or {}) do
         add(ing.name, (ing.need or 0) .. " needed | " .. (ing.missing or 0) .. " missing",
           ns.catalog.icon("item", ing.itemId), "verified_client", {itemId = ing.itemId})
+      end
+    elseif item.kind == "gamefile_recipe" then
+      local rec = ((ns.data.gameFiles or {}).recipes or {})[item.id]
+      if rec then
+        add("Profession", rec.profession or "Unknown",
+          "Interface\\Icons\\INV_Misc_Book_09", "game_files_unconfirmed")
+        add("Minimum skill", rec.minimumSkill or "Unknown",
+          "Interface\\Icons\\Trade_Cooking", "game_files_unconfirmed")
+        if rec.outputItemId then
+          add("Produces", ns.catalog.name("item", rec.outputItemId),
+            ns.catalog.icon("item", rec.outputItemId), "game_files_unconfirmed",
+            {itemId = rec.outputItemId})
+        end
+        for _, ing in ipairs(rec.reagents or {}) do
+          if ing.itemId then
+            add(ns.catalog.name("item", ing.itemId), ing.count .. " needed",
+              ns.catalog.icon("item", ing.itemId), "game_files_unconfirmed",
+              {itemId = ing.itemId})
+          end
+        end
       end
     end
   elseif item.kind == "catch" then
