@@ -1,0 +1,56 @@
+name: Bootstrap verified offline FishingAtlas data
+on:
+  push:
+    branches: [feature/explorer-linked-records]
+    paths:
+      - .github/workflows/bootstrap-offline-data.yml
+permissions:
+  contents: write
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/explorer-linked-records
+      - name: Download and normalize licensed source snapshot
+        env:
+          EVERLOOT_API_KEY: ${{ secrets.EVERLOOT_API_KEY }}
+        run: |
+          if [ -z "$EVERLOOT_API_KEY" ]; then
+            echo "::error::EVERLOOT_API_KEY secret was not available to this workflow"
+            exit 1
+          fi
+          python3 scripts/seed_offline.py
+      - name: Require nonempty, attributed offline data
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("database/observed/everloot-normalized.json").read_text())
+          m=d["meta"]
+          assert m["sourceSha256"]!="not-imported" and len(m["sourceSha256"])==64, "Missing raw corpus digest"
+          assert m["dataAsOf"] and m["license"]=="CC-BY-SA-4.0", "Missing snapshot date or license"
+          assert sum(m["recordCounts"].values())>0, "No real observed records"
+          print("Snapshot as of:",m["dataAsOf"])
+          print("Source:",m["sourceUrl"])
+          print("Corpus event counts:",m["recordCounts"])
+          print("Offline item names:",len(d["itemNames"]))
+          print("Offline sellers:",len(d["vendorItems"]))
+          print("Offline fishing:",len(d["fishing"]))
+          print("Offline schools:",len(d["schools"]))
+          PY
+          python3 scripts/build_catalog.py --check
+          python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Commit validated offline snapshot to v0.99.6 PR branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add FishingAtlas/Data/EverlootObserved.lua database/observed/everloot-normalized.json database/observed/last-diff.json
+          if git diff --cached --quiet; then
+            echo "Already up to date."
+          else
+            git commit -m 'data: bootstrap verified attributed offline Everloot snapshot'
+            git push origin HEAD:feature/explorer-linked-records
+          fi
