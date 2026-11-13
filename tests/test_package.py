@@ -24,12 +24,20 @@ class PackageTests(unittest.TestCase):
                 self.assertIn("FishingAtlas/FishingAtlas.toc", files)
                 self.assertIn("FishingAtlas/LICENSE", files)
                 self.assertIn("FishingAtlas/Data/Catalog.lua", files)
+                self.assertIn("FishingAtlas/Art/atlas-emblem.tga", files)
+                self.assertIn("FishingAtlas/Art/deepwater-background.tga", files)
+                self.assertIn("FishingAtlas/Art/lakeshore-banner.tga", files)
+                self.assertIn("FishingAtlas/Art/bronze-button.tga", files)
+                header = zipped.read("FishingAtlas/Art/atlas-emblem.tga")
+                self.assertEqual(header[2], 2)
+                self.assertEqual(header[16], 32)
+                self.assertEqual(header[12] + 256 * header[13], 128)
                 self.assertTrue(all(p.startswith("FishingAtlas/") for p in files))
                 self.assertTrue(all(not p.endswith(".pyc") for p in files))
 
     def test_current_version_package(self):
         with tempfile.TemporaryDirectory() as tmp:
-            artifact, _ = build(Path(tmp), "v0.99.3")
+            artifact, _ = build(Path(tmp), "v0.99.4")
             self.assertTrue(artifact.is_file())
 
     def test_reject_mismatched_tag(self):

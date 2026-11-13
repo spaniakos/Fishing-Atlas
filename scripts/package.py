@@ -26,7 +26,7 @@ def build(output_dir, tag):
     if tag.startswith("v") and re.fullmatch(r"v\d+\.\d+\.\d+", tag):
         if tag[1:] != match.group(1):
             raise ValueError("Tag must match TOC version")
-    files = sorted(p for p in ADDON.rglob("*") if p.is_file() and p.suffix in {".toc", ".lua"})
+    files = sorted(p for p in ADDON.rglob("*") if p.is_file() and p.suffix in {".toc", ".lua", ".tga"})
     if not any(p.name == "FishingAtlas.toc" for p in files):
         raise ValueError("Addon manifest missing")
     output_dir.mkdir(parents=True, exist_ok=True)
