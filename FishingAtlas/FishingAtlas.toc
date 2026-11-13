@@ -13,6 +13,7 @@ Data/Recipes.lua
 Data/Catalog.lua
 Data/CatalogRuntime.lua
 Data/EverlootObserved.lua
+Data/EverlootGameFiles.lua
 Data/ObservedRuntime.lua
 Kitchen/Planner.lua
 Kitchen/CatalogPlanner.lua
