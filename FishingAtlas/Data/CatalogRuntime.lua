@@ -97,7 +97,7 @@ end
 -- Prefer client-provided textures, with a bundled Blizzard icon as an honest fallback.
 function C.icon(kind, id)
   id = tonumber(id)
-  if not id then return "Interface\\Icons\\INV_Misc_QuestionMark" end
+  if not id then return "Interface\\Icons\\INV_Misc_Book_09" end
   if kind == "item" and type(C_Item) == "table" then
     if type(C_Item.GetItemIconByID) == "function" then
       local icon = C_Item.GetItemIconByID(id)
@@ -117,5 +117,12 @@ function C.icon(kind, id)
       if type(info) == "table" and info.iconID then return info.iconID end
     end
   end
-  return "Interface\\Icons\\INV_Misc_QuestionMark"
+  local entry = C.entity(kind, id)
+  if kind == "item" then
+    if entry and entry.category == "fish" then return "Interface\\Icons\\INV_Misc_Fish_02" end
+    if entry and entry.category == "fishing_pole" then return "Interface\\Icons\\Trade_Fishing" end
+    if entry and entry.category == "lure" then return "Interface\\Icons\\INV_Misc_Fishingpole_02" end
+    return "Interface\\Icons\\INV_Misc_Bag_10"
+  end
+  return "Interface\\Icons\\INV_Misc_Book_09"
 end
