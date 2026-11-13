@@ -60,7 +60,7 @@ function B.list(category, term)
     end
   elseif category == "vendors" then
     for _, vendor in ipairs(ns.data.referenceVendors or {}) do
-      push(out, row(vendor.name, vendor.name, "vendor_reference", "forever_guide_reference", vendor), term)
+      push(out, row(vendor.id, vendor.name, "vendor_reference", "mixed_source_reference", vendor), term)
     end
     for id, r in pairs(db.vendorObservations or {}) do
       if type(r) == "table" then
@@ -157,8 +157,10 @@ function B.details(item)
     local rec = B.zoneSightings(item.id)
     local reference = ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}
     lines[#lines + 1] = "Indicative fish (Classic-reference, not live verified): " .. #reference
-    for _, fishID in ipairs(reference) do
-      lines[#lines + 1] = "  " .. ns.catalog.name("item", fishID)
+    for _, entry in ipairs(reference) do
+      local id = type(entry) == "table" and entry.id or entry
+      local evidence = type(entry) == "table" and entry.evidence or "unattributed_reference"
+      lines[#lines + 1] = "  " .. ns.catalog.name("item", id) .. " (" .. evidence .. ")"
     end
     lines[#lines + 1] = "Your recorded school sightings: " .. #rec.schools
     for i = 1, math.min(#rec.schools, 15) do appendPlace(lines, rec.schools[i], "School proximity") end
@@ -173,14 +175,20 @@ function B.details(item)
     end
   elseif item.kind == "vendor_reference" then
     local ref = item.extra
+    lines[#lines + 1] = "NPC ID: " .. tostring(ref.id)
     lines[#lines + 1] = "Faction: " .. tostring(ref.side)
-    lines[#lines + 1] = "Known area: " .. tostring(ref.area)
-    lines[#lines + 1] = "Zone map ID: " .. tostring(ref.mapID)
+    lines[#lines + 1] = "Role: " .. (ref.trainer and "Fishing trainer" or (ref.title or "Vendor"))
+    lines[#lines + 1] = "Mapped locations: " .. #(ref.spots or {})
+    for i = 1, math.min(5, #(ref.spots or {})) do
+      local place = ref.spots[i]
+      lines[#lines + 1] = string.format("  Map %d: %.1f, %.1f (reference position)",
+        place.mapID, place.x * 100, place.y * 100)
+    end
     lines[#lines + 1] = "Reference vendor goods (not live-verified):"
     for _, itemID in ipairs(ref.items or {}) do
       lines[#lines + 1] = "  " .. ns.catalog.name("item", itemID) .. " [" .. itemID .. "]"
     end
-    lines[#lines + 1] = "No confirmed coordinates yet; visit and open merchant to record a position."
+    lines[#lines + 1] = "Mixed Classic/ForeverDB reference. Confirm stock and coordinates in game."
   elseif item.kind == "merchant_observation" then
     local rec = item.extra
     lines[#lines + 1] = "Last observed inventory: " .. #(rec.items or {}) .. " item IDs"
@@ -192,8 +200,18 @@ function B.details(item)
   elseif item.kind == "catch" then
     lines[#lines + 1] = "Journal total: " .. tostring(item.extra.count or 0)
   elseif item.kind == "fishing_pole" or item.kind == "lure" then
-    lines[#lines + 1] = "Purchase/vendor location: not verified for Forever."
-    lines[#lines + 1] = "Do not treat Classic acquisition data as live server stock."
+    local found = 0
+    for _, v in ipairs(ns.data.referenceVendors or {}) do
+      for _, id in ipairs(v.items or {}) do
+        if id == item.id then
+          found = found + 1
+          if found <= 12 then lines[#lines + 1] = v.name .. " (" .. v.side .. ", NPC " .. v.id .. ")" end
+          break
+        end
+      end
+    end
+    lines[#lines + 1] = "Indexed reference sellers: " .. found
+    lines[#lines + 1] = "Mixed CMaNGOS/ForeverDB locations and stock; verify in game."
   elseif item.kind == "fish" then
     lines[#lines + 1] = "Known Classic fish ID, but no build-verified drop zones."
     lines[#lines + 1] = "You can record fishing locations manually."
@@ -235,6 +253,26 @@ function B.waypoint(item)
   elseif item.kind == "zone" then
     local all = B.zoneSightings(item.id)
     candidate = all.schools[1] or all.positions[1]
+  elseif item.kind == "vendor_reference" and item.extra then
+    local place = item.extra.spots and item.extra.spots[1]
+    if place then
+      candidate = {mapID = place.mapID, x = place.x, y = place.y,
+        label = item.name .. " (mixed-source reference; verify in game)",
+        reference = true}
+    end
+  elseif item.kind == "fishing_pole" or item.kind == "lure" then
+    for _, v in ipairs(ns.data.referenceVendors or {}) do
+      for _, id in ipairs(v.items or {}) do
+        if id == item.id and v.spots and v.spots[1] then
+          local place = v.spots[1]
+          candidate = {mapID = place.mapID, x = place.x, y = place.y,
+            label = v.name .. " (vendor reference; stock unverified)",
+            reference = true}
+          break
+        end
+      end
+      if candidate then break end
+    end
   elseif item.kind == "merchant_observation" and item.extra then
     local e = item.extra
     if type(e.mapID) == "number" then candidate = e end
@@ -242,7 +280,8 @@ function B.waypoint(item)
   if candidate and type(candidate.mapID) == "number"
       and ns.util.validCoordinate(candidate.x) and ns.util.validCoordinate(candidate.y) then
     return {mapID = candidate.mapID, x = candidate.x, y = candidate.y,
-      label = tostring(candidate.label or item.name) .. " (historical player position)"}
+      label = tostring(candidate.label or item.name) ..
+        (candidate.reference and "" or " (historical player position)")}
   end
   return nil
 end

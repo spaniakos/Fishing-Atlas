@@ -1,8 +1,8 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 local ns = {
- data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{name="Vendor", mapID=1411, area="Durotar",
-    items={6256}, side="Horde"}},
- zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={6303}}},
+ data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{id=66,name="Vendor",trainer=false,title="Shop",
+    spots={{mapID=1411,x=0.6,y=0.4}},items={6256},side="Horde"}},
+ zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={{id=6303,evidence="classic_reference"}}}},
  util = {validCoordinate = function(n) return type(n) == "number" and n >= 0 and n <= 1 end},
  storage = {db = {
   catches = {fish = {name = "Nightfin", count = 8, mapID = 1411}},
@@ -39,6 +39,8 @@ assert(table.concat(ns.browser.details(zone)," "):find("Indicative fish",1,true)
 assert(#ns.browser.zoneSightings(1411).schools == 1)
 assert(#ns.browser.zoneSightings(1411).catches == 1)
 assert(ns.browser.waypoint(ns.browser.list("vendors", "100")[1]).mapID == 1411)
+assert(ns.browser.waypoint(ns.browser.list("vendors", "vendor")[1]).label:find("reference"))
+assert(ns.browser.waypoint({kind="fishing_pole",id=6256,name="Pole"}).mapID == 1411)
 assert(ns.browser.waypoint(zone).mapID == 1411)
 assert(ns.browser.waypoint(ns.browser.list("schools", "wreckage")[1]) == nil)
 assert(ns.browser.waypoint(ns.browser.list("schools", "pool")[1]).x == 0.3)
