@@ -40,7 +40,12 @@ local function art(mapID, w, h)
   local layer = layers[1]
   local result, textures = pcall(C_Map.GetMapArtLayerTextures, mapID, 1)
   if not result or type(textures) ~= "table" then return {} end
-  return M.layout(layer, textures, w, h)
+  local aw, ah = tonumber(layer.layerWidth), tonumber(layer.layerHeight)
+  if not aw or not ah or aw <= 0 or ah <= 0 then return {} end
+  local scale = math.min(w / aw, h / ah)
+  local vw, vh = aw * scale, ah * scale
+  local ox, oy = (w - vw) / 2, (h - vh) / 2
+  return M.layout(layer, textures, vw, vh), ox, oy, vw, vh
 end
 
 local function state(parent)
@@ -63,11 +68,11 @@ local function pin(parent, s, index)
   local b = s.pins[index]
   if b then return b end
   b = CreateFrame("Button", nil, parent)
-  b:SetSize(17, 17)
+  b:SetSize(19, 19)
   b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
   local t = b:CreateTexture(nil, "ARTWORK")
   t:SetAllPoints()
-  t:SetTexture("Interface\\Buttons\\WHITE8X8")
+  t:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
   b.icon = t
   b:SetScript("OnEnter", function(self)
     if not GameTooltip then return end
@@ -75,6 +80,9 @@ local function pin(parent, s, index)
     local loc = self.location
     GameTooltip:AddLine(loc.label or "Fishing Atlas observation")
     GameTooltip:AddLine("Source: " .. (loc.source or "unknown"), 0.6, 0.8, 0.85)
+    GameTooltip:AddLine(loc.near and "Nearby player coordinates, not NPC spawn"
+        or (loc.kind == "school" and "Object/observation position; check source"
+          or "Sourced reference/observation"), 1, 0.9, 0.5)
     GameTooltip:AddLine(string.format("Map %d: %.1f, %.1f",
       loc.mapID, loc.x * 100, loc.y * 100), 1, 1, 1)
     GameTooltip:Show()
@@ -106,7 +114,8 @@ function M.render(parent, mapID, locations)
   end
   local width, height = parent:GetWidth(), parent:GetHeight()
   if not width or width <= 0 or not height or height <= 0 then return false end
-  local tiles = art(mapID, width, height)
+  local tiles, ox, oy, vw, vh = art(mapID, width, height)
+  ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
   s.fallback:SetShown(#tiles == 0)
   for index, tile in ipairs(tiles) do
     if index > 36 then break end
@@ -118,7 +127,7 @@ function M.render(parent, mapID, locations)
     texture:SetTexture(tile.texture)
     texture:SetTexCoord(0, tile.u, 0, tile.v)
     texture:ClearAllPoints()
-    texture:SetPoint("TOPLEFT", parent, "TOPLEFT", tile.x, -tile.y)
+    texture:SetPoint("TOPLEFT", parent, "TOPLEFT", ox + tile.x, -(oy + tile.y))
     texture:SetSize(tile.w, tile.h)
     texture:Show()
   end
@@ -129,11 +138,18 @@ function M.render(parent, mapID, locations)
       count = count + 1
       local marker = pin(parent, s, count)
       marker.location = loc
-      if loc.kind == "school" then marker.icon:SetVertexColor(0.2, 0.85, 0.97, 1)
-      elseif loc.kind == "vendor" then marker.icon:SetVertexColor(1, 0.74, 0.19, 1)
-      else marker.icon:SetVertexColor(0.3, 0.95, 0.53, 1) end
+      if loc.kind == "school" then
+        marker.icon:SetTexture("Interface\\Icons\\Trade_Fishing")
+        marker.icon:SetVertexColor(0.65, 0.95, 1, 1)
+      elseif loc.kind == "vendor" then
+        marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Bag_10")
+        marker.icon:SetVertexColor(1, 0.92, 0.6, 1)
+      else
+        marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
+        marker.icon:SetVertexColor(0.75, 1, 0.75, 1)
+      end
       marker:ClearAllPoints()
-      marker:SetPoint("CENTER", parent, "TOPLEFT", loc.x * width, -loc.y * height)
+      marker:SetPoint("CENTER", parent, "TOPLEFT", ox + loc.x * vw, -(oy + loc.y * vh))
       marker:Show()
     end
   end
