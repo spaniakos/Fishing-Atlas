@@ -93,6 +93,11 @@ def load_live():
                 raise ValueError("Everloot unavailable; this is NOT an empty corpus: " + str(error))
             if not isinstance(page, dict) or not isinstance(page.get("records"), list):
                 raise ValueError("Invalid corpus page or unavailable source")
+            if not key and pages == 1 and type(page.get("total")) is int
+                    and page["total"] > 15000:
+                raise ValueError("Corpus holds " + str(page["total"]) +
+                                 " records: no-key rate limit supports at most " +
+                                 "15000 rows/hour; configure EVERLOOT_API_KEY or use full bulk export")
             page_asof = page.get("dataAsOf")
             if pages > 1 and page_asof != asof:
                 break  # Snapshot changed: discard all and restart.
