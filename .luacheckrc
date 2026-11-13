@@ -8,6 +8,7 @@ max_line_length = 140
 -- Generated deterministic catalog is syntax-checked and compared to the source JSON in CI.
 exclude_files = {
   "FishingAtlas/Data/Catalog.lua",
+  "FishingAtlas/Data/EverlootObserved.lua",
   "FishingAtlas/Data/ReferenceVendors.lua",
   "FishingAtlas/Data/ReferenceFishZones.lua",
   "FishingAtlas/Data/ZoneSkill.lua"
