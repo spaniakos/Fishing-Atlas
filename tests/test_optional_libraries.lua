@@ -12,11 +12,14 @@ local itemDB = {
 }
 local professionDB = {
   IsReady = function() return true end,
+  GetGameVersion = function() return "Forever" end,
   GetRecipe = function(_, professionID, id)
     assert(professionID == 185 and id == 18243)
-    return {name="Nightfin Soup",sources={{kind="trainer",id=101}}}
+    return {name="Nightfin Soup",sources={{kind="trainer",id=101}},
+      requiredSkill=175, difficulty={150,175,195,215},
+      craftedItemId=13931, reagents={{13759,1}}}
   end,
-  GetBorrowed = function() return {sources=true} end
+  GetBorrowed = function() return {sources="Vanilla", requiredSkill="Vanilla"} end
 }
 LibStub = function(name)
   if name == "LibItemDB-1.0" then return itemDB end
@@ -31,8 +34,10 @@ assert(name == "Offline Nightfin Snapper" and live == false)
 assert(ns.catalog.itemLink(13759) == "|Hitem:13759|h[Nightfin]|h")
 local record, meta = ns.catalog.professionRecord(18243)
 assert(record.name == "Nightfin Soup")
-assert(meta.source == "libprofessiondb_offline_reference")
-assert(meta.verifiedInForever == false and meta.borrowed.sources == true)
+assert(meta.source == "libprofessiondb_forever_client")
+assert(meta.verifiedInForeverClient == true and meta.verifiedLiveServer == false)
+assert(record.sources == nil and record.requiredSkill == nil)
+assert(record.craftedItemId == 13931 and record.difficulty[1] == 150)
 assert(ns.catalog.recipe(18243).cookingSkill == 250)
 C_Item = {GetItemInfo = function() return "Client Nightfin Snapper" end}
 local clientName, clientLive = ns.catalog.name("item", 13759)
@@ -42,6 +47,12 @@ itemDB.IsReady = function() return false end
 assert(ns.catalog.name("item", 13759) == "Unresolved item #13759")
 assert(ns.catalog.itemLink(13759) == nil)
 professionDB.IsReady = function() return false end
+assert(ns.catalog.professionRecord(18243) == nil)
+professionDB.IsReady = function() return true end
+professionDB.GetGameVersion = function() return "Vanilla" end
+assert(ns.catalog.professionRecord(18243) == nil)
+professionDB.GetGameVersion = function() return "Forever" end
+professionDB.GetBorrowed = nil
 assert(ns.catalog.professionRecord(18243) == nil)
 itemDB.IsReady = function() error("stale addon library") end
 assert(ns.catalog.name("item", 13759) == "Unresolved item #13759")

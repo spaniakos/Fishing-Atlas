@@ -5,7 +5,7 @@ This is one component of the **single v0.99.6 release**, not a separate release.
 ## Optional runtime libraries
 
 * [LibItemDB (MIT)](https://www.curseforge.com/wow/addons/libitemdb): current publisher lists a Forever-specific offline item set (23,596 items, 12 locales as of Oct 2026). GetName and GetLink may provide a name/link when the client cache is cold. The client API wins when it answers. The boolean return from `catalog.name` is **false** for offline library names: offline records do not establish live availability.
-* [LibProfessionDB (MIT)](https://www.curseforge.com/wow/addons/libprofessiondb): publisher lists 2,511 Forever recipes across 10 professions, with client-derived recipe records and flagged Vanilla-borrowed sources. A guarded `catalog.professionRecord` exposes the external record and borrowed-field metadata for review; it **does not overwrite** our 70888 client-recipe catalog.
+* [LibProfessionDB (MIT)](https://www.curseforge.com/wow/addons/libprofessiondb): publisher lists 2,511 Forever recipes across 10 professions, with client-derived recipe records and flagged Vanilla-borrowed sources. A guarded `catalog.professionRecord` reads **only Forever client-derived fields** after checking the library's `GetGameVersion() == 'Forever'` and its `GetBorrowed` metadata. Borrowed acquisition sources, hidden status and skill requirements are never surfaced; unmarked client-derived skill may be included. The library **does not overwrite** our client-recipe catalog.
 * [CraftLib](https://www.curseforge.com/wow/addons/craftlib): currently Classic-specific; public listing says **All Rights Reserved**, not a Forever flavor. Do not vendor or scrape.
 * [Questie-Forever](https://github.com/tysongoulding/Questie-Forever): inspect as a quest/NPC reference, preserving its license and provenance. Not a complete fishing-pool database.
 * [ForeverDB](https://www.curseforge.com/wow/addons/foreverdb): player observations and source IDs where the publisher permits, not proof of every present-day spawn.
@@ -20,7 +20,7 @@ The libraries are **optional separately installed addons**. No third-party code 
 
 1. Actual in-game recording (NPC GUID, item ID, zone, coordinates, build and time).
 2. Build-identified Forever client data (existence and client-defined recipe relations, not availability).
-3. Forever-targeted offline libraries, with explicit borrowed-field flags.
+3. Forever-targeted offline libraries, with borrowed fields hard-excluded (never ingested).
 4. Licensed community reference tables (Finddon/Luredon/CMaNGOS/Questie), labeled as reference.
 5. Unsupported or unlicensed sources: reject until reviewed.
 

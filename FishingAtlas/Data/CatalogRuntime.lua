@@ -48,15 +48,31 @@ function C.professionRecord(spellID)
   local skillLineID = own and tonumber(own.professionId)
   if not id or not skillLineID then return nil end
   local lib = optionalLibrary("LibProfessionDB-1.0")
-  if not lib or type(lib.GetRecipe) ~= "function" then return nil end
+  if not lib or type(lib.GetRecipe) ~= "function" or
+      type(lib.GetGameVersion) ~= "function" or type(lib.GetBorrowed) ~= "function" then
+    return nil -- cannot prove the library is a Forever build or check borrowed fields
+  end
+  local good, flavor = pcall(lib.GetGameVersion, lib)
+  if not good or flavor ~= "Forever" then return nil end
   local ok, record = pcall(lib.GetRecipe, lib, skillLineID, id)
   if not ok or type(record) ~= "table" then return nil end
-  local meta = {source = "libprofessiondb_offline_reference", verifiedInForever = false}
-  if type(lib.GetBorrowed) == "function" then
-    local good, borrowed = pcall(lib.GetBorrowed, lib, id)
-    if good and type(borrowed) == "table" then meta.borrowed = borrowed end
-  end
-  return record, meta
+  local borrowedOK, borrowed = pcall(lib.GetBorrowed, lib, id)
+  if not borrowedOK or type(borrowed) ~= "table" then return nil end
+  -- Whitelist ONLY Forever client-derived values. Not a wholesale copy:
+  -- Vanilla-borrowed source, hidden and trainer fields cannot enter the result.
+  local clean = {
+    name = record.name,
+    effect = record.effect,
+    reagents = record.reagents,
+    difficulty = record.difficulty,
+    craftedItemId = record.craftedItemId,
+    itemId = record.itemId,
+    recipeItemId = record.recipeItemId,
+  }
+  if not borrowed.requiredSkill then clean.requiredSkill = record.requiredSkill end
+  local meta = {source = "libprofessiondb_forever_client", verifiedInForeverClient = true,
+    verifiedLiveServer = false, borrowedFieldsExcluded = true}
+  return clean, meta
 end
 
 function C.entity(kind, id)
