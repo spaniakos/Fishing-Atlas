@@ -76,6 +76,19 @@ class EverlootImportTest(unittest.TestCase):
         self.assertNotIn("mapID", out["poolItems"][6303][0])
         self.assertNotIn("installId", lua_pack(out))
 
+    def test_reject_untrusted_install_identifiers(self):
+        invalid = [
+            {"kind": "vendor", "installId": "missing", "eventId": "bad1",
+             "vendorNpcId": 4, "items": [{"itemId": 6256}]},
+            {"kind": "vendor", "installId": "pub-not-a-pseudonym",
+             "eventId": "bad2", "vendorNpcId": 4, "items": [{"itemId": 6256}]},
+            {"kind": "vendor", "installId": "pub-" + "z" * 32,
+             "eventId": "bad3", "vendorNpcId": 4, "items": [{"itemId": 6256}]},
+        ]
+        result = normalize(invalid, None, "invalid-installs")
+        self.assertEqual(result["vendorItems"], {})
+        self.assertEqual(result["meta"]["recordCounts"], {})
+
     def test_numeric_lua_keys(self):
         self.assertIn("[6256]", lua({6256: [{"npcId": 10}]}))
 
