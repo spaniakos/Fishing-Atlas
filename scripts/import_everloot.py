@@ -156,8 +156,9 @@ def normalize(records, data_asof, digest):
             for entry in row.get("items", []):
                 if isinstance(entry, dict) and positive(entry.get("itemId")):
                     add_vote(vendor, (entry["itemId"], row["vendorNpcId"]), install)
-        elif kind == "loot" and row.get("sourceEvidence") == "loot-api":
-            if row.get("lootType") == "kill" and positive(row.get("sourceNpcId")):
+        elif kind == "loot":
+            if (row.get("lootType") == "kill" and
+                    row.get("sourceEvidence") == "loot-api" and positive(row.get("sourceNpcId"))):
                 for entry in row.get("items", []):
                     if isinstance(entry, dict) and positive(entry.get("itemId")):
                         add_vote(drops, (entry["itemId"], row["sourceNpcId"]), install)
@@ -254,6 +255,14 @@ def normalize(records, data_asof, digest):
             spots.append({"mapID": mid, "x": gx / 50, "y": gy / 50,
                           "installs": v["installs"]})
         result["schools"].append({"objectId": oid, "name": name, "spots": spots})
+    # Add actual observed pool positions to the corresponding loot-source edges.
+    schools_by_id = {school["objectId"]: school for school in result["schools"]}
+    for edges in result["poolItems"].values():
+        for edge in edges:
+            school = schools_by_id.get(edge["objectId"])
+            if school and school["spots"]:
+                spot = sorted(school["spots"], key=lambda rec: -rec["installs"])[0]
+                edge.update({"mapID": spot["mapID"], "x": spot["x"], "y": spot["y"]})
     # Only numeric recipe ids are mapped to catalog operations. A name without an
     # observed recipe id cannot silently become a known client spell.
     recipe_names = {}
