@@ -24,8 +24,8 @@ function K.catalogPlan(spellId, crafts, itemCounts)
     local owned = 0
     if type(itemCounts) == "table" then
       owned = tonumber(itemCounts[ingredient.itemId]) or 0
-    elseif type(GetItemCount) == "function" then
-      owned = tonumber(GetItemCount(ingredient.itemId, true)) or 0
+    elseif type(C_Item) == "table" and type(C_Item.GetItemCount) == "function" then
+      owned = tonumber(C_Item.GetItemCount(ingredient.itemId, true)) or 0
     end
     owned = math.max(0, owned)
     local needed = ingredient.amount * crafts

@@ -16,4 +16,11 @@ assert(plan.reagents[1].missing == 1 and plan.reagents[2].missing == 0)
 assert(not ns.kitchen.catalogPlan(123, 1))
 assert(not ns.kitchen.catalogPlan(18243, 0))
 assert(not ns.kitchen.catalogPlan(18243, 101))
+C_Item = {GetItemCount = function(id, bank)
+  assert(bank == true)
+  if id == 13759 then return 2 end
+  return 0
+end}
+local clientPlan = assert(ns.kitchen.catalogPlan(18243, 3))
+assert(clientPlan.reagents[1].owned == 2 and clientPlan.reagents[1].missing == 1)
 print("catalog planner tests passed")

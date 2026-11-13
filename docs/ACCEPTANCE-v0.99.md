@@ -1,6 +1,6 @@
 # Fishing Atlas v0.99: WoW Forever in-game acceptance
 
-**Target client:** 1.60.1.70888, build dated November 9, 2026, interface 16001.
+**Database baseline:** client build 70888, interface 16001. **Current observed client:** 1.60.1 build 70938 on November 13, 2026. The build can advance without changing interface 16001.
 **Tester:** player running the actual Forever client.
 **Status:** All cases **NOT TESTED** until explicitly reported by the tester.
 **Procedure:** Run one case at a time, return PASS or FAIL with notes and complete
@@ -11,7 +11,7 @@ Back up `WTF/Account/.../SavedVariables/FishingAtlas.lua` before migration check
 1. Remove any *older Fishing Atlas addon folder*, preserving SavedVariables separately.
 2. Install the build ZIP so `FishingAtlas/FishingAtlas.toc` is directly below AddOns.
 3. Enable the addon and log in; then type `/fa diagnose`.
-**Expected:** No Lua errors; version 1.60.1.70888/interface 16001 reported;
+**Expected:** No Lua errors; version 1.60.1/build 70938/interface 16001 reported (or a newer compatible build);
 addon loads without disabling another addon; diagnostics reflect actual API availability.
 
 ## T02 — Manual Fishing Space binding
