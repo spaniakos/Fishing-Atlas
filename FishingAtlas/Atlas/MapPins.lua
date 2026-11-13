@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Conservative overlay for WorldMapFrame canvas: markers represent user positions only.
+-- Sourced WorldMapFrame overlays: personal places and confirmed independent observations.
 local _, ns = ...
 ns.mapPins = {}
 local M = ns.mapPins
@@ -18,6 +18,17 @@ function M.points(mapID)
   for _, node in ipairs(ns.schools.inZone(mapID)) do
     out[#out + 1] = {x = node.x, y = node.y, label = node.label,
       kind = "school_candidate", verifiedSpawn = false}
+  end
+  if ns.sources then
+    for _, school in ipairs(ns.sources.schools()) do
+      for _, loc in ipairs(school.spots or {}) do
+        if loc.mapID == mapID and (loc.installs or 0) >= 3
+            and ns.util.validCoordinate(loc.x) and ns.util.validCoordinate(loc.y) then
+          out[#out + 1] = {x = loc.x, y = loc.y, label = school.name,
+            kind = "observed_school", verifiedSpawn = true}
+        end
+      end
+    end
   end
   return out
 end
@@ -48,10 +59,10 @@ function M.refresh()
     local pin = pins[i]
     if not pin then
       pin = CreateFrame("Frame", nil, canvas)
-      pin:SetSize(9, 9)
+      pin:SetSize(15, 15)
       local texture = pin:CreateTexture(nil, "OVERLAY")
       texture:SetAllPoints()
-      texture:SetTexture("Interface\\Buttons\\WHITE8X8")
+      texture:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
       pin.marker = texture
       pins[i] = pin
     end
@@ -59,8 +70,16 @@ function M.refresh()
     pin:ClearAllPoints()
     pin:SetPoint("CENTER", canvas, "TOPLEFT", w * loc.x, -h * loc.y)
     if pin.marker.SetVertexColor then
-      if loc.kind == "school_candidate" then pin.marker:SetVertexColor(1, 0.65, 0.12, 0.9)
-      else pin.marker:SetVertexColor(0.1, 0.8, 0.8, 0.85) end
+      if loc.kind == "observed_school" then
+        pin.marker:SetTexture("Interface\\Icons\\Trade_Fishing")
+        pin.marker:SetVertexColor(0.6, 1, 0.9, 0.95)
+      elseif loc.kind == "school_candidate" then
+        pin.marker:SetTexture("Interface\\Icons\\Trade_Fishing")
+        pin.marker:SetVertexColor(1, 0.65, 0.12, 0.9)
+      else
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
+        pin.marker:SetVertexColor(0.1, 0.8, 0.8, 0.85)
+      end
     end
     pin:Show()
   end
