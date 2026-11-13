@@ -1,10 +1,12 @@
 Data licensing and credits for Fishing Atlas 0.99.6
 
 Addon code: GPL-3.0-or-later. See FishingAtlas/LICENSE.
-Everloot observed-data pack: CC BY-SA 4.0, if populated.
+Everloot observed-data pack: CC BY-SA 4.0, populated 2026-11-13.
 Data from Everloot (https://everloot.app), CC BY-SA 4.0.
 License: https://creativecommons.org/licenses/by-sa/4.0/
 Source snapshots: https://everloot.app/docs/addon-authors
+Snapshot dataAsOf 2026-11-13T14:10:21.029Z.
+Raw corpus SHA-256 b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915ecd.
 The observed pack contains no installation identifiers.
 
 Blizzard game-file metadata: Game data (c) Blizzard Entertainment, Inc.
