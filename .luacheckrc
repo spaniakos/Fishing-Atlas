@@ -1,7 +1,7 @@
 std = "lua51"
 globals = {
   "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "Settings", "Minimap", "GameTooltip", "GetCursorPosition", "InterfaceOptions_AddCategory", "InterfaceOptionsFrame_OpenToCategory", "C_Item", "C_Spell", "TomTom",
-  "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "UnitName", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
+  "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "UnitName", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "OpenWorldMap", "ToggleWorldMap", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
 }
 max_line_length = 140
 
