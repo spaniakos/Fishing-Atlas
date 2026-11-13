@@ -91,6 +91,26 @@ Fishing-related vendor NPCs, inventory candidates and map locations are now sour
 The Explorer was redesigned around the third approved concept: branded panorama header, icon navigation, category sidebar, search/filters, sorted record list, dedicated section inspector, native zone map-art preview (when the Forever client exposes C_Map map layers), source-marked points, quick zone skill information and contextual vendor/fish links. Layout auto-scales to the available game viewport. The pictured concept's illustrative fish/school counts and "verified" flags are **not** treated as proof of live spawns. The actual client UI still requires acceptance testing.
 
 
+## Offline-first usage and data updates
+
+**Everloot is NOT a player-side dependency.** The complete set of data that
+FishingAtlas currently knows is bundled inside its installable ZIP. No player
+needs Everloot installed, an API key or Internet access. See
+[Offline data packs](docs/OFFLINE-DATA-PACKS.md).
+
+The initial v0.99.6 bundle contains the existing client and reference catalog;
+the Everloot-observed layer is **not yet populated**. On 13 November 2026 the
+published bulk corpus contained no rows, the alternative open-data endpoint
+returned HTTP 403, and the unauthenticated corpus API reached its hourly limit.
+This is an upstream acquisition limitation, not a requirement for players.
+
+For a full initial observed-data import, create an optional **free Everloot API
+key** at https://everloot.app/docs/api/keys and configure it as the repository
+Actions secret `EVERLOOT_API_KEY`. The scheduled/dispatchable
+`everloot-refresh.yml` builds a reviewed, versioned source-data PR with proper
+CC BY-SA attribution. It will never silently replace released data.
+The key is used only by the builder, never embedded in the addon.
+
 ## v0.99.6 | Linked explorer and evidence-based data pipeline
 
 - The middle inspector has hoverable, clickable item and spell rows. Recipe outputs and ingredients can show native tooltips; clicking goods follows their item record.
