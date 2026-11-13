@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Fishing Atlas 0.99.5: image-3-inspired three-column explorer.
+-- Fishing Atlas 0.99.6: image-3-inspired three-column explorer.
 -- All controls are functional FrameXML; visuals never invent game-world data.
 local _, ns = ...
 ns.ui = {}
@@ -474,7 +474,7 @@ local function build()
   label(frame, "GameFontNormalHuge", 665, 42, 105, -7):SetText("Fishing Atlas")
   label(frame, "GameFontHighlight", 670, 25, 108, -51):SetText("The Azeroth Fishing Compendium")
   versionLabel = label(frame, "GameFontHighlightSmall", 267, 30, 851, -21)
-  versionLabel:SetText("v0.99.5  |  Data: mixed-source")
+  versionLabel:SetText("v0.99.6  |  Data: sourced + reference")
   button(frame, "X", 1167, -10, 30, 31, function() frame:Hide() end)
   button(frame, "?", 1132, -10, 30, 31, function()
     if ns.issues then ns.issues.open() end
