@@ -25,8 +25,9 @@ local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
-local alertsButton, mapPinsButton, footerStatus, versionLabel
+local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
 local uiBusy = false
+local renderDetails
 
 local function label(parent, font, width, height, x, y)
   local txt = parent:CreateFontString(nil, "OVERLAY", font or "GameFontNormal")
@@ -127,6 +128,24 @@ local function waypoint()
   local success = pcall(TomTom.AddWaypoint, TomTom, wp.mapID, wp.x, wp.y,
     {title = "Fishing Atlas: " .. wp.label, persistent = false})
   ns.commands.say(success and "TomTom waypoint created" or "TomTom rejected the waypoint")
+end
+
+local function hideContext()
+  if context then context:Hide() end
+end
+
+local function showContext(item)
+  if not context or not item then return end
+  active = item
+  UI.detailsTab = "Overview"
+  renderDetails()
+  UI.draw()
+  local wp = ns.browser.waypoint(item)
+  contextButtons[2]:SetEnabled(wp ~= nil)
+  contextButtons[2].text:SetText(wp and "TomTom waypoint" or "No mapped waypoint")
+  local mapID = ns.viewModel.mapID(item)
+  contextButtons[3]:SetEnabled(mapID ~= nil)
+  context:Show()
 end
 
 local function updateFooter()
@@ -230,7 +249,7 @@ local function updateRight()
   renderMap()
 end
 
-local function renderDetails()
+renderDetails = function()
   if not detailsScroll then return end
   local summary = ns.viewModel.summary(active)
   headerName:SetText(active and active.name or "Choose a record")
@@ -342,6 +361,7 @@ function UI.refresh(reset)
   end
   UI.draw()
   renderDetails()
+  hideContext()
 end
 
 function UI.selectCategory(category, id, topPage)
@@ -469,10 +489,8 @@ local function build()
     btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     btn:SetScript("OnClick", function(self, mouse)
       if self.item then
-        if mouse == "RightButton" then
-          select(self.item)
-          waypoint()
-        else select(self.item) end
+        if mouse == "RightButton" then showContext(self.item)
+        else hideContext(); select(self.item) end
       end
     end)
     btn:SetScript("OnEnter", function(self) tooltip(self.item, self) end)
@@ -557,6 +575,28 @@ local function build()
   end)
   footerStatus = label(footer, "GameFontHighlightSmall", 260, 30, 895, -7)
   footerStatus:SetText("Data sources: client + reference + yours")
+  context = panel(frame, 480, -345, 215, 150, {0.04, 0.10, 0.13, 0.99})
+  context:SetFrameStrata("TOOLTIP")
+  contextButtons = {
+    button(context, "Inspect record", 7, -8, 200, 30, function()
+      hideContext()
+      renderDetails()
+    end),
+    button(context, "TomTom waypoint", 7, -43, 200, 30, function()
+      hideContext()
+      waypoint()
+    end),
+    button(context, "Open world map", 7, -78, 200, 30, function()
+      local mapID = ns.viewModel.mapID(active)
+      hideContext()
+      if not inGameMap(mapID) then ns.commands.say("World map unavailable") end
+    end),
+    button(context, "Report issue", 7, -113, 200, 30, function()
+      hideContext()
+      if ns.issues then ns.issues.open() end
+    end)
+  }
+  context:Hide()
   frame:Hide()
   fitFrame()
 end
@@ -564,6 +604,7 @@ end
 function UI.show()
   build()
   if not frame then return false end
+  hideContext()
   fitFrame()
   frame:Show()
   UI.refresh(false)
