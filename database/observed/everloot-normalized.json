@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "credit": "Data from Everloot (https://everloot.app), CC BY-SA 4.0.",
+    "license": "CC-BY-SA-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceUrl": "https://everloot.app/api/corpus/public",
+    "dataAsOf": null,
+    "targetBuild": "1.60.1.70888",
+    "sourceSha256": "not-imported",
+    "recordCounts": {}
+  },
+  "itemNames": {},
+  "npcs": {},
+  "vendorItems": {},
+  "drops": {},
+  "fishing": {},
+  "poolItems": {},
+  "schools": [],
+  "recipes": {},
+  "trainers": {}
+}
