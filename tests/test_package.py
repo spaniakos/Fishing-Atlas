@@ -37,7 +37,7 @@ class PackageTests(unittest.TestCase):
 
     def test_current_version_package(self):
         with tempfile.TemporaryDirectory() as tmp:
-            artifact, _ = build(Path(tmp), "v0.99.4")
+            artifact, _ = build(Path(tmp), "v0.99.5")
             self.assertTrue(artifact.is_file())
 
     def test_reject_mismatched_tag(self):

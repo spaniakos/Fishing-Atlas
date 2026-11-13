@@ -49,6 +49,9 @@ jobs:
           lua5.1 tests/test_skill.lua
           lua5.1 tests/test_source_data.lua
           lua5.1 tests/test_issues.lua
+          lua5.1 tests/test_view_model.lua
+          lua5.1 tests/test_zone_map.lua
+          lua5.1 tests/test_window_smoke.lua
       - name: Validate manifest and documentation
         run: python3 scripts/validate.py
       - name: Package installable ZIP
