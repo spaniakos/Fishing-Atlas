@@ -51,6 +51,23 @@ function V.zoneVendors(mapID)
       end
     end
   end
+  local sellerSet = {}
+  for _, offers in pairs((ns.data.everloot or {}).vendorItems or {}) do
+    for _, offer in ipairs(offers) do sellerSet[offer.npcId] = true end
+  end
+  for npcId in pairs(sellerSet) do
+    if source() then
+      for _, spot in ipairs(source().vendorLocations(npcId)) do
+        if spot.mapID == mapID and validPlace(spot) then
+          local npc = source().vendor(npcId) or {}
+          results[#results + 1] = {id = npcId, name = npc.name or ("NPC " .. npcId),
+            x = spot.x, y = spot.y, mapID = mapID,
+            source = spot.installs >= 3 and "observed_confirmed"
+              or "observed_provisional", kind = "vendor"}
+        end
+      end
+    end
+  end
   table.sort(results, function(a, b) return a.name < b.name end)
   return results
 end
@@ -234,6 +251,16 @@ function V.mapPoints(item)
         end
       end
     end
+    if source() then
+      for _, loc in ipairs(source().vendorLocations(item.id)) do
+        if validPlace(loc) then
+          results[#results + 1] = {mapID = loc.mapID, x = loc.x, y = loc.y,
+            kind = "vendor", label = item.name .. (loc.near and " (nearby)" or ""),
+            source = loc.installs >= 3 and "observed_confirmed"
+              or "observed_provisional"}
+        end
+      end
+    end
     return results
   elseif item.kind == "merchant_observation" then
     if validPlace(item.extra) then
@@ -242,6 +269,22 @@ function V.mapPoints(item)
         kind = "vendor", label = item.name, source = "client_observed"}
     end
     return results
+  elseif item.kind == "Cooking" or item.kind == "Fishing" then
+    local recipe = ns.catalog.recipe(item.id)
+    if recipe and recipe.recipeItemId then
+      return V.itemMapPoints(recipe.recipeItemId)
+    end
+    local out = {}
+    for _, trainer in ipairs(source() and source().trainersForRecipe(item.id) or {}) do
+      for _, loc in ipairs(source().vendorLocations(trainer.npcId)) do
+        if validPlace(loc) then
+          out[#out + 1] = {mapID = loc.mapID, x = loc.x, y = loc.y,
+            kind = "vendor", label = trainer.title,
+            source = trainer.confidence}
+        end
+      end
+    end
+    return out
   elseif item.kind == "school_type" then
     for _, school in ipairs(source() and source().schoolLocations(item.name) or {}) do
       results[#results + 1] = school
@@ -406,6 +449,15 @@ function V.section(item, section)
     end
   elseif item.kind == "zone" then
     local fish = ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}
+    local observedFish = {}
+    for id, zones in pairs((ns.data.everloot or {}).fishing or {}) do
+      for _, observed in ipairs(zones) do
+        if observed.mapID == item.id then
+          observedFish[#observedFish + 1] = {id = id, installs = observed.installs,
+            windows = observed.windows}
+        end
+      end
+    end
     local skill = ns.data.zoneFishingSkill and ns.data.zoneFishingSkill[item.id]
     local sightings = B.zoneSightings(item.id)
     local vendors = V.zoneVendors(item.id)
@@ -417,16 +469,29 @@ function V.section(item, section)
       end
       add("Reference fish", #fish .. " indexed species (not current-server confirmed)",
         "Interface\\Icons\\INV_Misc_Fish_02", "cmangos_reference")
+      add("Observed fish", #observedFish .. " sourced zone catches",
+        "Interface\\Icons\\INV_Misc_Fish_02", "observed")
       add("School sightings", #sightings.schools .. " player-recorded positions",
         "Interface\\Icons\\INV_Misc_Spyglass_03", "user_observation")
       add("Vendor references", #vendors .. " mapped NPCs", "Interface\\Icons\\INV_Misc_Bag_10",
         "mixed_source_reference")
     elseif section == "Fish" then
+      local observedSet = {}
+      for _, rec in ipairs(observedFish) do
+        observedSet[rec.id] = true
+        add(nameFor(rec.id), rec.installs .. " installs | " ..
+          rec.windows .. " loot windows",
+          ns.catalog.icon("item", rec.id),
+          rec.installs >= 3 and "observed_confirmed" or "observed_provisional",
+          {itemId = rec.id})
+      end
       for _, rec in ipairs(fish) do
         local id = type(rec) == "table" and rec.id or rec
         local evidence = type(rec) == "table" and rec.evidence or "reference"
-        add(nameFor(id), "Item " .. id .. " | " .. evidence,
-          ns.catalog.icon("item", id), evidence, {itemId = id})
+        if not observedSet[id] then
+          add(nameFor(id), "Item " .. id .. " | " .. evidence,
+            ns.catalog.icon("item", id), evidence, {itemId = id})
+        end
       end
     elseif section == "Schools" then
       for _, observed in ipairs(source() and source().schools() or {}) do
