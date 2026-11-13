@@ -1,0 +1,53 @@
+{
+  "currentSnapshot": "b70c4a280ba90e74eec66e3bbd4958aa1a4c1f7f0c9ce9fa96b0ae4897915ecd",
+  "dataAsOf": "2026-11-13T14:10:21.029Z",
+  "note": "missingFromSnapshot is NOT proof that a game entity was removed",
+  "previousSnapshot": "not-imported",
+  "sections": {
+    "drops": {
+      "added": 1115,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "fishing": {
+      "added": 27,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "itemNames": {
+      "added": 96,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "npcs": {
+      "added": 2747,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "poolItems": {
+      "added": 27,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "recipes": {
+      "added": 1380,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "schools": {
+      "added": 0,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "trainers": {
+      "added": 190,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    },
+    "vendorItems": {
+      "added": 562,
+      "changed": 0,
+      "missingFromSnapshot": 0
+    }
+  }
+}\n
