@@ -1,6 +1,6 @@
 # Everloot ingestion contract for Fishing Atlas
 
-Status: v0.99.6 draft includes a complete public Everloot observation corpus snapshot imported 2026-11-13T14:10:21.029Z and shipped as attributed offline Lua. The separate matching-build full game-file export and actual WoW client acceptance are still pending. A complete observation corpus is **not** an exhaustive verified game database.
+Status: v0.99.6 draft includes a complete public Everloot observation corpus snapshot imported 2026-11-13T14:10:21.029Z and shipped as attributed offline Lua. The relevant build-matched client game-file catalog has also been imported separately; actual WoW client acceptance remains pending. A complete observation corpus is **not** an exhaustive verified game database.
 
 ## Upstream
 - Project: https://everloot.app/
@@ -36,12 +36,12 @@ Observed contributor records are CC BY-SA 4.0. Game-file derived data is **not**
 ## Implemented generated datasets and actions
 
 1. `scripts/import_everloot.py` reads a complete public API/NDJSON corpus, checks paging snapshots, counts independent installs, removes install IDs and writes `FishingAtlas/Data/EverlootObserved.lua`, `database/observed/everloot-normalized.json` and `database/observed/last-diff.json`. The live addon reads it with `FishingAtlas/Data/ObservedRuntime.lua`.
-2. `scripts/import_everloot_gamefiles.py` reads a *different*, game-file open export with `manifest.json` and checksum checks, validates the Forever build and outputs `FishingAtlas/Data/EverlootGameFiles.lua` with `game_files_unconfirmed` labels.
+2. `scripts/import_everloot_client_git.py` imports the build-70888 client-recipes and client-layer catalogs from an immutable Everloot Git revision with source digests, emitting `FishingAtlas/Data/EverlootGameFiles.lua` and a separate JSON manifest. The alternative `scripts/import_everloot_gamefiles.py` accepts a matching-build public open-data export folder when available. Both label game-file facts `game_files_unconfirmed`.
 3. The in-client explorer joins item IDs to vendor, drop, fishing-pool, trainer and recipe links, keeping unverified sources labelled. It shows copyable source URLs rather than trying to open a browser from WoW.
 4. `.github/workflows/everloot-refresh.yml` fetches and opens a review PR with source changes after integration to main. It is not an automatic release.
 5. `FishingAtlas/DATA-LICENSES.txt` and the in-game Source link popup carry attribution.
 
-**Remaining content gate:** the branch now ships 60,550 source observation events normalized into indexed fishing/vendor/recipe/NPC relationships. The independent full game-file export is not populated, 0 eligible school-object positions are present in this snapshot, and client UI compatibility remains untested. Review future snapshots for availability, lineage, licensing and performance. A game-file item category is not proof of server availability.
+**Remaining content gate:** the branch now ships 60,550 source observation events normalized into indexed fishing/vendor/recipe/NPC relationships. The relevant build-matched client-file pack is populated (136 recipe definitions, 1,854 categories, 3,356 selected relationships), 0 eligible school-object positions are present in the observed snapshot, and client UI compatibility remains untested. Review future snapshots for availability, lineage, licensing and performance. A game-file item category is not proof of server availability.
 
 ## Acceptance gate
 - Stable snapshot pagination and/or bulk checksum checks.
@@ -51,4 +51,4 @@ Observed contributor records are CC BY-SA 4.0. Game-file derived data is **not**
 - User testing for maps, TomTom calls, and tooltip API behavior on interface 16001.
 - Regression test on a representative set of fish, recipes, schools, vendors and zones.
 
-The full public observation snapshot is now bundled and documented in docs/DATABASE-COVERAGE.md. Full build-matched game-file data is still unavailable in this release candidate and cannot be inferred from observed records.
+The full public observation snapshot is now bundled and documented in docs/DATABASE-COVERAGE.md. Relevant build-matched client-file metadata is bundled as a separate, unconfirmed layer. The full upstream 31,981-item catalog is not copied wholesale, and missing names/icons/availability cannot be inferred from game-file records.
