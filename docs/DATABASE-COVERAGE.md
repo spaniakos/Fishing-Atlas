@@ -36,3 +36,12 @@ are not marked `verified_ingame`.
 
 The pre-v1 release candidate can include this curated but partial content as long
 as coverage is disclosed and missing facts are not advertised as verified.
+
+
+## v0.99.6 observed/source ingestion status
+
+The 0.99.6 source graph and client export pipeline are implemented, **but neither a complete Everloot observed corpus nor a matching full open game-file export has been imported into this branch**. The bundled `EverlootObserved.lua` and `EverlootGameFiles.lua` contain explicit empty placeholders. They do **not** show that zero schools or sellers exist on Forever.
+
+The current static base remains 136 build-70888 Cooking/Fishing recipe relationships, 46 map entries, 23 reference fish, 12 Classic school-type names, 96 mixed-reference vendors and 11 poles/lures. Those are not new independently confirmed sightings.
+
+Once a full source is available, `scripts/import_everloot.py` generates normalized CC BY-SA observation data with distinct-install support, a source checksum and a last-diff report. The separate `scripts/import_everloot_gamefiles.py` filters build-70888 client metadata and marks it unconfirmed. This page must be regenerated with *real* counts before advertising complete coverage.
