@@ -20,7 +20,7 @@ jobs:
         env:
           EVERLOOT_API_KEY: ${{ secrets.EVERLOOT_API_KEY }}
         run: |
-          python3 scripts/import_everloot.py --fetch --write
+          python3 scripts/seed_offline.py
       - name: Validate generated snapshot
         run: |
           python3 scripts/build_catalog.py --check
