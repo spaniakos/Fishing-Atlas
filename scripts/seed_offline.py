@@ -23,6 +23,10 @@ MAX_BYTES = 150 * 1024 * 1024
 ROOT = Path(__file__).resolve().parents[1]
 
 
+class NoBulkData(ValueError):
+    """The published bulk export is valid but lacks a nonempty observed corpus."""
+
+
 def get_bytes(url, limit=MAX_BYTES):
     req = Request(url, headers={"User-Agent": "FishingAtlas-offline-build/0.99.6"})
     with urlopen(req, timeout=60) as response:
@@ -64,10 +68,12 @@ def select_corpus(index):
         raise ValueError("Bulk corpus has unexpected ownership or dataset")
     if not isinstance(item.get("sha256"), str) or not re.fullmatch(r"[a-fA-F0-9]{64}", item["sha256"]):
         raise ValueError("Bulk corpus SHA-256 missing/invalid")
+    if item.get("rows") == 0 and item.get("bytes") == 0:
+        raise NoBulkData("Everloot published an empty corpus; trying the live API")
     if not isinstance(item.get("bytes"), int) or not 0 < item["bytes"] <= MAX_BYTES:
-        raise ValueError("Bulk corpus size missing/invalid")
+        raise ValueError("Bulk corpus size missing/invalid: " + str(item.get("bytes")))
     if not isinstance(item.get("rows"), int) or item["rows"] < 1:
-        raise ValueError("Empty bulk corpus cannot seed verified offline content")
+        raise ValueError("Bulk corpus row count missing/invalid: " + str(item.get("rows")))
     return item
 
 
@@ -100,7 +106,7 @@ def seed():
             subprocess.run(cmd, check=True, cwd=ROOT)
         print("Offline source: verified immutable Everloot bulk export", url)
         return
-    except (HTTPError, URLError, TimeoutError) as exc:
+    except (HTTPError, URLError, TimeoutError, NoBulkData) as exc:
         # The bulk endpoint may genuinely be unpublished. Attempt the API
         # rather than pretending a missing export is an empty data set.
         print("Bulk export unavailable; trying public corpus API:", str(exc), file=sys.stderr)
