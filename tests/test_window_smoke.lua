@@ -4,7 +4,7 @@ local function element()
   local f = {shown = true, width = 0, height = 0, scripts = {}, text = ""}
   local methods = {
     "SetPoint", "ClearAllPoints", "SetTexture", "SetVertexColor", "SetAllPoints",
-    "SetFrameStrata", "SetMovable", "EnableMouse", "RegisterForDrag", "StartMoving",
+    "SetFrameStrata", "SetMovable", "EnableMouse", "EnableMouseWheel", "RegisterForDrag", "StartMoving",
     "StopMovingOrSizing", "SetJustifyH", "SetJustifyV", "SetSize", "SetWordWrap",
     "RegisterForClicks", "SetMinMaxValues", "SetValueStep", "SetOrientation",
     "SetThumbTexture", "SetVerticalScroll", "SetText", "SetAutoFocus",
