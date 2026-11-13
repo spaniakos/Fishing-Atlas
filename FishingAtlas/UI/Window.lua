@@ -8,7 +8,6 @@ local pageSize = 10
 UI.category, UI.query, UI.page = "fish", "", 1
 local frame, search, summary, details
 local rows, tabButtons = {}, {}
-local selected
 
 local function font(parent, x, y, width, height, size)
   local label = parent:CreateFontString(nil, "OVERLAY", size or "GameFontNormal")
@@ -46,7 +45,6 @@ function UI.refresh()
       if btn.icon then btn.icon:SetTexture(ns.browser.icon(item)) end
       btn.item = item
       btn:SetScript("OnClick", function()
-        selected = item
         details:SetText(table.concat(ns.browser.details(item), "\n"))
       end)
       btn:Show()
