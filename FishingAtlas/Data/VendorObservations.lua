@@ -11,7 +11,7 @@ function V.npcId(guid)
   return tonumber(guid:match("^Creature%-%d+%-%d+%-%d+%-%d+%-(%d+)%-"))
 end
 
-function V.capture(guid, links, when, position)
+function V.capture(guid, links, when, position, npcName)
   local npcId = V.npcId(guid)
   if not npcId then return false, "Merchant NPC ID unavailable" end
   if type(links) ~= "table" then return false, "Missing merchant items" end
@@ -38,6 +38,9 @@ function V.capture(guid, links, when, position)
   end
   table.sort(found)
   current.items = found
+  if type(npcName) == "string" and npcName ~= "" then
+    current.name = ns.util.safeText(npcName)
+  end
   current.lastSeen = tonumber(when) or 0
   current.sightings = current.sightings + 1
   if type(position) == "table" and type(position.mapID) == "number"
@@ -74,7 +77,7 @@ function V.scan()
       end
     end
   end
-  V.capture(guid, links, now, position)
+  V.capture(guid, links, now, position, type(UnitName) == "function" and UnitName("npc") or nil)
 end
 
 function V.start()

@@ -64,7 +64,7 @@ function B.list(category, term)
     end
     for id, r in pairs(db.vendorObservations or {}) do
       if type(r) == "table" then
-        push(out, row(id, "Merchant NPC #" .. tostring(id),
+        push(out, row(id, r.name or ("Merchant NPC #" .. tostring(id)),
           "merchant_observation", "client_observed", r), term)
       end
     end
@@ -159,6 +159,10 @@ function B.details(item)
     for i = 1, math.min(#rec.schools, 15) do appendPlace(lines, rec.schools[i], "School proximity") end
     lines[#lines + 1] = "Saved fishing positions: " .. #rec.positions
     lines[#lines + 1] = "Zone-tagged catches: " .. #rec.catches
+    for i = 1, math.min(#rec.catches, 20) do
+      lines[#lines + 1] = "Caught: " .. tostring(rec.catches[i].name or "Unknown fish") ..
+        " (" .. tostring(rec.catches[i].count or 0) .. " total recorded)"
+    end
     if #rec.schools == 0 and #rec.positions == 0 and #rec.catches == 0 then
       lines[#lines + 1] = "No verified zone-specific fish or school data yet."
     end

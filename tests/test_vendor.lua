@@ -15,6 +15,7 @@ assert(#item.items == 1 and item.items[1] == 13759 and item.sightings == 1)
 assert(not ns.vendors.capture("Player-123-456", {"|Hitem:13759|h"}, 100))
 assert(not ns.vendors.capture(guid, {"invalid"}, 100))
 assert(ns.vendors.capture(guid, {"|Hitem:6256|h[Pole]|h"}, 200,
-  {mapID = 1411, x = 0.3, y = 0.5}))
+  {mapID = 1411, x = 0.3, y = 0.5}, "Vendor Test"))
 assert(item.mapID == 1411 and item.x == 0.3 and item.precision == "player_position_at_merchant")
+assert(item.name == "Vendor Test")
 print("vendor capture tests passed")
