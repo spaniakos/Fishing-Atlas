@@ -27,6 +27,8 @@ local function hidePins()
 end
 
 function M.refresh()
+  local settings = ns.storage.db and ns.storage.db.settings
+  if settings and settings.mapPins == false then hidePins(); return false end
   local map = WorldMapFrame
   if not map or not map.IsShown or not map:IsShown() then hidePins(); return false end
   local scroll = map.ScrollContainer

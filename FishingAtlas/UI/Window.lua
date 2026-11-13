@@ -8,6 +8,7 @@ local pageSize = 10
 UI.category, UI.query, UI.page = "fish", "", 1
 local frame, search, summary, details
 local rows, tabButtons = {}, {}
+local selected
 
 local function font(parent, x, y, width, height, size)
   local label = parent:CreateFontString(nil, "OVERLAY", size or "GameFontNormal")
@@ -41,8 +42,11 @@ function UI.refresh()
   for i, btn in ipairs(rows) do
     local item = data[(UI.page - 1) * pageSize + i]
     if item then
-      btn.title:SetText(item.name:sub(1, 45) .. "  [" .. tostring(item.id) .. "]")
+      btn.title:SetText(item.name:sub(1, 42) .. "  [" .. tostring(item.id) .. "]")
+      if btn.icon then btn.icon:SetTexture(ns.browser.icon(item)) end
+      btn.item = item
       btn:SetScript("OnClick", function()
+        selected = item
         details:SetText(table.concat(ns.browser.details(item), "\n"))
       end)
       btn:Show()
@@ -71,7 +75,7 @@ local function build()
   bg:SetTexture("Interface\\Buttons\\WHITE8X8")
   bg:SetVertexColor(0.035, 0.065, 0.075, 0.96)
   local heading = font(frame, 18, -12, 550, 25, "GameFontNormalLarge")
-  heading:SetText("Fishing Atlas  |  WoW Forever 70888")
+  heading:SetText("Fishing Atlas  |  Explorer  |  Data build 70888")
   control(frame, "X", 32, 28, 609, -12, function() frame:Hide() end)
   for i, category in ipairs(categories) do
     local btn = control(frame, category, 85, 29, 17 + (i - 1) * 90, -53, function()
@@ -95,7 +99,33 @@ local function build()
   search:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
   summary = font(frame, 18, -133, 590, 25, "GameFontNormal")
   for i = 1, pageSize do
-    rows[i] = control(frame, "", 623, 25, 19, -167 - (i - 1) * 27, function() end)
+    local rowButton = control(frame, "", 623, 25, 19, -167 - (i - 1) * 27, function() end)
+    rowButton.title:ClearAllPoints()
+    rowButton.title:SetPoint("LEFT", rowButton, "LEFT", 39, 0)
+    rowButton.title:SetSize(570, 23)
+    local icon = rowButton:CreateTexture(nil, "ARTWORK")
+    icon:SetSize(22, 22)
+    icon:SetPoint("LEFT", rowButton, "LEFT", 8, 0)
+    rowButton.icon = icon
+    rowButton:SetScript("OnEnter", function(self)
+      if not self.item or not GameTooltip then return end
+      local kind, id = ns.browser.tooltip(self.item)
+      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+      local displayed = false
+      if kind == "item" and type(GameTooltip.SetItemByID) == "function" then
+        displayed = pcall(GameTooltip.SetItemByID, GameTooltip, id)
+      elseif kind == "spell" and type(GameTooltip.SetSpellByID) == "function" then
+        displayed = pcall(GameTooltip.SetSpellByID, GameTooltip, id)
+      end
+      if not displayed then
+        GameTooltip:AddLine(self.item.name)
+      end
+      GameTooltip:AddLine("Fishing Atlas: " .. tostring(self.item.confidence), 0.3, 0.85, 0.8)
+      GameTooltip:AddLine("Click for details; client presence does not confirm live availability.", 1, 1, 1, true)
+      GameTooltip:Show()
+    end)
+    rowButton:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+    rows[i] = rowButton
   end
   control(frame, "< Prev", 92, 27, 19, -443, function()
     UI.page = math.max(1, UI.page - 1); UI.refresh()
@@ -113,7 +143,10 @@ local function build()
   toggle:Show()
   details = font(frame, 20, -486, 615, 160, "GameFontHighlightSmall")
   details:SetJustifyV("TOP")
-  details:SetText("Select an entry for details. Unverified data is labeled.")
+  details:SetText("Click an entry for details, or hover for the client item/spell tooltip.")
+  control(frame, "Options", 94, 27, 448, -443, function()
+    if ns.options then ns.options.open() end
+  end)
   frame:Hide()
 end
 

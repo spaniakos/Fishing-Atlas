@@ -56,3 +56,9 @@ See [ROADMAP.md](ROADMAP.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [docs/DATA
 ## License
 Copyright (c) 2026 Georgios Spanos and contributors.
 Licensed under **GNU GPL-3.0-or-later**. See [LICENSE](LICENSE). External game assets/data must have their own valid usage rights.
+
+## v0.99.1 UI improvements
+- Draggable minimap fishing icon: left-click explorer, right-click settings.
+- Settings > AddOns > Fishing Atlas: minimap launcher, map markers, proximity alerts.
+- Browser item/recipe icons from the game client, hover tooltips, larger click targets and Options shortcut.
+- Tooltips and client textures are capability-dependent; report unsupported APIs during acceptance.

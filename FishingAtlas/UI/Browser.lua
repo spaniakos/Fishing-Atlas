@@ -81,3 +81,24 @@ function B.details(row)
   end
   return out
 end
+
+function B.icon(row)
+  if type(row) ~= "table" then return "Interface\\Icons\\INV_Misc_QuestionMark" end
+  if row.kind == "fish" or row.kind == "fishing_pole" or row.kind == "lure" then
+    return ns.catalog.icon("item", row.id)
+  end
+  if row.kind == "Cooking" or row.kind == "Fishing" then
+    local recipe = ns.catalog.recipe(row.id)
+    if recipe and recipe.outputItemId then return ns.catalog.icon("item", recipe.outputItemId) end
+    return ns.catalog.icon("spell", row.id)
+  end
+  return "Interface\\Icons\\INV_Misc_QuestionMark"
+end
+function B.tooltip(row)
+  if type(row) ~= "table" then return nil end
+  if row.kind == "fish" or row.kind == "fishing_pole" or row.kind == "lure" then
+    return "item", tonumber(row.id)
+  end
+  if row.kind == "Cooking" or row.kind == "Fishing" then return "spell", tonumber(row.id) end
+  return nil
+end

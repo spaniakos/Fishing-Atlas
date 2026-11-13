@@ -82,3 +82,29 @@ end
 function C.zones()
   return data.zones or {}
 end
+
+-- Prefer client-provided textures, with a bundled Blizzard icon as an honest fallback.
+function C.icon(kind, id)
+  id = tonumber(id)
+  if not id then return "Interface\\Icons\\INV_Misc_QuestionMark" end
+  if kind == "item" and type(C_Item) == "table" then
+    if type(C_Item.GetItemIconByID) == "function" then
+      local icon = C_Item.GetItemIconByID(id)
+      if icon then return icon end
+    end
+    if type(C_Item.GetItemInfo) == "function" then
+      local _, _, _, _, _, _, _, _, _, icon = C_Item.GetItemInfo(id)
+      if icon then return icon end
+    end
+  elseif kind == "spell" and type(C_Spell) == "table" then
+    if type(C_Spell.GetSpellTexture) == "function" then
+      local icon = C_Spell.GetSpellTexture(id)
+      if icon then return icon end
+    end
+    if type(C_Spell.GetSpellInfo) == "function" then
+      local info = C_Spell.GetSpellInfo(id)
+      if type(info) == "table" and info.iconID then return info.iconID end
+    end
+  end
+  return "Interface\\Icons\\INV_Misc_QuestionMark"
+end

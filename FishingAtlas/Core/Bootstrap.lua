@@ -17,5 +17,7 @@ frame:SetScript("OnEvent", function(_, event, arg)
     ns.loot.start()
     ns.vendors.start()
     ns.mapPins.start()
+    ns.options.start()
+    ns.minimap.start()
   end
 end)
