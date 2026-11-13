@@ -10,9 +10,13 @@ local function nameFor(id)
   return ns.catalog.name("item", id)
 end
 
-local function textRow(title, detail, icon, confidence)
-  return {title = tostring(title or ""), detail = tostring(detail or ""),
+local function textRow(title, detail, icon, confidence, target)
+  local row = {title = tostring(title or ""), detail = tostring(detail or ""),
     icon = icon, confidence = confidence}
+  if type(target) == "table" then
+    for key, value in pairs(target) do row[key] = value end
+  end
+  return row
 end
 
 local function findZone(mapID)
@@ -187,8 +191,10 @@ function V.section(item, section)
   local rows = {}
   if not item then return rows end
   section = section or "Overview"
-  local function add(title, detail, icon, confidence)
-    if #rows < maxRows then rows[#rows + 1] = textRow(title, detail, icon, confidence) end
+  local function add(title, detail, icon, confidence, target)
+    if #rows < maxRows then
+      rows[#rows + 1] = textRow(title, detail, icon, confidence, target)
+    end
   end
   if item.kind == "zone" then
     local fish = ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}
@@ -212,7 +218,7 @@ function V.section(item, section)
         local id = type(rec) == "table" and rec.id or rec
         local evidence = type(rec) == "table" and rec.evidence or "reference"
         add(nameFor(id), "Item " .. id .. " | " .. evidence,
-          ns.catalog.icon("item", id), evidence)
+          ns.catalog.icon("item", id), evidence, {itemId = id})
       end
     elseif section == "Schools" then
       for _, school in ipairs(sightings.schools) do
@@ -223,7 +229,8 @@ function V.section(item, section)
     elseif section == "Vendors" then
       for _, vendor in ipairs(vendors) do
         add(vendor.name, string.format("Reference location: %.1f, %.1f",
-          vendor.x * 100, vendor.y * 100), nil, vendor.source)
+          vendor.x * 100, vendor.y * 100), "Interface\\Icons\\INV_Misc_Bag_10", vendor.source,
+          {vendorId = vendor.id, mapID = vendor.mapID, x = vendor.x, y = vendor.y})
       end
     elseif section == "Map" then
       add("Map pins", #V.mapPoints(item) .. " saved/reference positions",
@@ -253,7 +260,10 @@ function V.section(item, section)
   elseif item.kind == "vendor_reference" then
     local vendor = item.extra or {}
     if section == "Overview" then
-      add("Faction", vendor.side or "Unknown", nil, "mixed_source_reference")
+      add("Faction", vendor.side or "Unknown",
+        vendor.side == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02"
+          or vendor.side == "Horde" and "Interface\\Icons\\INV_BannerPVP_01"
+          or "Interface\\Icons\\INV_Misc_Map_01", "mixed_source_reference")
       add("Role", vendor.trainer and "Fishing trainer" or (vendor.title or "Merchant"),
         nil, "mixed_source_reference")
       add("Locations", #(vendor.spots or {}) .. " reference NPC coordinates",
@@ -263,23 +273,39 @@ function V.section(item, section)
     elseif section == "Goods" then
       for _, id in ipairs(vendor.items or {}) do
         add(nameFor(id), "Item " .. id .. " | stock unverified",
-          ns.catalog.icon("item", id), "mixed_source_reference")
+          ns.catalog.icon("item", id), "mixed_source_reference", {itemId = id})
       end
     elseif section == "Map" then
       for _, place in ipairs(vendor.spots or {}) do
         add("Map " .. place.mapID, string.format("%.1f, %.1f | reference NPC position",
-          place.x * 100, place.y * 100), nil, "mixed_source_reference")
+          place.x * 100, place.y * 100), "Interface\\Icons\\INV_Misc_Map_01",
+          "mixed_source_reference", {mapID = place.mapID, x = place.x, y = place.y})
       end
     end
   elseif item.kind == "school_type" then
     local places = B.schoolSightings(item.name)
     if section == "Overview" then
-      add("School type", item.name, nil, "classic_reference")
-      add("Your sightings", #places .. " nearby player positions", nil, "user_observation")
+      add("School type", item.name, "Interface\\Icons\\Trade_Fishing", "classic_reference")
+      add("Your sightings", #places .. " nearby player positions",
+        "Interface\\Icons\\INV_Misc_Spyglass_03", "user_observation")
+      local seen = {}
+      for _, place in ipairs(places) do seen[place.mapID] = true end
+      local zoneNames = {}
+      for mapID in pairs(seen) do
+        local zone = findZone(mapID)
+        zoneNames[#zoneNames + 1] = zone and zone.name or ("Map " .. mapID)
+      end
+      table.sort(zoneNames)
+      add("Observed zones", #zoneNames > 0 and table.concat(zoneNames, ", ")
+        or "No player-confirmed areas recorded", "Interface\\Icons\\INV_Misc_Map_01",
+        "user_observation")
     else
       for _, place in ipairs(places) do
-        add("Map " .. place.mapID, string.format("Near %.1f, %.1f",
-          place.x * 100, place.y * 100), nil, "user_observation")
+        local zone = findZone(place.mapID)
+        add(zone and zone.name or ("Map " .. place.mapID),
+          string.format("Nearby observation: %.1f, %.1f",
+          place.x * 100, place.y * 100), "Interface\\Icons\\INV_Misc_Map_01",
+          "user_observation", {mapID = place.mapID, x = place.x, y = place.y})
       end
     end
   elseif item.kind == "fishing_pole" or item.kind == "lure" then
@@ -292,8 +318,9 @@ function V.section(item, section)
       for _, vendor in ipairs(ns.data.referenceVendors or {}) do
         for _, id in ipairs(vendor.items or {}) do
           if id == item.id then
-            add(vendor.name, vendor.side .. " | NPC " .. vendor.id, nil,
-              "mixed_source_reference")
+            add(vendor.name, (vendor.side or "Unknown") .. " | NPC " .. vendor.id,
+              "Interface\\Icons\\INV_Misc_Bag_10",
+              "mixed_source_reference", {vendorId = vendor.id})
             break
           end
         end
@@ -302,11 +329,18 @@ function V.section(item, section)
   elseif item.kind == "Cooking" or item.kind == "Fishing" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     if plan then
-      add("Cooking skill", plan.minimumSkill or "Unknown", nil, "verified_client")
-      add("Produces", plan.output, nil, "verified_client")
+      add("Cooking skill", plan.minimumSkill or "Unknown",
+        "Interface\\Icons\\INV_Misc_Note_01", "verified_client")
+      local recipe = ns.catalog.recipe(item.id)
+      add("Produces", plan.output,
+        recipe and recipe.outputItemId and ns.catalog.icon("item", recipe.outputItemId),
+        "verified_client", recipe and recipe.outputItemId
+          and {itemId = recipe.outputItemId} or nil)
+      add("Learn / obtain recipe", "Source not yet verified on Forever",
+        "Interface\\Icons\\INV_Misc_Book_09", "unknown")
       for _, ing in ipairs(plan.reagents or {}) do
         add(ing.name, (ing.need or 0) .. " needed | " .. (ing.missing or 0) .. " missing",
-          ns.catalog.icon("item", ing.itemId), "verified_client")
+          ns.catalog.icon("item", ing.itemId), "verified_client", {itemId = ing.itemId})
       end
     end
   elseif item.kind == "catch" then
