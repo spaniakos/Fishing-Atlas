@@ -33,6 +33,7 @@ def build(output_dir, tag):
     destination = output_dir / ("FishingAtlas-" + tag + ".zip")
     contents = [(p.relative_to(ROOT).as_posix(), p.read_bytes()) for p in files]
     contents.append(("FishingAtlas/LICENSE", (ROOT / "LICENSE").read_bytes()))
+    contents.append(("FishingAtlas/DATA-LICENSES.txt", (ADDON / "DATA-LICENSES.txt").read_bytes()))
     contents.sort(key=lambda item: item[0])
     with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for path, raw in contents:
