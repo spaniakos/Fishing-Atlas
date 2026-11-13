@@ -1,0 +1,34 @@
+name: Check Everloot published open-data layer
+on:
+  push:
+    branches: [feature/explorer-linked-records]
+    paths: [.github/workflows/check-everloot-open-data.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect published open data manifest only
+        run: |
+          python3 - <<'PY'
+          import json
+          from urllib.request import urlopen
+          from urllib.error import HTTPError, URLError
+          base="https://data.everloot.app"
+          try:
+              with urlopen(base+"/open-data/latest.json", timeout=20) as h:
+                  latest=json.load(h)
+              print("Open data pointer", latest)
+              path=latest.get("manifest","")
+              if not path.startswith("open-data/") or not path.endswith("/manifest.json"):
+                  raise ValueError("Invalid open data manifest path")
+              with urlopen(base+"/"+path,timeout=20) as h:
+                  manifest=json.load(h)
+              print("Open data manifest summary",
+                    {k:manifest.get(k) for k in ("generatedAt","dataAsOf","gameFiles","build","files") if k != "files"})
+              print("Open data files",
+                    [{k:file.get(k) for k in ("path","rows","layer","bytes")} for file in manifest.get("files",[])])
+          except (HTTPError, URLError) as e:
+              print("No accessible open-data export:", str(e))
+          PY
