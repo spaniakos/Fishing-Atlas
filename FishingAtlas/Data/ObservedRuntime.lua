@@ -23,6 +23,10 @@ function S.npcName(id)
   for _, ref in ipairs(ns.data.referenceVendors or {}) do
     if ref.id == id and type(ref.name) == "string" then return ref.name end
   end
+  local classic = ns.data.classicNpcNames or {}
+  if type(classic[id]) == "string" and classic[id] ~= "" then
+    return classic[id]
+  end
   local observed = ns.storage and ns.storage.db
     and ns.storage.db.recordedNpcNames or {}
   if type(observed[id]) == "string" and observed[id] ~= "" then return observed[id] end
