@@ -241,10 +241,34 @@ function V.recordedLocations(mapID)
   return results
 end
 
+function V.schoolMapMode()
+  return ns.storage and ns.storage.db and ns.storage.db.settings
+    and ns.storage.db.settings.schoolMapMode or "active"
+end
+
 function V.mapPoints(item)
   local results = {}
   if not item then return results end
   local mapID = item.kind == "zone" and item.id or nil
+  -- ACTIVE is session evidence only. Historic spawn references are never
+  -- presented as current server spawns, even with multiple historical reports.
+  if V.schoolMapMode() == "active"
+      and (item.kind == "zone" or item.kind == "school_type") then
+    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID,
+        item.kind == "school_type" and item.name or nil) or {}) do
+      results[#results + 1] = rec
+    end
+    if item.kind == "school_type" and not mapID and ns.liveSchools then
+      -- Scan history is session-scoped; show only the user's current zone.
+      local current = type(C_Map) == "table"
+        and type(C_Map.GetBestMapForUnit) == "function"
+        and C_Map.GetBestMapForUnit("player") or nil
+      for _, rec in ipairs(ns.liveSchools.inZone(current, item.name)) do
+        results[#results + 1] = rec
+      end
+    end
+    return results
+  end
   if item.kind == "item" then
     return V.itemMapPoints(item.id)
   elseif item.kind == "observed_npc" then
@@ -295,6 +319,13 @@ function V.mapPoints(item)
     for _, school in ipairs(source() and source().schoolLocations(item.name) or {}) do
       results[#results + 1] = school
     end
+    for _, guide in ipairs((ns.data.classicSchoolLocations or {})[item.name] or {}) do
+      if validPlace(guide) then
+        results[#results + 1] = {mapID = guide.mapID, x = guide.x, y = guide.y,
+          kind = "school_guide", label = item.name .. " (Classic probable)",
+          source = "cmangos_classic_reference", objectId = guide.objectId}
+      end
+    end
     for _, guide in ipairs((ns.data.referenceSchoolLocations or {})[item.name] or {}) do
       if validPlace(guide) then
         results[#results + 1] = {mapID = guide.mapID, x = guide.x, y = guide.y,
@@ -314,6 +345,15 @@ function V.mapPoints(item)
   for _, loc in ipairs(V.recordedLocations(mapID)) do results[#results + 1] = loc end
   for _, vendor in ipairs(V.zoneVendors(mapID)) do
     results[#results + 1] = vendor
+  end
+  for name, spots in pairs(ns.data.classicSchoolLocations or {}) do
+    for _, spot in ipairs(spots) do
+      if spot.mapID == mapID and validPlace(spot) then
+        results[#results + 1] = {mapID = mapID, x = spot.x, y = spot.y,
+          kind = "school_guide", label = name .. " (Classic probable)",
+          source = "cmangos_classic_reference", objectId = spot.objectId}
+      end
+    end
   end
   for name, spots in pairs(ns.data.referenceSchoolLocations or {}) do
     for _, spot in ipairs(spots) do
