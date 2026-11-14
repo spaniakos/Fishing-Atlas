@@ -66,7 +66,7 @@ function V.zoneVendors(mapID)
           local npc = source().vendor(npcId) or {}
           results[#results + 1] = {id = npcId, name = npc.name or ("NPC " .. npcId),
             x = spot.x, y = spot.y, mapID = mapID,
-            source = spot.installs >= 3 and "observed_confirmed"
+            source = (spot.installs or 0) >= 3 and "observed_confirmed"
               or "observed_provisional", kind = "vendor"}
         end
       end

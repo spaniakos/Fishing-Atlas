@@ -35,11 +35,31 @@ function M.collect(item, mapID, selected)
     local label = tostring(point.label or point.name or "Fishing Atlas position")
     local source = tostring(point.source or "unspecified_source")
     local kind = tostring(point.kind or "position")
-    local key = string.format("%s:%s:%.5f:%.5f:%s",
-      kind, label, point.x, point.y, source)
+    -- Saved spots and personal school candidates can arrive from both the
+    -- selected ViewModel and the generic overlay. Coalesce identical places.
+    local group = (kind == "position" or kind == "player_position")
+      and "personal_position" or nil
+    if kind == "school" or kind == "school_candidate" then
+      group = "personal_school"
+    elseif kind == "school_guide" or kind == "school_classic_reference" then
+      group = "reference_school"
+    end
+    group = group or kind
+    local keyLabel = label:gsub(" %(Classic probable%)$", "")
+      :gsub(" %(guide reference%)$", "")
+    local key = string.format("%s:%s:%.5f:%.5f",
+      group, keyLabel, point.x, point.y)
+    for _, existing in ipairs(output) do
+      if not highlight and existing.isSelected and existing.x == point.x
+          and existing.y == point.y then return end
+    end
     local existing = seen[key]
     if existing then
       if highlight then existing.isSelected = true end
+      if existing.source ~= source and not existing.source:find(source, 1, true)
+          and #existing.source < 120 then
+        existing.source = existing.source .. " / " .. source
+      end
       return
     end
     local rec = {mapID = mapID, x = point.x, y = point.y,
