@@ -7,6 +7,10 @@
 - Add guarded parent-map artwork underlays using client map geometry and UV clipping,
   with a preference toggle and safe fallback when coordinate mapping is unavailable.
 - Extend frame-click and native-pin regression tests. No fake school spawns or map art.
+- Correct Cooking SPELL learn-skill display: do not treat imported `minimumSkill=1`
+  as authoritative for high-tier spells. Show actual sourced learn ranks where
+  documented, skill-up thresholds separately, and trainer versus teaching-scroll
+  acquisition with provenance and map locations when known.
 - **Pending:** real-client map alignment, surrounding-context and marker acceptance.
 
 ## v0.99.6 — Evidence-linked explorer, source pipelines (draft)

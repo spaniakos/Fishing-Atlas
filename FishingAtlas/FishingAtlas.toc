@@ -41,6 +41,7 @@ Data/ClassicSchoolLocations.lua
 Data/ClassicNPCNames.lua
 Data/ClassicMapOverlays.lua
 Kitchen/RecipeKnowledge.lua
+Kitchen/RecipeLearning.lua
 UI/Browser.lua
 UI/ViewModel.lua
 UI/ZoneMap.lua

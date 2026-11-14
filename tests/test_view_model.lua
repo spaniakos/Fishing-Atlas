@@ -18,6 +18,13 @@ local ns = {
     schoolCandidates = {{mapID = 1440, x = 0.6, y = 0.4,
       label = "Fishing School", sightings = 2}},
     catches = {}, vendorObservations = {}}},
+  recipeLearning = {
+    info = function(id) return {requiredSkill = id == 18243 and 250 or nil,
+      requirementSource = "forever_client_public_reference",
+      profession = "Cooking", recipeItemId = id == 18243 and 13945} end,
+    sources = function() return {} end,
+    locations = function() return {} end
+  },
   kitchen = {catalogPlan = function()
     return {minimumSkill = 150, output = "Cooked fish",
       reagents = {{itemId = 13759, name = "Fish", need = 2, missing = 1}}}
@@ -76,4 +83,11 @@ assert(#V.itemQuests(pole.id) == 1)
 assert(V.section(pole, "Quest")[1].title == "The Family and the Fishing Pole")
 assert(V.section(pole, "Overview")[1].title == "Item Name")
 assert(V.section(fish, "Overview")[1].title == "Item Name")
+local cooked = {id = 18243, kind = "Cooking", name = "Nightfin Soup"}
+local cookingRows = V.section(cooked, "Overview")
+assert(cookingRows[1].title == "Recipe knowledge")
+assert(cookingRows[3].title == "Required Cooking skill"
+  and cookingRows[3].detail == "250",
+  "Cooking spell inspector must show the learn requirement, not a scroll or skill=1")
+assert(V.section(cooked, "Sources")[1].title == "Learning source unknown")
 print("image3 view model / gear quest acquisition tests passed")

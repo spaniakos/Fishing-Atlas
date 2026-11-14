@@ -15,7 +15,8 @@ function K.catalogPlan(spellId, crafts, itemCounts)
     profession = recipe.profession,
     name = ns.catalog.name("spell", recipe.spellId),
     output = recipe.outputItemId and ns.catalog.name("item", recipe.outputItemId) or "No item output",
-    minimumSkill = recipe.cookingSkill,
+    minimumSkill = ns.recipeLearning and ns.recipeLearning.info(spellId)
+      and ns.recipeLearning.info(spellId).requiredSkill or nil,
     crafts = crafts,
     reagents = {},
     verifiedInGame = false,
