@@ -2,6 +2,12 @@
 -- Exercise image-3 presentation model without a WoW runtime.
 local ns = {
   data = {
+    foreverObservedCooking = {vendors = {["crispy bat wing"] = {
+      {itemId = 12226, itemName = "Recipe: Crispy Bat Wing",
+        npcId = 2118, name = "Abigail Shiel",
+        mapID = 1420, x = 0.61, y = 0.5246,
+        sourceBuild = "1.60.1.70862"}
+    }}},
     recipeLearningReferences = {[2795] = {
       minimumSkill = 25, recipeItemId = 2889,
       source = "forever_client_public_reference",
@@ -145,3 +151,13 @@ assert(#V.tabs(teachingItem) == 6, "Teaching item quest should have a tab")
 assert(V.section(teachingItem, "Overview")[6].title == "Teaches Cooking")
 assert(V.section(teachingItem, "Vendors")[1].sourceMapFirst)
 assert(V.section(teachingItem, "Quest")[1].sourceMapFirst)
+
+local egItem = {kind = "item", id = 12226, name = "Recipe: Crispy Bat Wing"}
+local egVendors = V.itemVendors(12226)
+assert(#egVendors == 1 and egVendors[1].name == "Abigail Shiel"
+  and egVendors[1].mapID == 1420)
+local egMap = V.itemMapPoints(12226)
+assert(#egMap == 1 and egMap[1].x == 0.61 and egMap[1].y == 0.5246,
+  "Forever-observed scroll vendor location must reach the item map")
+assert(V.section(egItem, "Vendors")[1].sourceMapFirst,
+  "Clicking an observed scroll vendor should focus its map")

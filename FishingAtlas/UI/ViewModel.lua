@@ -135,6 +135,18 @@ function V.itemVendors(itemID)
       end
     end
   end
+  for _, sellers in pairs((ns.data.foreverObservedCooking or {}).vendors or {}) do
+    for _, seller in ipairs(sellers) do
+      if seller.itemId == itemID and not seen[seller.npcId] then
+        out[#out + 1] = {id = seller.npcId, name = seller.name,
+          kind = "vendor",
+          confidence = "forever_observed_vendor_" .. seller.sourceBuild,
+          sourceBuild = seller.sourceBuild, installs = seller.installs,
+          mapID = seller.mapID, x = seller.x, y = seller.y}
+        seen[seller.npcId] = true
+      end
+    end
+  end
   for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
     if ref.recipeItemId == itemID then
       for _, lead in ipairs(ref.sources or {}) do
@@ -239,6 +251,9 @@ function V.itemMapPoints(itemID)
     end
   end
   for _, vendor in ipairs(V.itemVendors(itemID)) do
+    if vendor.mapID then
+      add(vendor, vendor.name, "vendor", vendor.confidence)
+    end
     if source() then
       for _, loc in ipairs(source().vendorLocations(vendor.id)) do
         add(loc, vendor.name .. (loc.near and " (nearby)" or ""),
@@ -462,7 +477,7 @@ function V.summary(item)
   elseif item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe" then
     summary.subtitle = "RECIPE  |  Spell " .. item.id
-    summary.note = "Client-defined ingredient relationships; acquisition unverified."
+    summary.note = "Client ingredients; teaching method and rank are sourced separately."
   end
   return summary
 end
@@ -894,7 +909,7 @@ function V.section(item, section)
         " | not the recipe scroll", "Interface\\Icons\\INV_Misc_Food_15",
         "client_spell_id")
       add("Required " .. tostring(learning and learning.profession or "Cooking") .. " skill",
-        skill and tostring(skill) or "Not verified (not skill 1)",
+        skill and tostring(skill) or "Requirement not recorded in current sources",
         "Interface\\Icons\\INV_Misc_Book_09", skillSource)
       if learning and learning.yellow then
         add("Turns yellow", tostring(learning.yellow) ..
@@ -965,16 +980,26 @@ function V.section(item, section)
           local place = entry.x and entry.y and string.format(
             " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
             entry.y * 100) or " | NPC location not mapped"
-          add(entry.label, "Observed teaching trainer" .. place,
+          local evidence = entry.sourceBuild and
+            ("Forever trainer menu, build " .. entry.sourceBuild ..
+              " | Cooking " .. tostring(entry.skillRank or "?"))
+            or "Trainer reference; teaching availability unverified"
+          add(entry.label, evidence .. place,
             "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
             {vendorId = entry.npcId, mapID = entry.mapID,
-              x = entry.x, y = entry.y})
+              x = entry.x, y = entry.y,
+              source = entry.source,
+              sourceMapFirst = entry.x ~= nil and entry.y ~= nil})
         elseif entry.kind == "vendor" then
           local place = entry.x and entry.y and string.format(
             " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
             entry.y * 100) or " | location not mapped"
-          add(entry.label, "Sells teaching item " .. entry.itemId .. place ..
-            " | stock unverified when reference-only",
+          local evidence = entry.sourceBuild and
+            ("Observed selling item " .. entry.itemId ..
+              " on Forever build " .. entry.sourceBuild)
+            or ("Reference for item " .. entry.itemId ..
+              "; current stock not confirmed")
+          add(entry.label, evidence .. place,
             "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
             {vendorId = entry.npcId, mapID = entry.mapID,
               x = entry.x, y = entry.y, source = entry.source,

@@ -1,6 +1,15 @@
 # Fishing Atlas changelog
 
 ## v0.99.7 — Map integrity and geographic context (client acceptance pending)
+- Import CC BY 4.0 EG Link Cooking trainer menus and recipe-item vendor records
+  from pinned Forever 1.60.1 client builds (up to 70938). Include 72 observed
+  trainer services and 94 vendor observations, keeping source builds and
+  coordinates. Index matches only when the dish name is unambiguous.
+- Fix Crispy Bat Wing #15935: teaching scroll #12226, Cooking 1, and
+  observed vendor Abigail Shiel; use actual Forever trainer skills for
+  trainer-taught recipes. Optionally read an available native item tooltip
+  or version-aware profession library for additional sourced rank evidence.
+
 - Restore selected vendor/NPC/item, saved-position and clicked-detail markers in both school modes.
 - Centralize in-panel and native World Map marker evidence, selection highlighting,
   tooltip attribution and content-aware cache invalidation.

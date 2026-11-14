@@ -47,6 +47,7 @@ jobs:
           lua5.1 tests/test_map_markers.lua
           lua5.1 tests/test_catalog_planner.lua
           lua5.1 tests/test_recipe_learning.lua
+          lua5.1 tests/test_eg_cooking_data.lua
           lua5.1 tests/test_browser.lua
           lua5.1 tests/test_fishing_scope.lua
           lua5.1 tests/test_recipe_knowledge.lua

@@ -41,6 +41,13 @@ function C.name(kind, id)
         return ref.recipeItemName, false
       end
     end
+    for _, sellers in pairs((ns.data.foreverObservedCooking or {}).vendors or {}) do
+      for _, seller in ipairs(sellers) do
+        if seller.itemId == id and type(seller.itemName) == "string" then
+          return seller.itemName, false
+        end
+      end
+    end
   end
   return (kind == "spell" and "Unresolved spell #" or "Unresolved item #") .. id, false
 end

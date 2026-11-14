@@ -19,6 +19,13 @@ local function push(out, value, term)
   if matches(value, term) then out[#out + 1] = value end
 end
 
+local function recipeKey(text)
+  if type(text) ~= "string" or text:find("^Unresolved ")
+      or text:find("^Spell #") or text:find("^Item #") then return nil end
+  return text:lower():gsub("^recipe:%s*", ""):gsub("[^%w]+", " ")
+    :gsub("^%s+", ""):gsub("%s+$", "")
+end
+
 function B.list(category, term)
   term = type(term) == "string" and term:lower() or ""
   local out, db = {}, ns.storage.db or {}
@@ -59,6 +66,33 @@ function B.list(category, term)
         seen[id] = true
         push(out, row(id, ref.recipeItemName or ns.catalog.name("item", id),
           "item", ref.source or "forever_public_reference"), term)
+      end
+    end
+    -- Only index EG Link scrolls corresponding to catalog Cooking spells,
+    -- not unrelated Alchemy/Engineering recipe items sold by the same NPCs.
+    local sales = (ns.data.foreverObservedCooking or {}).vendors or {}
+    local function addCookingScroll(spellID, outputID)
+      local dish = recipeKey(ns.catalog.name("spell", spellID))
+        or (outputID and recipeKey(ns.catalog.name("item", outputID)))
+      for _, seller in ipairs((dish and sales[dish]) or {}) do
+        local id = seller.itemId
+        if type(id) == "number" and id > 0 and not seen[id] then
+          seen[id] = true
+          push(out, row(id, seller.itemName, "item",
+            "forever_observed_vendor_" .. seller.sourceBuild), term)
+        end
+      end
+    end
+    local indexed = {}
+    for _, recipe in ipairs(ns.catalog.recipeList() or {}) do
+      if recipe.profession == "Cooking" then
+        indexed[recipe.spellId] = true
+        addCookingScroll(recipe.spellId, recipe.outputItemId)
+      end
+    end
+    for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+      if recipe.profession == "Cooking" and not indexed[id] then
+        addCookingScroll(id, recipe.outputItemId)
       end
     end
   elseif category == "fish" then

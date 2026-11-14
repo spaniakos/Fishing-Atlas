@@ -1,4 +1,4 @@
-Data licensing and credits for Fishing Atlas 0.99.6
+Data licensing and credits for Fishing Atlas 0.99.7
 
 Addon code: GPL-3.0-or-later. See FishingAtlas/LICENSE.
 Everloot observed-data pack: CC BY-SA 4.0, populated 2026-11-13.
@@ -22,3 +22,19 @@ Historical Classic records are never represented as Forever-confirmed.
 
 The Fishing Atlas name and artwork are independent of Everloot.
 The CC BY-SA observed pack is distributed as a separately licensed data file.
+
+Efficient Games (EG Link) observed vendor/trainer snapshots: CC BY 4.0.
+Data from Efficient Games (https://efficient.games), licensed under CC BY 4.0.
+License: https://creativecommons.org/licenses/by/4.0/
+Original data: https://github.com/JIVESCORP/eg-link-output-wowf
+Pinned commit: ea970da071079b32e56f349e09648ff0e314b351.
+Copied, selected and indexed for Cooking source discovery by Fishing Atlas,
+retaining actual client build, observed NPC, map coordinates and observation
+count where available. Source builds: 1.60.1.70205, 70338, 70450, 70840,
+70862, 70888 and 70938. The bundle contains 49 vendor recipe-name groups
+(94 vendor observations) and 72 Cooking trainer service observations.
+Some vendor recipe-name groups are unrelated to Cooking and are not surfaced
+as Cooking abilities. Historic observations must NOT be represented as
+current-player confirmed inventory or trainer offerings.
+Blizzard game names, NPCs and spells remain Blizzard content.
+
