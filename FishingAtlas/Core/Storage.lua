@@ -25,6 +25,9 @@ function Store.init()
      or db.settings.radiusPercent > 5 then db.settings.radiusPercent = 1 end
   if type(db.settings.showMinimap) ~= "boolean" then db.settings.showMinimap = true end
   if type(db.settings.mapPins) ~= "boolean" then db.settings.mapPins = true end
+  if db.settings.schoolMapMode ~= "active" and db.settings.schoolMapMode ~= "probable" then
+    db.settings.schoolMapMode = "active"
+  end
   if type(db.settings.minimapAngle) ~= "number" or db.settings.minimapAngle ~= db.settings.minimapAngle then
     db.settings.minimapAngle = 210
   end
