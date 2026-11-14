@@ -107,7 +107,11 @@ assert(cookingRows[3].title == "Required Cooking skill"
 assert(V.section(cooked, "Sources")[1].title == "Learning source unknown")
 local ribs = {id = 2795, kind = "Cooking", name = "Beer Basted Boar Ribs"}
 local ribsOverview = V.section(ribs, "Overview")
-assert(ribsOverview[3].detail == "25" and ribsOverview[7].detail:find(
+local learnRow
+for _, row in ipairs(ribsOverview) do
+  if row.title == "How to learn" then learnRow = row end
+end
+assert(ribsOverview[3].detail == "25" and learnRow and learnRow.detail:find(
   "Recipe: Beer Basted Boar Ribs", 1, true),
   "Cooking ability overview must show verified skill and teaching recipe")
 local refs = V.section(ribs, "Sources")
