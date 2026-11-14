@@ -44,7 +44,7 @@ local overlay = ns.zoneMap.exploredForMap(1439, m, ox, oy, w, h)
 assert(#overlay == 2, "Explored terrain must overlay complete base map tiles")
 assert(overlay[1].texture == 201 and overlay[2].texture == 202)
 assert(overlay[1].y == 128 and overlay[2].x == 128)
-assert(ns.zoneMap.describe(1439):find("2 exploration tiles", 1, true))
+assert(ns.zoneMap.describe(1439):find("2 overlay tiles", 1, true))
 local clipped = ns.zoneMap.explorationLayout({
   {textureWidth = 256, textureHeight = 256,
     offsetX = -64, offsetY = -64, fileDataIDs = {201}}
