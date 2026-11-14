@@ -130,6 +130,28 @@ function B.list(category, term)
   return out
 end
 
+-- Search across the fishing atlas. Keep category metadata for cross-tab routing.
+function B.searchAll(term, maxResults)
+  term = type(term) == "string" and term:lower() or ""
+  if #term < 2 then return {} end
+  local output, seen = {}, {}
+  local categories = {"fish", "recipes", "items", "schools", "zones",
+    "vendors", "gear", "journal"}
+  local maxRows = math.max(1, math.min(tonumber(maxResults) or 150, 300))
+  for _, category in ipairs(categories) do
+    for _, entry in ipairs(B.list(category, term)) do
+      local key = tostring(entry.kind) .. ":" .. tostring(entry.id)
+      if not seen[key] then
+        seen[key] = true
+        entry.atlasCategory = category
+        output[#output + 1] = entry
+        if #output >= maxRows then return output end
+      end
+    end
+  end
+  return output
+end
+
 function B.schoolSightings(label)
   local found = {}
   for _, rec in ipairs((ns.storage.db and ns.storage.db.schoolCandidates) or {}) do
@@ -286,12 +308,8 @@ function B.icon(item)
   elseif item.kind == "catch" and item.extra and item.extra.id then
     return ns.catalog.icon("item", item.extra.id)
   elseif item.kind == "school_type" then
-    for _, school in ipairs(ns.data.schoolTypes or {}) do
-      if school.name == item.name then
-        if school.iconItemId then return ns.catalog.icon("item", school.iconItemId) end
-        break
-      end
-    end
+    -- A stable client icon, including schools without a corresponding item ID.
+    -- An item icon ID is not guaranteed to be cached or even loadable.
     return "Interface\\Icons\\INV_Misc_Fish_02"
   elseif item.kind == "vendor_reference" or item.kind == "merchant_observation"
       or item.kind == "observed_npc" then
