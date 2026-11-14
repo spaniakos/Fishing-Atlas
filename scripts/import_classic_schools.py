@@ -51,10 +51,15 @@ def project(zones, continent, world_x, world_y):
         x = (world_y - bounds["left"]) / dx
         y = (world_x - bounds["top"]) / dy
         if 0 <= x <= 1 and 0 <= y <= 1:
-            candidates.append((abs(dx * dy), zone["mapId"], round(x, 6), round(y, 6)))
+            # Extracted map rectangles can overlap adjacent zones. Prefer
+            # the zone where the point is closest to its map center, rather
+            # than the smallest rectangle (which misplaces Barrens pools).
+            center_distance = (x - 0.5) ** 2 + (y - 0.5) ** 2
+            candidates.append((center_distance, abs(dx * dy),
+                               zone["mapId"], round(x, 6), round(y, 6)))
     if not candidates:
         return None
-    _, map_id, x, y = min(candidates)
+    _, _, map_id, x, y = min(candidates)
     return map_id, x, y
 
 
