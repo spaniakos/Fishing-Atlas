@@ -8,6 +8,10 @@ FishingAtlasDB = nil
 assert(ns.storage.init())
 assert(ns.storage.add(1411, 0.1, 0.2, "River"))
 assert(ns.schools.record(1411, 0.3, 0.4, "School"))
+-- New default suppresses non-live historical/player pins.
+assert(ns.storage.db.settings.schoolMapMode == "active")
+assert(#ns.mapPins.points(1411) == 0)
+ns.storage.db.settings.schoolMapMode = "probable"
 local points = ns.mapPins.points(1411)
 assert(#points == 2)
 assert(points[1].kind == "player_position" and not points[1].verifiedSpawn)
