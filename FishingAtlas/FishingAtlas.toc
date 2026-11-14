@@ -2,7 +2,7 @@
 ## Title: Fishing Atlas
 ## IconTexture: Interface\AddOns\FishingAtlas\Art\atlas-emblem
 ## Notes: Fishing discovery journal and guide for WoW Forever
-## Version: 0.99.7
+## Version: 0.99.8
 ## Author: Georgios Spanos and contributors
 ## SavedVariables: FishingAtlasDB
 ## OptionalDeps: TomTom
@@ -14,6 +14,7 @@ Data/Recipes.lua
 Data/RecipeLearningReferences.lua
 Data/ForeverObservedCooking.lua
 Data/Catalog.lua
+Data/RecipeIndex.lua
 Data/CatalogRuntime.lua
 Data/EverlootObserved.lua
 Data/EverlootGameFiles.lua
@@ -43,8 +44,10 @@ Data/ClassicSchoolLocations.lua
 Data/ClassicNPCNames.lua
 Data/ClassicMapOverlays.lua
 Kitchen/RecipeKnowledge.lua
+Kitchen/ProfessionScanner.lua
 Kitchen/RecipeDiscovery.lua
 Kitchen/RecipeLearning.lua
+Kitchen/RecipeRepository.lua
 UI/Browser.lua
 UI/ViewModel.lua
 UI/ZoneMap.lua

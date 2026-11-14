@@ -176,6 +176,9 @@ function commands.run(raw)
         ") to personal atlas; this does NOT mark it learned")
       if ns.ui then ns.ui.refresh(true) end
     else say(err) end
+  elseif command == "recipedebug" then
+    say(ns.professionScanner and ns.professionScanner.debug
+      and ns.professionScanner.debug() or "Cooking scanner not available")
   elseif command == "recipescan" then
     local count, message = ns.recipeDiscovery.scan()
     say(count and (message .. ": " .. count .. " new entries") or message)
@@ -234,7 +237,7 @@ function commands.run(raw)
     say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, lootdebug, guide [fish], route [spot]")
-    say("Recipes: recipeadd <spellID> [name], recipescan (open Cooking first)")
+    say("Recipes: recipeadd <spellID> [name], recipescan, recipedebug")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>, mapdebug [mapID]")
     say("Feedback: /fa issue opens a copyable GitHub Issues URL")
   end

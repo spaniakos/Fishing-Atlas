@@ -235,8 +235,15 @@ function K.observeLearned(spellId)
 end
 
 function K.refresh()
-  local added = K.scanCatalog() + K.scanModern() + K.scanOpenProfession()
-  if ns.recipeDiscovery then ns.recipeDiscovery.scan() end
+  local added = 0
+  if ns.professionScanner and ns.recipeDiscovery then
+    -- Shared scanner provides only positive, Cooking-attributed observations.
+    -- Do not overwrite known state from filtered/stale unrelated professions.
+    local discovered = ns.recipeDiscovery.scan()
+    if type(discovered) == "number" then added = discovered end
+  else
+    added = K.scanCatalog() + K.scanModern() + K.scanOpenProfession()
+  end
   if ns.ui and ns.ui.refresh then ns.ui.refresh(false) end
   return added
 end
