@@ -4,7 +4,7 @@ local _, ns = ...
 ns.mapPins = {}
 local M = ns.mapPins
 local MAX_PINS = 120
-local pins, lastMap, lastCount = {}, nil, -1
+local pins, lastMap, lastCount, lastMode = {}, nil, -1, nil
 local elapsed = 0
 
 function M.points(mapID)
@@ -77,8 +77,9 @@ function M.refresh()
   if not w or not h or w <= 0 or h <= 0 then hidePins(); return false end
   local candidates = M.points(mapID)
   local count = math.min(MAX_PINS, #candidates)
-  if mapID == lastMap and count == lastCount then return true end
-  lastMap, lastCount = mapID, count
+  local mode = settings and settings.schoolMapMode or "active"
+  if mapID == lastMap and count == lastCount and mode == lastMode then return true end
+  lastMap, lastCount, lastMode = mapID, count, mode
   hidePins()
   for i = 1, count do
     local loc = candidates[i]
@@ -125,7 +126,7 @@ function M.start()
     elapsed = elapsed + (delta or 0)
     if elapsed >= 2 then
       elapsed = 0
-      lastMap, lastCount = nil, -1
+      lastMap, lastCount, lastMode = nil, -1, nil
       M.refresh()
     end
   end)
