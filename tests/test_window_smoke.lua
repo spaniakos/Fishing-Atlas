@@ -167,9 +167,18 @@ assert(ns.ui.selected().id == 6256,
 WorldMapFrame = element()
 WorldMapFrame:Hide()
 WorldMapFrame.SetMapID = function(self, id) self.mapID = id end
+WorldMapFrame.GetMapID = function(self) return self.mapID end
 assert(ns.ui.openWorldMap(nil), "World Map must open with no mapped item zone")
 assert(ns.ui.openWorldMap(1413), "World Map should open with a selected map")
 assert(WorldMapFrame.mapID == 1413)
+local properSetMapID = WorldMapFrame.SetMapID
+WorldMapFrame.SetMapID = function(self) self.mapID = 999 end
+assert(not ns.ui.openWorldMap(1413),
+  "A visible World Map on the wrong zone must not count as success")
+WorldMapFrame.SetMapID = function() error("Cannot select map") end
+assert(not ns.ui.openWorldMap(1413),
+  "A World Map SetMapID exception must not count as selection success")
+WorldMapFrame.SetMapID = properSetMapID
 assert(ns.ui.selectCategory("items", nil, "Items") == nil)
 assert(ns.ui.category == "items" and ns.ui.topPage == "Items")
 assert(ns.ui.refresh(true) == nil)

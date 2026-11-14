@@ -114,13 +114,10 @@ local function setActive(btn, yes)
 end
 
 local function inGameMap(mapID)
-  -- Opening the world map must work even for records with no sourced zone.
-  -- In that case show the player's current map rather than claiming there is
-  -- a verified location for an otherwise unmapped fish/recipe.
+  -- Open the native map, but do not report success if the requested zone
+  -- could not actually be selected. OpenWorldMap may ignore its argument.
   if type(OpenWorldMap) == "function" then
-    local ok = pcall(OpenWorldMap, mapID)
-    if ok and WorldMapFrame and WorldMapFrame.IsShown
-        and WorldMapFrame:IsShown() then return true end
+    pcall(OpenWorldMap, mapID)
   end
   local map = WorldMapFrame
   if not map and type(C_AddOns) == "table" and type(C_AddOns.LoadAddOn) == "function" then
@@ -131,23 +128,39 @@ local function inGameMap(mapID)
     pcall(UIParentLoadAddOn, "Blizzard_WorldMap")
     map = WorldMapFrame
   end
-  if map and type(map.Show) == "function" then
+  if map and type(map.IsShown) == "function" and not map:IsShown()
+      and type(map.Show) == "function" then
     pcall(map.Show, map)
-  elseif type(ToggleWorldMap) == "function" then
+  elseif not map and type(ToggleWorldMap) == "function" then
     pcall(ToggleWorldMap)
     map = WorldMapFrame
   end
-  if map and type(map.IsShown) == "function" and map:IsShown() then
-    if type(mapID) == "number" and type(map.SetMapID) == "function" then
+  if not (map and type(map.IsShown) == "function" and map:IsShown()) then
+    return false
+  end
+  if type(mapID) == "number" then
+    if type(map.SetMapID) == "function" then
       local ok, why = pcall(map.SetMapID, map, mapID)
-      if not ok and ns.commands then
-        ns.commands.say("Map opened, but zone " .. mapID ..
-          " could not be selected: " .. tostring(why))
+      if not ok then
+        if ns.commands then
+          ns.commands.say("World Map opened, but zone " .. mapID
+            .. " could not be selected: " .. tostring(why))
+        end
+        return false
       end
     end
-    return true
+    if type(map.GetMapID) == "function" then
+      local ok, actual = pcall(map.GetMapID, map)
+      if ok and type(actual) == "number" and actual ~= mapID then
+        if ns.commands then
+          ns.commands.say("World Map stayed on " .. actual
+            .. " instead of requested zone " .. mapID)
+        end
+        return false
+      end
+    end
   end
-  return false
+  return true
 end
 UI.openWorldMap = inGameMap
 

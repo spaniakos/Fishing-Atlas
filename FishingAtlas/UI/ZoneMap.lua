@@ -7,7 +7,15 @@ local M = ns.zoneMap
 local pool = setmetatable({}, {__mode = "k"})
 local requested = {}
 
-function M.layout(layer, textures, width, height)
+-- WorldMapOverlayTile files use power-of-two backing textures for edge tiles.
+-- Keep the base-map behavior unchanged: its client texture grid is different.
+local function backingSize(pixels)
+  local result = 16
+  while result < pixels do result = result * 2 end
+  return result
+end
+
+function M.layout(layer, textures, width, height, powerOfTwoEdges)
   if type(layer) ~= "table" or type(textures) ~= "table" then return {} end
   local totalW, totalH = tonumber(layer.layerWidth), tonumber(layer.layerHeight)
   local tileW, tileH = tonumber(layer.tileWidth), tonumber(layer.tileHeight)
@@ -21,12 +29,14 @@ function M.layout(layer, textures, width, height)
       local index = y * cols + x + 1
       local texture = textures[index]
       if texture and texture ~= 0 and texture ~= "" then
+        local actualW = math.min(tileW, totalW - x * tileW)
+        local actualH = math.min(tileH, totalH - y * tileH)
+        local imageW = powerOfTwoEdges and backingSize(actualW) or tileW
+        local imageH = powerOfTwoEdges and backingSize(actualH) or tileH
         out[#out + 1] = {texture = texture,
           x = x * tileW / totalW * width, y = y * tileH / totalH * height,
-          w = math.min(tileW, totalW - x * tileW) / totalW * width,
-          h = math.min(tileH, totalH - y * tileH) / totalH * height,
-          u = math.min(1, (totalW - x * tileW) / tileW),
-          v = math.min(1, (totalH - y * tileH) / tileH)}
+          w = actualW / totalW * width, h = actualH / totalH * height,
+          u = actualW / imageW, v = actualH / imageH}
       end
     end
   end
@@ -69,8 +79,13 @@ function M.artForMap(mapID, w, h)
           if validTile(textures[i]) then present = present + 1 end
         end
         local score = present / math.max(1, expected)
-        if not best or score > bestInfo.coverage
-            or (score == bestInfo.coverage and aw * ah > bestInfo.area) then
+        -- Prefer the real base layer on equal coverage. Historical exploration
+        -- overlays are keyed to layer 1, not a larger alternate art layer.
+        local tieBetter = bestInfo and score == bestInfo.coverage
+          and ((index == 1 and bestInfo.layer ~= 1)
+            or (index ~= 1 and bestInfo.layer ~= 1
+              and aw * ah > bestInfo.area))
+        if not best or score > bestInfo.coverage or tieBetter then
           best = {layer = layer, textures = textures, width = aw, height = ah}
           bestInfo = {layer = index, tiles = present, expected = expected,
             coverage = score, area = aw * ah, width = aw, height = ah,
@@ -107,7 +122,7 @@ function M.explorationLayout(records, totalW, totalH, ox, oy, viewW, viewH)
           and type(record.fileDataIDs) == "table" then
         local pieces = M.layout({layerWidth = ow, layerHeight = oh,
           tileWidth = 256, tileHeight = 256},
-          record.fileDataIDs, ow * scaleX, oh * scaleY)
+          record.fileDataIDs, ow * scaleX, oh * scaleY, true)
         for _, tile in ipairs(pieces) do
           local x, y = dx * scaleX + tile.x, dy * scaleY + tile.y
           local left, top = math.max(0, x), math.max(0, y)
@@ -120,7 +135,8 @@ function M.explorationLayout(records, totalW, totalH, ox, oy, viewW, viewH)
             local v1 = (bottom - y) / tile.h * tile.v
             out[#out + 1] = {texture = tile.texture,
               x = ox + left, y = oy + top, w = right - left,
-              h = bottom - top, u0 = u0, v0 = v0, u1 = u1, v1 = v1}
+              h = bottom - top, u0 = u0, v0 = v0, u1 = u1, v1 = v1,
+              topLayer = record.isDrawOnTopLayer == true}
           end
         end
       end
@@ -153,11 +169,13 @@ function M.fullOverlayRecords(mapID, meta)
   for index = 3, #refs do
     local record = refs[index]
     if type(record) == "table" and #record >= 5 then
-      local ids = {}
+      local ids, valid = {}, 0
       for i = 5, #record do
-        if validTile(record[i]) then ids[#ids + 1] = record[i] end
+        -- A missing file must NOT shift later files to another grid cell.
+        ids[i - 4] = validTile(record[i]) and record[i] or 0
+        if validTile(record[i]) then valid = valid + 1 end
       end
-      if #ids > 0 then
+      if valid > 0 then
         records[#records + 1] = {
           textureWidth = record[1], textureHeight = record[2],
           offsetX = record[3], offsetY = record[4], fileDataIDs = ids,
@@ -194,7 +212,10 @@ end
 local function previewLoadStatus(mapID)
   local chosen, width
   for parent, state in pairs(pool) do
-    if state.renderedMap == mapID then
+    -- IsShown ignores hidden ancestors; the Explorer may have switched zones.
+    local visible = parent.IsVisible and parent:IsVisible()
+      or (not parent.IsVisible and parent.IsShown and parent:IsShown())
+    if visible and state.renderedMap == mapID then
       local currentWidth = parent.GetWidth and parent:GetWidth() or 0
       if not chosen or currentWidth < width then
         chosen, width = state, currentWidth
@@ -255,6 +276,7 @@ function M.describe(mapID)
   local preview = previewLoadStatus(mapID)
   if not preview then
     return summary .. " | no matching visible preview for load test"
+      .. " (select this map in the Fishing Atlas zone panel, then rerun)"
   end
   if preview.unknown == preview.assigned then
     return summary .. " | texture-load API unavailable in this client"
@@ -342,6 +364,8 @@ function M.render(parent, mapID, locations)
   for _, tile in ipairs(s.tiles) do tile:Hide() end
   for _, tile in ipairs(s.explored) do tile:Hide() end
   for _, marker in ipairs(s.pins) do marker:Hide() end
+  -- A cleared selection must not leave a stale preview eligible for diagnosis.
+  s.renderedMap, s.tileIDs, s.overlayIDs = nil, {}, {}
   if type(mapID) ~= "number" then
     s.fallback:Show()
     s.caption:SetText("Choose a zone to view its map")
@@ -351,7 +375,7 @@ function M.render(parent, mapID, locations)
   if not width or width <= 0 or not height or height <= 0 then return false end
   local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
-  s.renderedMap, s.tileIDs, s.overlayIDs = mapID, {}, {}
+  s.renderedMap = mapID
   -- Retain the safe local fallback when this client lacks world-map tiles.
   s.fallback:Show()
   -- Some map assets arrive after the first request. Retry once, without an
@@ -404,6 +428,9 @@ function M.render(parent, mapID, locations)
       s.explored[index] = texture
     end
     s.overlayIDs[index] = part.texture
+    if texture.SetDrawLayer then
+      texture:SetDrawLayer("ARTWORK", part.topLayer and 2 or 1)
+    end
     texture:SetTexture(part.texture)
     texture:SetTexCoord(part.u0, part.u1, part.v0, part.v1)
     texture:ClearAllPoints()
