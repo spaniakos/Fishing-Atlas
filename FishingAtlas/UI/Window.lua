@@ -107,20 +107,38 @@ local function setActive(btn, yes)
 end
 
 local function inGameMap(mapID)
-  if type(mapID) ~= "number" then return false end
+  -- Opening the world map must work even for records with no sourced zone.
+  -- In that case show the player's current map rather than claiming there is
+  -- a verified location for an otherwise unmapped fish/recipe.
   if type(OpenWorldMap) == "function" then
     local ok = pcall(OpenWorldMap, mapID)
-    if ok then return true end
+    if ok and WorldMapFrame and WorldMapFrame.IsShown
+        and WorldMapFrame:IsShown() then return true end
   end
-  if not WorldMapFrame then
-    if type(ToggleWorldMap) == "function" then pcall(ToggleWorldMap) end
-  end
-  if not WorldMapFrame then return false end
   local map = WorldMapFrame
-  if type(map.Show) == "function" then map:Show() end
-  if type(map.SetMapID) == "function" then
-    local ok = pcall(map.SetMapID, map, mapID)
-    return ok
+  if not map and type(C_AddOns) == "table" and type(C_AddOns.LoadAddOn) == "function" then
+    pcall(C_AddOns.LoadAddOn, "Blizzard_WorldMap")
+    map = WorldMapFrame
+  end
+  if not map and type(UIParentLoadAddOn) == "function" then
+    pcall(UIParentLoadAddOn, "Blizzard_WorldMap")
+    map = WorldMapFrame
+  end
+  if map and type(map.Show) == "function" then
+    pcall(map.Show, map)
+  elseif type(ToggleWorldMap) == "function" then
+    pcall(ToggleWorldMap)
+    map = WorldMapFrame
+  end
+  if map and type(map.IsShown) == "function" and map:IsShown() then
+    if type(mapID) == "number" and type(map.SetMapID) == "function" then
+      local ok, why = pcall(map.SetMapID, map, mapID)
+      if not ok and ns.commands then
+        ns.commands.say("Map opened, but zone " .. mapID ..
+          " could not be selected: " .. tostring(why))
+      end
+    end
+    return true
   end
   return false
 end
@@ -168,7 +186,7 @@ end
 local function zoneIcon(item)
   if item.kind == "zone" then return "Interface\\Icons\\INV_Misc_Map_01" end
   if item.kind == "vendor_reference" then return "Interface\\Icons\\INV_Misc_Bag_10" end
-  if item.kind == "school_type" then return "Interface\\Icons\\Trade_Fishing" end
+  if item.kind == "school_type" then return ns.browser.icon(item) end
   return ns.browser.icon(item)
 end
 
@@ -310,7 +328,10 @@ end
 
 local function rowClick(record)
   if not record then return end
-  if record.vendorId then
+  if record.toggleRecipe and ns.recipeKnowledge then
+    ns.recipeKnowledge.cycle(record.recipeId)
+    UI.refresh(false)
+  elseif record.vendorId then
     UI.selectCategory("vendors", record.vendorId)
   elseif record.recipeId then
     UI.selectCategory("recipes", record.recipeId)
@@ -320,7 +341,7 @@ local function rowClick(record)
       x = record.x, y = record.y, label = record.title or "Fishing Atlas"} or nil
     renderMap()
     local opened = inGameMap(record.mapID)
-    if not opened then ns.commands.say("Map unavailable for this location") end
+    if not opened then ns.commands.say("World map could not be opened by this client") end
     if record.x and record.y and type(TomTom) == "table"
         and type(TomTom.AddWaypoint) == "function" then
       pcall(TomTom.AddWaypoint, TomTom, record.mapID, record.x, record.y,
