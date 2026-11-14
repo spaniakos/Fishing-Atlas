@@ -5,6 +5,7 @@ local _, ns = ...
 ns.zoneMap = {}
 local M = ns.zoneMap
 local pool = setmetatable({}, {__mode = "k"})
+local requested = {}
 
 function M.layout(layer, textures, width, height)
   if type(layer) ~= "table" or type(textures) ~= "table" then return {} end
@@ -43,6 +44,12 @@ function M.artForMap(mapID, w, h)
   if type(C_Map) ~= "table" or type(C_Map.GetMapArtLayers) ~= "function"
       or type(C_Map.GetMapArtLayerTextures) ~= "function" then
     return {}, 0, 0, w, h, {reason = "Map art APIs missing", tiles = 0}
+  end
+  if not requested[mapID] then
+    requested[mapID] = true
+    if type(C_Map.RequestPreloadMap) == "function" then
+      pcall(C_Map.RequestPreloadMap, mapID)
+    end
   end
   local ok, layers = pcall(C_Map.GetMapArtLayers, mapID)
   if not ok or type(layers) ~= "table" then
@@ -161,9 +168,22 @@ function M.render(parent, mapID, locations)
   if not width or width <= 0 or not height or height <= 0 then return false end
   local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
-  s.fallback:Show() -- Fill missing tiles instead of leaving hard black rectangles
+  -- Retain the safe local fallback when this client lacks world-map tiles.
+  s.fallback:Show()
+  -- Some map assets arrive after the first request. Retry once, without an
+  -- OnUpdate loop that would hammer C_Map during ordinary gameplay.
+  if s.requestedMap ~= mapID then
+    s.requestedMap = mapID
+    if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
+      C_Timer.After(1, function()
+        if s.requestedMap == mapID and parent:IsShown() then
+          M.render(parent, mapID, locations)
+        end
+      end)
+    end
+  end
   for index, tile in ipairs(tiles) do
-    if index > 36 then break end
+    if index > 256 then break end
     local texture = s.tiles[index]
     if not texture then
       texture = parent:CreateTexture(nil, "BACKGROUND")
@@ -206,7 +226,7 @@ function M.render(parent, mapID, locations)
     end
   end
   if #tiles == 0 then
-    s.caption:SetText("Map artwork missing | open the full World Map")
+    s.caption:SetText("Missing client map tiles | use World Map")
   elseif info and info.tiles < info.expected then
     s.caption:SetText("Map " .. mapID .. " | partial client art (" ..
       info.tiles .. "/" .. info.expected .. " tiles)")
