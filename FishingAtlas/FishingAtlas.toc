@@ -14,6 +14,7 @@ Data/Recipes.lua
 Data/RecipeLearningReferences.lua
 Data/ForeverObservedCooking.lua
 Data/Catalog.lua
+Data/RecipeIndex.lua
 Data/CatalogRuntime.lua
 Data/EverlootObserved.lua
 Data/EverlootGameFiles.lua
@@ -45,6 +46,7 @@ Data/ClassicMapOverlays.lua
 Kitchen/RecipeKnowledge.lua
 Kitchen/RecipeDiscovery.lua
 Kitchen/RecipeLearning.lua
+Kitchen/RecipeRepository.lua
 UI/Browser.lua
 UI/ViewModel.lua
 UI/ZoneMap.lua
