@@ -601,7 +601,17 @@ function UI.refresh(reset)
   if active then
     local matched
     for _, item in ipairs(results) do
-      if item.id == active.id and item.kind == active.kind then matched = item; break end
+      if item.id == active.id and item.kind == active.kind then
+        matched = item
+        break
+      end
+    end
+    if not matched and UI.query == ""
+        and active.pinnedForCategory == UI.category then
+      -- A global search can discover valid records missing from a restricted
+      -- category listing. Keep that exact entry selected on later refreshes.
+      table.insert(results, 1, active)
+      matched = active
     end
     active = matched
   end
@@ -672,6 +682,7 @@ function UI.selectCategory(category, id, topPage, searchRecord)
         end
       end
       if record then
+        record.pinnedForCategory = category
         table.insert(results, 1, record)
         active = record
       else
