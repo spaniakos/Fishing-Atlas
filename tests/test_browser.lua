@@ -11,7 +11,19 @@ local ns = {
 }}, kitchen = {catalogPlan = function()
   return {minimumSkill = 250, output = "Soup", reagents = {{need = 2, name = "Fish", missing = 1}}}
 end}}
+ns.fishingScope = {
+  data = function()
+    return {caught = {[13759] = true},
+      items = {[6256] = true, [13759] = true}}
+  end,
+  vendor = function() return true end,
+  item = function() return true end,
+}
 ns.catalog = {
+  entity = function(_, id)
+    if id == 13759 then return {id = 13759, category = "fish",
+      confidence = "reference"} end
+  end,
   byCategory = function(cat)
     if cat == "fish" then return {{id = 13759, name = "Nightfin", confidence = "reference"}} end
     return {}
