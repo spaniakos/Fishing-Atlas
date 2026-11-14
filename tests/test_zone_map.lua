@@ -44,7 +44,7 @@ local overlay = ns.zoneMap.exploredForMap(1439, m, ox, oy, w, h)
 assert(#overlay == 2, "Explored terrain must overlay complete base map tiles")
 assert(overlay[1].texture == 201 and overlay[2].texture == 202)
 assert(overlay[1].y == 128 and overlay[2].x == 128)
-assert(ns.zoneMap.describe(1439):find("2 explored-overlay tiles", 1, true))
+assert(ns.zoneMap.describe(1439):find("2 exploration tiles", 1, true))
 local clipped = ns.zoneMap.explorationLayout({
   {textureWidth = 256, textureHeight = 256,
     offsetX = -64, offsetY = -64, fileDataIDs = {201}}
@@ -62,6 +62,7 @@ local function sprite(layer)
     "SetJustifyH", "SetText"}
   for _, name in ipairs(methods) do t[name] = function() end end
   t.SetTexture = function(self, value) self.texture = value end
+  t.IsObjectLoaded = function(self) return self.texture ~= 102 end
   return t
 end
 local fake = {
@@ -97,4 +98,9 @@ for _, t in ipairs(textures) do
 end
 assert(baseCount == 4 and explorationCount == 2,
   "Preview must render both complete base layer AND two exploration textures")
-print("WoW map art tests: base IDs, explored overlays, clipping and render passed")
+local loadReport = ns.zoneMap.describe(1439)
+assert(loadReport:find("3/4 loaded", 1, true),
+  "The preview must distinguish rendered textures from C_Map file references")
+assert(loadReport:find("2:102", 1, true),
+  "The preview must report an unloaded tile slot and its FileDataID")
+print("WoW map art tests: base IDs, explored overlays, clipping, actual load states and render passed")
