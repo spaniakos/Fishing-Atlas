@@ -121,11 +121,13 @@ local function pin(parent, s, index)
     local loc = self.location
     GameTooltip:AddLine(loc.label or "Fishing Atlas observation")
     GameTooltip:AddLine("Source: " .. (loc.source or "unknown"), 0.6, 0.8, 0.85)
-    GameTooltip:AddLine(loc.kind == "school_guide"
-        and "Published guide lead, not a guaranteed active school"
+    GameTooltip:AddLine(loc.kind == "school_live_nearby"
+        and "Recently visible nearby school; player position, not exact pool"
+        or (loc.kind == "school_guide"
+        and "Historical reference; not a guaranteed active school"
         or (loc.near and "Nearby player coordinates, not NPC spawn"
         or (loc.kind == "school" and "Object/observation position; check source"
-          or "Sourced reference/observation")), 1, 0.9, 0.5)
+          or "Sourced reference/observation"))), 1, 0.9, 0.5)
     GameTooltip:AddLine(string.format("Map %d: %.1f, %.1f",
       loc.mapID, loc.x * 100, loc.y * 100), 1, 1, 1)
     GameTooltip:Show()
@@ -175,13 +177,17 @@ function M.render(parent, mapID, locations)
     texture:Show()
   end
   local count = 0
+  local pinLimit = width >= 500 and 300 or 80
   for _, loc in ipairs(locations or {}) do
-    if count >= 40 then break end
+    if count >= pinLimit then break end
     if loc.mapID == mapID and ns.util.validCoordinate(loc.x) and ns.util.validCoordinate(loc.y) then
       count = count + 1
       local marker = pin(parent, s, count)
       marker.location = loc
-      if loc.kind == "school_guide" then
+      if loc.kind == "school_live_nearby" then
+        marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
+        marker.icon:SetVertexColor(0.35, 1, 0.55, 1)
+      elseif loc.kind == "school_guide" then
         marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
         marker.icon:SetVertexColor(1, 0.8, 0.35, 0.9)
       elseif loc.kind == "school" then
