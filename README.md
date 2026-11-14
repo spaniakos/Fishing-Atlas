@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
+> **v0.99.7 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
@@ -25,7 +25,7 @@
 - **Not complete:** fishing-school coordinates, vendor guides, equipment acquisition locations and full acquisition paths remain outstanding. 23 reference fish and 11 gear IDs are indexed.
 
 ## v0.99 Explorer
-Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Live game-client UI compatibility is still pending player testing.
+Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Map v0.99.7 marker and geographic context fixes require renewed real-client acceptance.
 
 ## Installation
 Follow [the step-by-step installation guide](docs/INSTALLATION.md). The CI pipeline generates a reproducible addon ZIP (including the GPL license and SHA256SUMS) for `main`.
@@ -41,6 +41,8 @@ A location is an observation of a **player standing near water**, not proof a fi
 The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog contains extracted recipes/maps and selected reference fish/gear IDs but **is not an exhaustive Forever database**; see [coverage](docs/DATABASE-COVERAGE.md). See [ROADMAP.md](ROADMAP.md).
 
 ## Acceptance testing
+For v0.99.7 map markers, neighboring context and Cooking spell requirements,
+see [the v0.99.7 in-game checklist](docs/V0.99.7-IN-GAME-ACCEPTANCE.md).
 See [the 12-case manual test plan](docs/ACCEPTANCE-v0.99.md), [test results](docs/TEST-RESULTS-v0.99.md), and [candidate notes](docs/RELEASE-v0.99.md). Do not treat automated CI as a substitute for in-game verification.
 
 ## Roadmap

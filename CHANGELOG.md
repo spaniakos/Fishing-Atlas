@@ -1,5 +1,40 @@
 # Fishing Atlas changelog
 
+## v0.99.7 — Map integrity and geographic context (client acceptance pending)
+- Repair fishing Journal capture when `IsFishingLoot` is absent or auto-loot
+  skips `LOOT_SLOT_CLEARED`: correlate recent Fishing casts and confirmed
+  self loot-chat evidence, avoid double-counting, refresh the explorer and
+  expose `/fa lootdebug` counters.
+- Add personal Cooking recipe import from the currently open profession UI
+  and user-added spell IDs. Persist missing spells in SavedVariables without
+  treating manual entry as learned, inventing trainer evidence or modifying
+  the shared static catalog. UI controls and slash commands included.
+
+- Import CC BY 4.0 EG Link Cooking trainer menus and recipe-item vendor records
+  from pinned Forever 1.60.1 client builds (up to 70938). Include 72 observed
+  trainer services and 94 vendor observations, keeping source builds and
+  coordinates. Index matches only when the dish name is unambiguous.
+- Fix Crispy Bat Wing #15935: teaching scroll #12226, Cooking 1, and
+  observed vendor Abigail Shiel; use actual Forever trainer skills for
+  trainer-taught recipes. Optionally read an available native item tooltip
+  or version-aware profession library for additional sourced rank evidence.
+
+- Restore selected vendor/NPC/item, saved-position and clicked-detail markers in both school modes.
+- Centralize in-panel and native World Map marker evidence, selection highlighting,
+  tooltip attribution and content-aware cache invalidation.
+- Add guarded parent-map artwork underlays using client map geometry and UV clipping,
+  with a preference toggle and safe fallback when coordinate mapping is unavailable.
+- Extend frame-click and native-pin regression tests. No fake school spawns or map art.
+- Include attributed offline Cooking teaching-scroll, vendor and quest references
+  for tested spells (Beer Basted Boar Ribs, Baked Salmon, Brilliant Smallfish,
+  Longjaw Mud Snapper); source-coordinate clicks now focus maps rather than
+  redirecting to an unrelated vendor-list entry.
+- Correct Cooking SPELL learn-skill display: do not treat imported `minimumSkill=1`
+  as authoritative for high-tier spells. Show actual sourced learn ranks where
+  documented, skill-up thresholds separately, and trainer versus teaching-scroll
+  acquisition with provenance and map locations when known.
+- **Pending:** real-client map alignment, surrounding-context and marker acceptance.
+
 ## v0.99.6 — Evidence-linked explorer, source pipelines (draft)
 - Clickable/hoverable item, recipe, vendor and map relationships; explicit acquisition sections.
 - Sourced observed fish, vendors, trainer recipes, drops and school-object sightings, without treating old Classic references as Forever-confirmed.

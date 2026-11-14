@@ -18,6 +18,11 @@ C_Spell = {GetSpellInfo = function(id)
 end}
 assert(ns.catalog.name("item", 13759) == "Raw Nightfin Snapper")
 assert(ns.catalog.name("spell", 18243) == "Nightfin Soup")
+ns.data.foreverObservedCooking = {vendors = {["crispy bat wing"] = {
+  {itemId = 12226, itemName = "Recipe: Crispy Bat Wing"}
+}}}
+assert(ns.catalog.name("item", 12226) == "Recipe: Crispy Bat Wing",
+  "Observed Forever teaching scrolls must resolve to their real item name")
 assert(ns.catalog.stats().recipes == 1)
 assert(#ns.catalog.search("snapper") == 1)
 assert(ns.catalog.search("snapper")[1].id == 13759)

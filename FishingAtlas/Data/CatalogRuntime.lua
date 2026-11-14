@@ -28,6 +28,10 @@ function C.name(kind, id)
       return info.name, true
     end
   end
+  if kind == "spell" and type(GetSpellInfo) == "function" then
+    local name = GetSpellInfo(id)
+    if type(name) == "string" and name ~= "" then return name, true end
+  end
   if kind == "item" and ns.sources and ns.sources.itemName then
     local fromObserved = ns.sources.itemName(id)
     if type(fromObserved) == "string" and fromObserved ~= "" then return fromObserved, false end
@@ -35,6 +39,26 @@ function C.name(kind, id)
   local item = C.entity(kind, id)
   if item and type(item.name) == "string" and not item.name:match("^Item #")
     and not item.name:match("^Spell #") then return item.name, false end
+  if kind == "spell" and ns.recipeDiscovery then
+    local discovery = ns.recipeDiscovery.get(id)
+    if discovery and type(discovery.name) == "string" then
+      return discovery.name, false
+    end
+  end
+  if kind == "item" then
+    for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+      if ref.recipeItemId == id and type(ref.recipeItemName) == "string" then
+        return ref.recipeItemName, false
+      end
+    end
+    for _, sellers in pairs((ns.data.foreverObservedCooking or {}).vendors or {}) do
+      for _, seller in ipairs(sellers) do
+        if seller.itemId == id and type(seller.itemName) == "string" then
+          return seller.itemName, false
+        end
+      end
+    end
+  end
   return (kind == "spell" and "Unresolved spell #" or "Unresolved item #") .. id, false
 end
 function C.stats()

@@ -19,6 +19,13 @@ local function push(out, value, term)
   if matches(value, term) then out[#out + 1] = value end
 end
 
+local function recipeKey(text)
+  if type(text) ~= "string" or text:find("^Unresolved ")
+      or text:find("^Spell #") or text:find("^Item #") then return nil end
+  return text:lower():gsub("^recipe:%s*", ""):gsub("[^%w]+", " ")
+    :gsub("^%s+", ""):gsub("%s+$", "")
+end
+
 function B.list(category, term)
   term = type(term) == "string" and term:lower() or ""
   local out, db = {}, ns.storage.db or {}
@@ -52,6 +59,42 @@ function B.list(category, term)
         end
       end
     end
+    -- Cooking teaching items are actual items, even if not fishable.
+    for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+      local id = ref.recipeItemId
+      if type(id) == "number" and id > 0 and not seen[id] then
+        seen[id] = true
+        push(out, row(id, ref.recipeItemName or ns.catalog.name("item", id),
+          "item", ref.source or "forever_public_reference"), term)
+      end
+    end
+    -- Only index EG Link scrolls corresponding to catalog Cooking spells,
+    -- not unrelated Alchemy/Engineering recipe items sold by the same NPCs.
+    local sales = (ns.data.foreverObservedCooking or {}).vendors or {}
+    local function addCookingScroll(spellID, outputID)
+      local dish = recipeKey(ns.catalog.name("spell", spellID))
+        or (outputID and recipeKey(ns.catalog.name("item", outputID)))
+      for _, seller in ipairs((dish and sales[dish]) or {}) do
+        local id = seller.itemId
+        if type(id) == "number" and id > 0 and not seen[id] then
+          seen[id] = true
+          push(out, row(id, seller.itemName, "item",
+            "forever_observed_vendor_" .. seller.sourceBuild), term)
+        end
+      end
+    end
+    local indexed = {}
+    for _, recipe in ipairs(ns.catalog.recipeList() or {}) do
+      if recipe.profession == "Cooking" then
+        indexed[recipe.spellId] = true
+        addCookingScroll(recipe.spellId, recipe.outputItemId)
+      end
+    end
+    for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+      if recipe.profession == "Cooking" and not indexed[id] then
+        addCookingScroll(id, recipe.outputItemId)
+      end
+    end
   elseif category == "fish" then
     -- Fish is every item actually associated with fishing casts/pools or
     -- documented fishing-water references, including non-fish catches.
@@ -81,8 +124,18 @@ function B.list(category, term)
     end
     for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
       if not seenRecipes[id] then
+        seenRecipes[id] = true
         push(out, row(id, ns.catalog.name("spell", id),
           "gamefile_recipe", "game_files_unconfirmed", recipe), term)
+      end
+    end
+    for _, discovered in ipairs(ns.recipeDiscovery and
+        ns.recipeDiscovery.list() or {}) do
+      if not seenRecipes[discovered.id] then
+        seenRecipes[discovered.id] = true
+        push(out, row(discovered.id, discovered.name,
+          "Cooking", discovered.source or "personal_reference",
+          discovered), term)
       end
     end
   elseif category == "zones" then
@@ -222,13 +275,19 @@ function B.details(item)
   if item.kind == "Cooking" or item.kind == "Fishing" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     if plan then
-      lines[#lines + 1] = "Requires skill " .. tostring(plan.minimumSkill)
+      lines[#lines + 1] = "Requires skill " ..
+        tostring(plan.minimumSkill or "Not verified")
       lines[#lines + 1] = "Produces: " .. plan.output
       for _, i in ipairs(plan.reagents) do
         lines[#lines + 1] = string.format("%d x %s | owned %d | missing %d",
           i.need or 0, i.name or "Unknown", i.owned or 0, i.missing or 0)
       end
-      lines[#lines + 1] = "Recipe acquisition/vendor: not yet verified."
+      local info = ns.recipeLearning and ns.recipeLearning.info(item.id)
+      if info and info.recipeItemId then
+        lines[#lines + 1] = "Learned from recipe item #" .. info.recipeItemId
+      else
+        lines[#lines + 1] = "Learning source: check observed trainer records."
+      end
     end
   elseif item.kind == "school_type" then
     local matchesByName = B.schoolSightings(item.name)

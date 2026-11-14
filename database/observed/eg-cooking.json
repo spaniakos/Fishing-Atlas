@@ -1,0 +1,2073 @@
+{
+  "meta": {
+    "source": "Efficient Games EG Link: observed Forever trainer menus and vendor stock",
+    "sourceUrl": "https://github.com/JIVESCORP/eg-link-output-wowf/tree/ea970da071079b32e56f349e09648ff0e314b351/data/wowf",
+    "sourceCommit": "ea970da071079b32e56f349e09648ff0e314b351",
+    "license": "CC BY 4.0",
+    "attribution": "Data from Efficient Games (https://efficient.games), licensed under CC BY 4.0.",
+    "clientBuilds": [
+      "1.60.1.70938",
+      "1.60.1.70888",
+      "1.60.1.70862",
+      "1.60.1.70840",
+      "1.60.1.70450",
+      "1.60.1.70338",
+      "1.60.1.70205"
+    ],
+    "sourceFiles": [
+      "data/wowf/1.60.1.70938/trainers.json",
+      "data/wowf/1.60.1.70938/vendors.json",
+      "data/wowf/1.60.1.70888/trainers.json",
+      "data/wowf/1.60.1.70888/vendors.json",
+      "data/wowf/1.60.1.70862/trainers.json",
+      "data/wowf/1.60.1.70862/vendors.json",
+      "data/wowf/1.60.1.70840/trainers.json",
+      "data/wowf/1.60.1.70840/vendors.json",
+      "data/wowf/1.60.1.70450/trainers.json",
+      "data/wowf/1.60.1.70450/vendors.json",
+      "data/wowf/1.60.1.70338/trainers.json",
+      "data/wowf/1.60.1.70338/vendors.json",
+      "data/wowf/1.60.1.70205/trainers.json",
+      "data/wowf/1.60.1.70205/vendors.json"
+    ],
+    "notes": "Multiple client-build observations, NOT guarantee of today's current stock or teachability."
+  },
+  "trainers": {
+    "2539": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 10,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "2541": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "2544": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 75,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "2546": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 80,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "6499": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 50,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "6500": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 125,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "21175": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 200,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ],
+    "1229737": [
+      {
+        "npcId": 3026,
+        "name": "Aska Mistrunner",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "npcId": 3087,
+        "name": "Crystal Boughman",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1768,
+        "y": 0.4368
+      },
+      {
+        "npcId": 5482,
+        "name": "Stephen Ryback",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7815,
+        "y": 0.5328
+      },
+      {
+        "npcId": 251905,
+        "name": "Zerril Softbreeze",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 2521,
+        "x": 0.4382,
+        "y": 0.4386
+      },
+      {
+        "npcId": 1355,
+        "name": "Cook Ghilm",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1426,
+        "x": 0.6836,
+        "y": 0.5442
+      },
+      {
+        "npcId": 3399,
+        "name": "Zamja",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5749,
+        "y": 0.5372
+      },
+      {
+        "npcId": 8306,
+        "name": "Duhng",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5529,
+        "y": 0.3182
+      },
+      {
+        "npcId": 265944,
+        "name": "William Pickman",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6167,
+        "y": 0.5154
+      },
+      {
+        "npcId": 3191,
+        "name": "Cook Torka",
+        "skillRank": 20,
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4251
+      }
+    ]
+  },
+  "vendors": {
+    "brilliant smallfish": [
+      {
+        "itemId": 6325,
+        "itemName": "Recipe: Brilliant Smallfish",
+        "npcId": 66,
+        "name": "Tharynn Bouden",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1429,
+        "x": 0.4194,
+        "y": 0.6711
+      },
+      {
+        "itemId": 6325,
+        "itemName": "Recipe: Brilliant Smallfish",
+        "npcId": 3550,
+        "name": "Martine Tramblay",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6578,
+        "y": 0.5972
+      },
+      {
+        "itemId": 6325,
+        "itemName": "Recipe: Brilliant Smallfish",
+        "npcId": 3029,
+        "name": "Sewa Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.558,
+        "y": 0.4715
+      }
+    ],
+    "longjaw mud snapper": [
+      {
+        "itemId": 6328,
+        "itemName": "Recipe: Longjaw Mud Snapper",
+        "npcId": 66,
+        "name": "Tharynn Bouden",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1429,
+        "x": 0.4194,
+        "y": 0.6711
+      },
+      {
+        "itemId": 6328,
+        "itemName": "Recipe: Longjaw Mud Snapper",
+        "npcId": 3027,
+        "name": "Naal Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "itemId": 6328,
+        "itemName": "Recipe: Longjaw Mud Snapper",
+        "npcId": 5748,
+        "name": "Killian Sanatha",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1421,
+        "x": 0.3293,
+        "y": 0.179
+      }
+    ],
+    "roast raptor": [
+      {
+        "itemId": 12228,
+        "itemName": "Recipe: Roast Raptor",
+        "npcId": 1148,
+        "name": "Nerrist",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-14",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.3265,
+        "y": 0.2925
+      },
+      {
+        "itemId": 12228,
+        "itemName": "Recipe: Roast Raptor",
+        "npcId": 2821,
+        "name": "Keena",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1417,
+        "x": 0.74,
+        "y": 0.3269
+      },
+      {
+        "itemId": 12228,
+        "itemName": "Recipe: Roast Raptor",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      },
+      {
+        "itemId": 12228,
+        "itemName": "Recipe: Roast Raptor",
+        "npcId": 4879,
+        "name": "Ogg'marr",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1445,
+        "x": 0.3662,
+        "y": 0.3095
+      }
+    ],
+    "jungle stew": [
+      {
+        "itemId": 12231,
+        "itemName": "Recipe: Jungle Stew",
+        "npcId": 1148,
+        "name": "Nerrist",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-14",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.3265,
+        "y": 0.2925
+      },
+      {
+        "itemId": 12231,
+        "itemName": "Recipe: Jungle Stew",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      }
+    ],
+    "curiously tasty omelet": [
+      {
+        "itemId": 3682,
+        "itemName": "Recipe: Curiously Tasty Omelet",
+        "npcId": 1148,
+        "name": "Nerrist",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-14",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.3265,
+        "y": 0.2925
+      },
+      {
+        "itemId": 3682,
+        "itemName": "Recipe: Curiously Tasty Omelet",
+        "npcId": 2821,
+        "name": "Keena",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1417,
+        "x": 0.74,
+        "y": 0.3269
+      }
+    ],
+    "slitherskin mackerel": [
+      {
+        "itemId": 6326,
+        "itemName": "Recipe: Slitherskin Mackerel",
+        "npcId": 3550,
+        "name": "Martine Tramblay",
+        "sourceBuild": "1.60.1.70938",
+        "seenOn": "2026-11-13",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.6578,
+        "y": 0.5972
+      }
+    ],
+    "spiced chili crab": [
+      {
+        "itemId": 16111,
+        "itemName": "Recipe: Spiced Chili Crab",
+        "npcId": 1149,
+        "name": "Uthok",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 2,
+        "mapID": 1434,
+        "x": 0.3161,
+        "y": 0.2798
+      }
+    ],
+    "smoked sagefish": [
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 2397,
+        "name": "Derak Nightfall",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1424,
+        "x": 0.6313,
+        "y": 0.1952
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 3027,
+        "name": "Naal Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 3085,
+        "name": "Gloria Femmel",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.216,
+        "y": 0.4358
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 4553,
+        "name": "Ronald Burch",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 2,
+        "mapID": 1458,
+        "x": 0.6243,
+        "y": 0.4339
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 5483,
+        "name": "Erika Tate",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7851,
+        "y": 0.5308
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 12033,
+        "name": "Wulan",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.2618,
+        "y": 0.697
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 3400,
+        "name": "Xen'to",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 2,
+        "mapID": 1454,
+        "x": 0.5764,
+        "y": 0.5346
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 8307,
+        "name": "Tarban Hearthgrain",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5516,
+        "y": 0.3203
+      },
+      {
+        "itemId": 21099,
+        "itemName": "Recipe: Smoked Sagefish",
+        "npcId": 242498,
+        "name": "Reagent Bot",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 2,
+        "mapID": 1440,
+        "x": 0.1523,
+        "y": 0.1524
+      }
+    ],
+    "sagefish delight": [
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 2397,
+        "name": "Derak Nightfall",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1424,
+        "x": 0.6313,
+        "y": 0.1952
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 3027,
+        "name": "Naal Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 3085,
+        "name": "Gloria Femmel",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.216,
+        "y": 0.4358
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 4553,
+        "name": "Ronald Burch",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 2,
+        "mapID": 1458,
+        "x": 0.6243,
+        "y": 0.4339
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 5483,
+        "name": "Erika Tate",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1453,
+        "x": 0.7851,
+        "y": 0.5308
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 12033,
+        "name": "Wulan",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.2618,
+        "y": 0.697
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 3400,
+        "name": "Xen'to",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 2,
+        "mapID": 1454,
+        "x": 0.5764,
+        "y": 0.5346
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 8307,
+        "name": "Tarban Hearthgrain",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5516,
+        "y": 0.3203
+      },
+      {
+        "itemId": 21219,
+        "itemName": "Recipe: Sagefish Delight",
+        "npcId": 242498,
+        "name": "Reagent Bot",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 2,
+        "mapID": 1440,
+        "x": 0.1523,
+        "y": 0.1524
+      }
+    ],
+    "bristle whisker catfish": [
+      {
+        "itemId": 6330,
+        "itemName": "Recipe: Bristle Whisker Catfish",
+        "npcId": 2397,
+        "name": "Derak Nightfall",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1424,
+        "x": 0.6313,
+        "y": 0.1952
+      },
+      {
+        "itemId": 6330,
+        "itemName": "Recipe: Bristle Whisker Catfish",
+        "npcId": 3027,
+        "name": "Naal Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.5101,
+        "y": 0.5292
+      },
+      {
+        "itemId": 6330,
+        "itemName": "Recipe: Bristle Whisker Catfish",
+        "npcId": 3029,
+        "name": "Sewa Mistrunner",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1456,
+        "x": 0.558,
+        "y": 0.4715
+      },
+      {
+        "itemId": 6330,
+        "itemName": "Recipe: Bristle Whisker Catfish",
+        "npcId": 4553,
+        "name": "Ronald Burch",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 2,
+        "mapID": 1458,
+        "x": 0.6243,
+        "y": 0.4339
+      }
+    ],
+    "holy protection potion": [
+      {
+        "itemId": 6053,
+        "itemName": "Recipe: Holy Protection Potion",
+        "npcId": 3134,
+        "name": "Kzixx",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1431,
+        "x": 0.8173,
+        "y": 0.1988
+      }
+    ],
+    "rainbow fin albacore": [
+      {
+        "itemId": 6368,
+        "itemName": "Recipe: Rainbow Fin Albacore",
+        "npcId": 4553,
+        "name": "Ronald Burch",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 2,
+        "mapID": 1458,
+        "x": 0.6243,
+        "y": 0.4339
+      },
+      {
+        "itemId": 6368,
+        "itemName": "Recipe: Rainbow Fin Albacore",
+        "npcId": 5748,
+        "name": "Killian Sanatha",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1421,
+        "x": 0.3293,
+        "y": 0.179
+      }
+    ],
+    "shadow oil": [
+      {
+        "itemId": 6068,
+        "itemName": "Recipe: Shadow Oil",
+        "npcId": 4878,
+        "name": "Montarr",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1441,
+        "x": 0.4525,
+        "y": 0.5076
+      },
+      {
+        "itemId": 6068,
+        "itemName": "Recipe: Shadow Oil",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      }
+    ],
+    "hot wolf ribs": [
+      {
+        "itemId": 12229,
+        "itemName": "Recipe: Hot Wolf Ribs",
+        "npcId": 8145,
+        "name": "Sheendra Tallgrass",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.745,
+        "y": 0.428
+      }
+    ],
+    "lobster stew": [
+      {
+        "itemId": 13947,
+        "itemName": "Recipe: Lobster Stew",
+        "npcId": 8145,
+        "name": "Sheendra Tallgrass",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.745,
+        "y": 0.428
+      }
+    ],
+    "mightfish steak": [
+      {
+        "itemId": 13948,
+        "itemName": "Recipe: Mightfish Steak",
+        "npcId": 8145,
+        "name": "Sheendra Tallgrass",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.745,
+        "y": 0.428
+      }
+    ],
+    "baked salmon": [
+      {
+        "itemId": 13949,
+        "itemName": "Recipe: Baked Salmon",
+        "npcId": 8145,
+        "name": "Sheendra Tallgrass",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.745,
+        "y": 0.428
+      }
+    ],
+    "mithril head trout": [
+      {
+        "itemId": 17062,
+        "itemName": "Recipe: Mithril Head Trout",
+        "npcId": 12033,
+        "name": "Wulan",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.2618,
+        "y": 0.697
+      },
+      {
+        "itemId": 17062,
+        "itemName": "Recipe: Mithril Head Trout",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      },
+      {
+        "itemId": 17062,
+        "itemName": "Recipe: Mithril Head Trout",
+        "npcId": 12962,
+        "name": "Wik'Tar",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 3,
+        "mapID": 1440,
+        "x": 0.1177,
+        "y": 0.3417
+      }
+    ],
+    "rockscale cod": [
+      {
+        "itemId": 6369,
+        "itemName": "Recipe: Rockscale Cod",
+        "npcId": 12033,
+        "name": "Wulan",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.2618,
+        "y": 0.697
+      },
+      {
+        "itemId": 6369,
+        "itemName": "Recipe: Rockscale Cod",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      },
+      {
+        "itemId": 6369,
+        "itemName": "Recipe: Rockscale Cod",
+        "npcId": 12962,
+        "name": "Wik'Tar",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 3,
+        "mapID": 1440,
+        "x": 0.1177,
+        "y": 0.3417
+      }
+    ],
+    "carrion surprise": [
+      {
+        "itemId": 12232,
+        "itemName": "Recipe: Carrion Surprise",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      },
+      {
+        "itemId": 12232,
+        "itemName": "Recipe: Carrion Surprise",
+        "npcId": 4879,
+        "name": "Ogg'marr",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1445,
+        "x": 0.3662,
+        "y": 0.3095
+      }
+    ],
+    "heavy kodo stew": [
+      {
+        "itemId": 12240,
+        "itemName": "Recipe: Heavy Kodo Stew",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      }
+    ],
+    "hot lion chops": [
+      {
+        "itemId": 3735,
+        "itemName": "Recipe: Hot Lion Chops",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      },
+      {
+        "itemId": 3735,
+        "itemName": "Recipe: Hot Lion Chops",
+        "npcId": 3489,
+        "name": "Zargh",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1413,
+        "x": 0.5258,
+        "y": 0.2985
+      }
+    ],
+    "lean venison": [
+      {
+        "itemId": 5489,
+        "itemName": "Recipe: Lean Venison",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      }
+    ],
+    "free action potion": [
+      {
+        "itemId": 5642,
+        "itemName": "Recipe: Free Action Potion",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      },
+      {
+        "itemId": 5642,
+        "itemName": "Recipe: Free Action Potion",
+        "npcId": 3348,
+        "name": "Kor'geld",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5625,
+        "y": 0.346
+      }
+    ],
+    "great rage potion": [
+      {
+        "itemId": 5643,
+        "itemName": "Recipe: Great Rage Potion",
+        "npcId": 12245,
+        "name": "Vendor-Tron 1000",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6036,
+        "y": 0.3817
+      },
+      {
+        "itemId": 5643,
+        "itemName": "Recipe: Great Rage Potion",
+        "npcId": 3335,
+        "name": "Hagrus",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.4616,
+        "y": 0.4605
+      }
+    ],
+    "greater spellblasting potion": [
+      {
+        "itemId": 250979,
+        "itemName": "Recipe: Greater Spellblasting Potion",
+        "npcId": 253139,
+        "name": "Gorhak",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6637,
+        "y": 0.7946
+      },
+      {
+        "itemId": 250979,
+        "itemName": "Recipe: Greater Spellblasting Potion",
+        "npcId": 253140,
+        "name": "Molkar",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.3568,
+        "y": 0.9211
+      }
+    ],
+    "greater frenzy potion": [
+      {
+        "itemId": 250985,
+        "itemName": "Recipe: Greater Frenzy Potion",
+        "npcId": 253139,
+        "name": "Gorhak",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-11",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.6637,
+        "y": 0.7946
+      },
+      {
+        "itemId": 250985,
+        "itemName": "Recipe: Greater Frenzy Potion",
+        "npcId": 253140,
+        "name": "Molkar",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1443,
+        "x": 0.3568,
+        "y": 0.9211
+      }
+    ],
+    "venomous smoothie": [
+      {
+        "itemId": 249885,
+        "itemName": "Recipe: Venomous Smoothie",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "slimy smoothie": [
+      {
+        "itemId": 249886,
+        "itemName": "Recipe: Slimy Smoothie",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "mrrggl smrrthle": [
+      {
+        "itemId": 249887,
+        "itemName": "Recipe: Mrrggl Smrrthle",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "calcified smoothie": [
+      {
+        "itemId": 249888,
+        "itemName": "Recipe: Calcified Smoothie",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "spicy smoothie": [
+      {
+        "itemId": 249889,
+        "itemName": "Recipe: Spicy Smoothie",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "wicked smoothie": [
+      {
+        "itemId": 249890,
+        "itemName": "Recipe: Wicked Smoothie",
+        "npcId": 256731,
+        "name": "Kalsey Sanden",
+        "sourceBuild": "1.60.1.70888",
+        "seenOn": "2026-11-12",
+        "installs": 1,
+        "mapID": 1433,
+        "x": 0.1074,
+        "y": 0.7278
+      }
+    ],
+    "crispy bat wing": [
+      {
+        "itemId": 12226,
+        "itemName": "Recipe: Crispy Bat Wing",
+        "npcId": 2118,
+        "name": "Abigail Shiel",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-09",
+        "installs": 1,
+        "mapID": 1420,
+        "x": 0.61,
+        "y": 0.5246
+      }
+    ],
+    "shadow protection potion": [
+      {
+        "itemId": 6054,
+        "itemName": "Recipe: Shadow Protection Potion",
+        "npcId": 2393,
+        "name": "Christoph Jeffcoat",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-10",
+        "installs": 1,
+        "mapID": 1424,
+        "x": 0.6236,
+        "y": 0.1923
+      }
+    ],
+    "cooked glossy mightfish": [
+      {
+        "itemId": 13940,
+        "itemName": "Recipe: Cooked Glossy Mightfish",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      }
+    ],
+    "filet of redgill": [
+      {
+        "itemId": 13941,
+        "itemName": "Recipe: Filet of Redgill",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      }
+    ],
+    "hot smoked bass": [
+      {
+        "itemId": 13943,
+        "itemName": "Recipe: Hot Smoked Bass",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      }
+    ],
+    "giant clam scorcho": [
+      {
+        "itemId": 6039,
+        "itemName": "Recipe: Giant Clam Scorcho",
+        "npcId": 2664,
+        "name": "Kelsey Yance",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1434,
+        "x": 0.2821,
+        "y": 0.7444
+      }
+    ],
+    "rage potion": [
+      {
+        "itemId": 5640,
+        "itemName": "Recipe: Rage Potion",
+        "npcId": 3335,
+        "name": "Hagrus",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.4616,
+        "y": 0.4605
+      },
+      {
+        "itemId": 5640,
+        "itemName": "Recipe: Rage Potion",
+        "npcId": 1669,
+        "name": "Defias Profiteer",
+        "sourceBuild": "1.60.1.70840",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1436,
+        "x": 0.4347,
+        "y": 0.6696
+      }
+    ],
+    "elixir of superior defense": [
+      {
+        "itemId": 13478,
+        "itemName": "Recipe: Elixir of Superior Defense",
+        "npcId": 3348,
+        "name": "Kor'geld",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1454,
+        "x": 0.5625,
+        "y": 0.346
+      }
+    ],
+    "strider stew": [
+      {
+        "itemId": 5486,
+        "itemName": "Recipe: Strider Stew",
+        "npcId": 3482,
+        "name": "Tari'qa",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 2,
+        "mapID": 1413,
+        "x": 0.5166,
+        "y": 0.3009
+      }
+    ],
+    "crispy lizard tail": [
+      {
+        "itemId": 5488,
+        "itemName": "Recipe: Crispy Lizard Tail",
+        "npcId": 3482,
+        "name": "Tari'qa",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 2,
+        "mapID": 1413,
+        "x": 0.5166,
+        "y": 0.3009
+      }
+    ],
+    "smoked bear meat": [
+      {
+        "itemId": 6892,
+        "itemName": "Recipe: Smoked Bear Meat",
+        "npcId": 3556,
+        "name": "Andrew Hilbert",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1421,
+        "x": 0.4323,
+        "y": 0.4078
+      }
+    ],
+    "scorpid surprise": [
+      {
+        "itemId": 5483,
+        "itemName": "Recipe: Scorpid Surprise",
+        "npcId": 3881,
+        "name": "Grimtak",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1411,
+        "x": 0.512,
+        "y": 0.4268
+      }
+    ],
+    "heavy crocolisk stew": [
+      {
+        "itemId": 20075,
+        "itemName": "Recipe: Heavy Crocolisk Stew",
+        "npcId": 4879,
+        "name": "Ogg'marr",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-07",
+        "installs": 1,
+        "mapID": 1445,
+        "x": 0.3662,
+        "y": 0.3095
+      }
+    ],
+    "nature protection potion": [
+      {
+        "itemId": 6057,
+        "itemName": "Recipe: Nature Protection Potion",
+        "npcId": 8158,
+        "name": "Bronk",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.7608,
+        "y": 0.4337
+      }
+    ],
+    "ghost dye": [
+      {
+        "itemId": 9302,
+        "itemName": "Recipe: Ghost Dye",
+        "npcId": 8158,
+        "name": "Bronk",
+        "sourceBuild": "1.60.1.70862",
+        "seenOn": "2026-11-08",
+        "installs": 1,
+        "mapID": 1444,
+        "x": 0.7608,
+        "y": 0.4337
+      }
+    ],
+    "fire protection potion": [
+      {
+        "itemId": 6055,
+        "itemName": "Recipe: Fire Protection Potion",
+        "npcId": 4083,
+        "name": "Jeeda",
+        "sourceBuild": "1.60.1.70338",
+        "seenOn": "2026-10-10",
+        "installs": 1,
+        "mapID": 1442,
+        "x": 0.4758,
+        "y": 0.616
+      }
+    ]
+  }
+}

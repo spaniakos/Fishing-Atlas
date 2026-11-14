@@ -19,6 +19,7 @@ jobs:
       - name: Validate generated database
         run: |
           python3 scripts/build_catalog.py --check
+          python3 scripts/build_forever_cooking_observed.py --check
           python3 scripts/catalog_coverage.py
           python3 -m unittest discover -s tests -p 'test_*.py'
           python3 scripts/import_curated.py database/source-pack.example.json --check
@@ -41,10 +42,16 @@ jobs:
           lua5.1 tests/test_schools.lua
           lua5.1 tests/test_gears.lua
           lua5.1 tests/test_map_pins.lua
+          lua5.1 tests/test_map_context.lua
+          lua5.1 tests/test_map_marker_integration.lua
+          lua5.1 tests/test_map_markers.lua
           lua5.1 tests/test_catalog_planner.lua
+          lua5.1 tests/test_recipe_learning.lua
+          lua5.1 tests/test_eg_cooking_data.lua
           lua5.1 tests/test_browser.lua
           lua5.1 tests/test_fishing_scope.lua
           lua5.1 tests/test_recipe_knowledge.lua
+          lua5.1 tests/test_recipe_discovery.lua
           lua5.1 tests/test_school_reference_locations.lua
           lua5.1 tests/test_live_school_modes.lua
           lua5.1 tests/test_diagnostics.lua

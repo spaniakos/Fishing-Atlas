@@ -9,6 +9,8 @@ chunk("FishingAtlas/Core/Storage.lua")("FishingAtlas", ns)
 FishingAtlasDB = nil
 time = function() return 1700000000 end
 assert(ns.storage.init())
+assert(ns.storage.db.settings.mapContext == true,
+  "Safe parent context is enabled by default only when geometry is valid")
 assert(ns.storage.count() == 0)
 assert(ns.storage.db.schemaVersion == 3)
 assert(type(ns.storage.db.schoolCandidates) == "table")

@@ -9,6 +9,10 @@ ns.catalog = {
   end,
   name = function(kind, id) return kind .. " #" .. id end
 }
+ns.data = {gameFiles = {recipes = {}}}
+ns.util = {validCoordinate = function(x)
+  return type(x) == "number" and x >= 0 and x <= 1 end}
+assert(loadfile("FishingAtlas/Kitchen/RecipeLearning.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Kitchen/CatalogPlanner.lua"))("FishingAtlas", ns)
 local plan = assert(ns.kitchen.catalogPlan(18243, 3, {[13759] = 2, [159] = 5}))
 assert(plan.crafts == 3 and plan.minimumSkill == 250)

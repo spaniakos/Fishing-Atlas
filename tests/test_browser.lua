@@ -2,7 +2,14 @@
 local ns = {
  data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{id=66,name="Vendor",trainer=false,title="Shop",
     spots={{mapID=1411,x=0.6,y=0.4}},items={6256},side="Horde"}},
- zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={{id=6303,evidence="classic_reference"}}}},
+ zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={{id=6303,evidence="classic_reference"}}},
+ foreverObservedCooking = {vendors = {["crispy bat wing"] = {
+   {itemId = 12226, itemName = "Recipe: Crispy Bat Wing",
+    npcId = 2118, sourceBuild = "1.60.1.70862"}
+ }}},
+ recipeLearningReferences = {[2795] = {minimumSkill = 25,
+   recipeItemId = 2889, recipeItemName = "Recipe: Beer Basted Boar Ribs",
+   source = "forever_client_public_reference"}}},
  util = {validCoordinate = function(n) return type(n) == "number" and n >= 0 and n <= 1 end},
  storage = {db = {
   catches = {fish = {name = "Nightfin", count = 8, mapID = 1411}},
@@ -34,11 +41,14 @@ ns.catalog = {
     return {}
   end,
   recipeList = function()
-    return {{spellId = 18243, profession = "Cooking", confidence = "verified_client"}}
+    return {{spellId = 18243, profession = "Cooking", confidence = "verified_client"},
+      {spellId = 15935, profession = "Cooking", outputItemId = 12224,
+        confidence = "verified_client"}}
   end,
   zones = function() return {{mapId = 1411, name = "Durotar", confidence = "verified_client"}} end,
   name = function(kind, id)
     if kind == "item" and id == 13759 then return "Nightfin" end
+    if kind == "spell" and id == 15935 then return "Crispy Bat Wing" end
     return "Spell " .. id
   end,
   icon = function(_, id) return "icon:" .. id end,
@@ -47,8 +57,10 @@ ns.catalog = {
 assert(loadfile("FishingAtlas/UI/Browser.lua"))("FishingAtlas", ns)
 assert(#ns.browser.list("fish", "night") == 1)
 assert(#ns.browser.list("fish", "") == 1, "Fish means fishing catches, not every item")
-assert(#ns.browser.list("items", "") == 2,
-  "Items should contain supplies/cooked items, not duplicate fish catches")
+assert(#ns.browser.list("items", "") == 4,
+  "Items include matched Forever Cooking scrolls, not unrelated recipes")
+assert(ns.browser.list("items", "12226")[1].name == "Recipe: Crispy Bat Wing")
+assert(ns.browser.list("items", "2889")[1].name == "Recipe: Beer Basted Boar Ribs")
 assert(#ns.browser.list("fish", "other") == 0)
 assert(#ns.browser.list("recipes", "18243") == 1)
 assert(#ns.browser.list("zones", "") == 1)

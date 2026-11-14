@@ -25,6 +25,7 @@ function Store.init()
      or db.settings.radiusPercent > 5 then db.settings.radiusPercent = 1 end
   if type(db.settings.showMinimap) ~= "boolean" then db.settings.showMinimap = true end
   if type(db.settings.mapPins) ~= "boolean" then db.settings.mapPins = true end
+  if type(db.settings.mapContext) ~= "boolean" then db.settings.mapContext = true end
   if db.settings.schoolMapMode ~= "active" and db.settings.schoolMapMode ~= "probable" then
     db.settings.schoolMapMode = "active"
   end
@@ -33,6 +34,7 @@ function Store.init()
   end
   if type(db.vendorObservations) ~= "table" then db.vendorObservations = {} end
   if type(db.catches) ~= "table" then db.catches = {} end
+  if type(db.discoveredRecipes) ~= "table" then db.discoveredRecipes = {} end
   db.schemaVersion = SCHEMA_VERSION
   Store.db = db
   return db
