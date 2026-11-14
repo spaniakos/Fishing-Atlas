@@ -35,7 +35,9 @@ GetLootSlotInfo = function() return nil, "Raw Brilliant Smallfish", 2 end
 GetLootSlotLink = function()
   return "|cff00ff00|Hitem:6291:0:0|h[Raw Brilliant Smallfish]|h|r"
 end
-assert(ns.loot.noteCast("Fishing"))
+GetSpellInfo = function(id) if id == 7620 then return "Fishing" end end
+assert(ns.loot.noteCast(nil, 7620),
+  "Client spellcast events can carry numeric spell IDs after nil arguments")
 assert(ns.loot.open(), "Recent fishing casts must classify a loot window")
 ns.loot.closed()
 assert(ns.loot.chat("You receive loot: |cff00ff00|Hitem:6291:0:0|h[Raw Brilliant Smallfish]|h|r."))

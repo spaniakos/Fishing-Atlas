@@ -28,6 +28,10 @@ function C.name(kind, id)
       return info.name, true
     end
   end
+  if kind == "spell" and type(GetSpellInfo) == "function" then
+    local name = GetSpellInfo(id)
+    if type(name) == "string" and name ~= "" then return name, true end
+  end
   if kind == "item" and ns.sources and ns.sources.itemName then
     local fromObserved = ns.sources.itemName(id)
     if type(fromObserved) == "string" and fromObserved ~= "" then return fromObserved, false end

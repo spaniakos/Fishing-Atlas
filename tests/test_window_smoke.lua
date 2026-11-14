@@ -127,6 +127,10 @@ end}
 ns.data.classicSchoolLocations = {}
 ns.data.referenceSchoolLocations = {}
 assert(loadfile("FishingAtlas/Atlas/MapMarkers.lua"))("FishingAtlas", ns)
+ns.recipeDiscovery = {
+  add = function(id) return {id = tonumber(id), name = "Mock recipe"} end,
+  scan = function() return 1, "Cooking scanned" end
+}
 ns.recipeKnowledge = {
   status = function(id) return id == 777 and "unknown" or "known" end,
   scanCatalog = function() return 0 end,
@@ -279,5 +283,17 @@ WorldMapFrame.SetMapID = properSetMapID
 assert(ns.ui.selectCategory("items", nil, "Items") == nil)
 assert(ns.ui.category == "items" and ns.ui.topPage == "Items")
 assert(ns.ui.refresh(true) == nil)
+ns.ui.selectCategory("recipes")
+assert(ns.ui.recipeAddButton.shown and ns.ui.recipeScanButton.shown,
+  "Recipe controls must show on the Recipes tab")
+ns.ui.recipeAddButton.scripts.OnClick()
+assert(ns.ui.recipePopup:IsShown() and ns.ui.recipeSpellField)
+ns.ui.recipeSpellField:SetText("15935")
+ns.ui.recipeSpellField.scripts.OnEnterPressed()
+assert(ns.ui.selected().id == 15935 and not ns.ui.recipePopup:IsShown(),
+  "Add recipe should navigate to the exact added spell ID")
+ns.ui.recipeScanButton.scripts.OnClick()
+ns.ui.selectCategory("zones")
+assert(not ns.ui.recipeAddButton.shown and not ns.ui.recipeScanButton.shown)
 assert(ns.ui.toggle())
 print("FrameXML explorer mock smoke test passed")

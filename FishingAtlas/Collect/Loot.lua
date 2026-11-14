@@ -45,7 +45,7 @@ local function record(entry, method)
 end
 
 function L.noteCast(...)
-  local args = {...}
+  local count = select("#", ...)
   local localized
   if type(GetSpellInfo) == "function" then
     localized = GetSpellInfo(7620)
@@ -53,9 +53,18 @@ function L.noteCast(...)
     local info = C_Spell.GetSpellInfo(7620)
     localized = info and info.name
   end
-  for _, value in ipairs(args) do
-    if value == "Fishing" or (type(localized) == "string"
-        and value == localized) then
+  for index = 1, count do
+    local value = select(index, ...)
+    local name = value
+    if type(value) == "number" and type(GetSpellInfo) == "function" then
+      name = GetSpellInfo(value)
+    elseif type(value) == "number" and type(C_Spell) == "table"
+        and type(C_Spell.GetSpellInfo) == "function" then
+      local info = C_Spell.GetSpellInfo(value)
+      name = info and info.name
+    end
+    if name == "Fishing" or (type(localized) == "string"
+        and name == localized) then
       lastFishingCast = clock()
       stats.castEvents = stats.castEvents + 1
       return true

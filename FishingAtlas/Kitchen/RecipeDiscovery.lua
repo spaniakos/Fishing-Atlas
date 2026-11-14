@@ -40,6 +40,7 @@ function D.add(input, name, evidence, outputItemID)
   local records = store()
   if not records then return nil, "SavedVariables are not initialized" end
   local known = records[id]
+  if known and type(known) ~= "table" then known = nil end
   if not known and not (ns.catalog and ns.catalog.recipe and
       ns.catalog.recipe(id)) then
     local n = 0
@@ -55,7 +56,8 @@ function D.add(input, name, evidence, outputItemID)
   if ns.util and ns.util.safeText then label = ns.util.safeText(label) end
   local scanned = evidence == "client_profession"
   local rec = known or {id = id, profession = "Cooking"}
-  if not known or scanned or rec.name:find("^Spell #") then
+  if not known or scanned or type(rec.name) ~= "string"
+      or rec.name:find("^Spell #") then
     rec.name = label
   end
   if scanned then
