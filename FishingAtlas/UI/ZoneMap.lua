@@ -73,7 +73,8 @@ function M.artForMap(mapID, w, h)
             or (score == bestInfo.coverage and aw * ah > bestInfo.area) then
           best = {layer = layer, textures = textures, width = aw, height = ah}
           bestInfo = {layer = index, tiles = present, expected = expected,
-            coverage = score, area = aw * ah, width = aw, height = ah}
+            coverage = score, area = aw * ah, width = aw, height = ah,
+            tileWidth = tw, tileHeight = th}
         end
       end
     end
@@ -128,16 +129,63 @@ function M.explorationLayout(records, totalW, totalH, ox, oy, viewW, viewH)
   return out
 end
 
+-- Complete historical overlays are a fallback for character-specific fog
+-- of war. They are not available through the exploration API until a zone is
+-- explored, so the old renderer could only draw the dark base tiles.
+-- Historical DB2 IDs MUST match the art the running client actually uses.
+function M.fullOverlayRecords(mapID, meta)
+  if not meta or not meta.width or not meta.height
+      or meta.layer ~= 1 or type(C_Map) ~= "table"
+      or type(C_Map.GetMapArtID) ~= "function" then
+    return nil, "art-id API unavailable or non-base art layer"
+  end
+  local ok, artID = pcall(C_Map.GetMapArtID, mapID)
+  if not ok or type(artID) ~= "number" then
+    return nil, "art-id unavailable"
+  end
+  local pack = ns.data and ns.data.classicMapOverlays or {}
+  local refs = pack[artID]
+  if not refs then return nil, "no indexed overlays for art " .. artID, artID end
+  if refs[1] ~= meta.tileWidth or refs[2] ~= meta.tileHeight then
+    return nil, "reference tile size mismatch for art " .. artID, artID
+  end
+  local records = {}
+  for index = 3, #refs do
+    local record = refs[index]
+    if type(record) == "table" and #record >= 5 then
+      local ids = {}
+      for i = 5, #record do
+        if validTile(record[i]) then ids[#ids + 1] = record[i] end
+      end
+      if #ids > 0 then
+        records[#records + 1] = {
+          textureWidth = record[1], textureHeight = record[2],
+          offsetX = record[3], offsetY = record[4], fileDataIDs = ids,
+        }
+      end
+    end
+  end
+  if #records == 0 then return nil, "indexed art contains no valid overlays", artID end
+  return records, "historical_full_reference", artID
+end
+
 function M.exploredForMap(mapID, meta, ox, oy, viewW, viewH)
+  if not meta or not meta.width or not meta.height then
+    return {}, "map layer unavailable"
+  end
+  local historical, source, artID = M.fullOverlayRecords(mapID, meta)
+  if historical then
+    return M.explorationLayout(historical, meta.width, meta.height,
+      ox, oy, viewW, viewH), source, artID
+  end
   if type(C_MapExplorationInfo) ~= "table"
-      or type(C_MapExplorationInfo.GetExploredMapTextures) ~= "function"
-      or not meta or not meta.width or not meta.height then
-    return {}
+      or type(C_MapExplorationInfo.GetExploredMapTextures) ~= "function" then
+    return {}, source or "exploration API unavailable", artID
   end
   local ok, records = pcall(C_MapExplorationInfo.GetExploredMapTextures, mapID)
-  if not ok then return {} end
+  if not ok then return {}, "exploration API failed", artID end
   return M.explorationLayout(records, meta.width, meta.height,
-    ox, oy, viewW, viewH)
+    ox, oy, viewW, viewH), "character_exploration", artID
 end
 
 -- Differentiate references provided by C_Map from textures that have
@@ -184,11 +232,11 @@ end
 function M.describe(mapID)
   if type(mapID) ~= "number" then return "No map selected" end
   local tiles, ox, oy, w, h, meta = M.artForMap(mapID, 275, 195)
-  local explored = M.exploredForMap(mapID, meta, ox, oy, w, h)
+  local explored, source, artID = M.exploredForMap(mapID, meta, ox, oy, w, h)
   local summary = string.format(
-    "Map %d: layer %s; %d/%d base file references; %d layout tiles; %d exploration tiles",
+    "Map %d: layer %s; %d/%d base file references; %d layout tiles; %d overlay tiles (%s, art %s)",
     mapID, tostring(meta.layer or "none"), meta.tiles or 0,
-    meta.expected or 0, #tiles, #explored)
+    meta.expected or 0, #tiles, #explored, tostring(source), tostring(artID))
   local preview = previewLoadStatus(mapID)
   if not preview then
     return summary .. " | no matching visible preview for load test"
@@ -324,7 +372,8 @@ function M.render(parent, mapID, locations)
   -- Add exploration art above the base, exactly as the WoW World Map does.
   -- A 12/12 base count can still show large fogged/blank rectangles without
   -- these additional client-owned textures.
-  local explored = M.exploredForMap(mapID, info, ox, oy, vw, vh)
+  local explored, overlaySource = M.exploredForMap(mapID, info, ox, oy, vw, vh)
+  s.overlaySource = overlaySource
   for index, part in ipairs(explored) do
     if index > 600 then break end
     local texture = s.explored[index]
@@ -375,7 +424,8 @@ function M.render(parent, mapID, locations)
       info.tiles .. "/" .. info.expected .. " tiles)")
   else
     s.caption:SetText("Map " .. mapID .. " | " .. #explored ..
-      " explored tiles | " .. count .. " sourced pins")
+      (overlaySource == "historical_full_reference" and " full reference" or " explored") ..
+      " tiles | " .. count .. " sourced pins")
   end
   return #tiles > 0
 end
