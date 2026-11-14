@@ -24,6 +24,76 @@ local function recipe(id)
     or ((ns.data.gameFiles or {}).recipes or {})[id]
 end
 
+local function normalized(value)
+  if type(value) ~= "string" or value:find("^Unresolved ")
+      or value:find("^Spell #") or value:find("^Item #") then return nil end
+  local key = value:lower():gsub("^recipe:%s*", "")
+    :gsub("[^%w]+", " "):gsub("^%s+", ""):gsub("%s+$", "")
+  return key ~= "" and key or nil
+end
+
+local function observed(spellId, rec)
+  local data = ns.data.foreverObservedCooking or {}
+  local sellers, trainers = nil, (data.trainers or {})[tostring(spellId)] or {}
+  local names, seen = {}, {}
+  local function try(kind, id)
+    if not id or not ns.catalog or type(ns.catalog.name) ~= "function" then return end
+    local ok, value = pcall(ns.catalog.name, kind, id)
+    local key = ok and normalized(value) or nil
+    if key and not seen[key] then
+      names[#names + 1] = key
+      seen[key] = true
+    end
+  end
+  try("spell", spellId)
+  try("item", rec.outputItemId)
+  for _, name in ipairs(names) do
+    if (data.vendors or {})[name] then
+      sellers = data.vendors[name]
+      break
+    end
+  end
+  return sellers or {}, trainers
+end
+
+local function professionDB(spellId)
+  if not LibStub then return nil end
+  local ok, lib = pcall(LibStub, "LibProfessionDB-1.0", true)
+  if not ok or type(lib) ~= "table"
+      or type(lib.GetGameVersion) ~= "function" then return nil end
+  local vOK, version = pcall(lib.GetGameVersion, lib)
+  if not vOK or version ~= "Forever" then return nil end
+  local function call(method)
+    if type(lib[method]) ~= "function" then return nil end
+    local success, value = pcall(lib[method], lib, spellId)
+    return success and value or nil
+  end
+  local required, item = call("GetRequiredSkill"), call("GetRecipeItem")
+  if type(item) == "table" then item = item.itemId or item.itemID end
+  local borrowed = false
+  if type(lib.IsBorrowed) == "function" then
+    local success, value = pcall(lib.IsBorrowed, lib, spellId, "requiredSkill")
+    borrowed = success and value == true
+  end
+  return tonumber(required), tonumber(item), borrowed
+end
+
+local function itemTooltipSkill(itemID)
+  if not itemID or type(C_TooltipInfo) ~= "table"
+      or type(C_TooltipInfo.GetItemByID) ~= "function" then return nil end
+  local ok, tooltip = pcall(C_TooltipInfo.GetItemByID, itemID)
+  if not ok or type(tooltip) ~= "table" then return nil end
+  for _, line in ipairs(tooltip.lines or {}) do
+    if type(line.leftText) == "string" then
+      local rank = line.leftText:match("Requires%s+Cooking%s*%((%d+)%)")
+        or line.leftText:match("Requires%s+Cooking%s+(%d+)")
+      if rank and tonumber(rank) and tonumber(rank) > 0 then
+        return tonumber(rank)
+      end
+    end
+  end
+end
+
 function L.info(spellId)
   local rec = recipe(spellId)
   if not rec then return nil end
@@ -32,23 +102,54 @@ function L.info(spellId)
   local grey = tonumber(rec.greySkill or rec.grey)
   local ref = (ns.data.recipeLearningReferences or {})[tonumber(spellId)]
     or historical[tonumber(spellId)]
+  local sellers, trainers = observed(tonumber(spellId), rec)
+  local scroll = tonumber(rec.recipeItemId or (ref and ref.recipeItemId))
+  if not scroll then
+    local candidate, ambiguous
+    for _, seller in ipairs(sellers) do
+      if candidate and candidate ~= seller.itemId then ambiguous = true; break end
+      candidate = seller.itemId
+    end
+    if not ambiguous then scroll = candidate end
+  end
+  local dbSkill, dbItem, borrowed = professionDB(tonumber(spellId))
+  if not scroll then scroll = dbItem end
+  local tooltipSkill = itemTooltipSkill(scroll)
+  local trainerSkill, conflicting = nil, false
+  for _, trainer in ipairs(trainers) do
+    if type(trainer.skillRank) == "number" and trainer.skillRank > 0 then
+      if trainerSkill and trainerSkill ~= trainer.skillRank then conflicting = true end
+      trainerSkill = trainer.skillRank
+    end
+  end
+  if conflicting then trainerSkill = nil end
   local learnedSkill, source
   if min and min > 1 then
     learnedSkill, source = min, "client_learn_requirement"
-  elseif ref then
-    learnedSkill, source = ref.minimumSkill, ref.source
+  elseif ref and tonumber(ref.minimumSkill) then
+    learnedSkill, source = tonumber(ref.minimumSkill), ref.source
+  elseif tooltipSkill then
+    learnedSkill, source = tooltipSkill, "client_recipe_item_tooltip"
+  elseif trainerSkill then
+    learnedSkill, source = trainerSkill, "forever_observed_trainer"
+  elseif dbSkill and dbSkill > 0 then
+    learnedSkill = dbSkill
+    source = borrowed and "borrowed_classic_reference" or "professiondb_forever"
   elseif min == 1 and yellow and yellow <= 1 then
-    -- Only a recipe with its yellow threshold at skill 1 is safely tagged
-    -- learnable at 1 from this partial export.
     learnedSkill, source = 1, "client_skill_floor"
   end
-  local scroll = tonumber(rec.recipeItemId or (ref and ref.recipeItemId))
+  local scrollName = ref and ref.recipeItemName
+  if not scrollName and scroll then
+    for _, seller in ipairs(sellers) do
+      if seller.itemId == scroll then scrollName = seller.itemName; break end
+    end
+  end
   return {spellId = tonumber(spellId), profession = rec.profession or "Cooking",
     requiredSkill = learnedSkill, requirementSource = source or "unverified",
     yellow = yellow, grey = grey, recipeItemId = scroll,
-    recipeItemName = ref and ref.recipeItemName or nil,
-    outputItemId = rec.outputItemId, reference = ref,
-    evidence = rec.confidence or "game_files_unconfirmed"}
+    recipeItemName = scrollName, outputItemId = rec.outputItemId,
+    observedSellers = sellers, observedTrainers = trainers,
+    reference = ref, evidence = rec.confidence or "game_files_unconfirmed"}
 end
 
 function L.sources(spellId)
@@ -56,6 +157,14 @@ function L.sources(spellId)
   if not info then return {} end
   local results = {}
   local sources = ns.sources
+  for _, trainer in ipairs(info.observedTrainers or {}) do
+    results[#results + 1] = {kind = "trainer", npcId = trainer.npcId,
+      label = trainer.name, source = "forever_observed_trainer_" ..
+        tostring(trainer.sourceBuild),
+      mapID = trainer.mapID, x = trainer.x, y = trainer.y,
+      skillRank = trainer.skillRank, sourceBuild = trainer.sourceBuild,
+      seenOn = trainer.seenOn, installs = trainer.installs}
+  end
   for _, teacher in ipairs(sources and sources.trainersForRecipe(spellId) or {}) do
     local npcId = teacher.npcId
     local locations = sources and sources.vendorLocations(npcId) or {}
@@ -77,6 +186,16 @@ function L.sources(spellId)
     results[#results + 1] = {kind = "recipe_item",
       itemId = info.recipeItemId, label = "Learn by using recipe item",
       source = info.evidence}
+    for _, seller in ipairs(info.observedSellers or {}) do
+      if seller.itemId == info.recipeItemId then
+        results[#results + 1] = {kind = "vendor", npcId = seller.npcId,
+          label = seller.name, source = "forever_observed_vendor_" ..
+            tostring(seller.sourceBuild),
+          mapID = seller.mapID, x = seller.x, y = seller.y,
+          itemId = seller.itemId, sourceBuild = seller.sourceBuild,
+          seenOn = seller.seenOn, installs = seller.installs}
+      end
+    end
     for _, seller in ipairs(sources and sources.vendorsForItem(info.recipeItemId) or {}) do
       local locations = sources and sources.vendorLocations(seller.npcId) or {}
       if #locations == 0 then

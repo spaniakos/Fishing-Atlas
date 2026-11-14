@@ -5,6 +5,13 @@
 -- Cooking spell IDs are not the item IDs of recipe scrolls used to learn them.
 local _, ns = ...
 ns.data.recipeLearningReferences = {
+  [15935] = {
+    minimumSkill = 1, recipeItemId = 12226,
+    recipeItemName = "Recipe: Crispy Bat Wing",
+    source = "forever_client_public_reference", sourceBuild = "1.60.1.70862",
+    url = "https://www.wowhead.com/forever/spell=15935/crispy-bat-wing"
+    -- Abigail Shiel is populated from observed EG Link data.
+  },
   [2795] = {
     minimumSkill = 25, recipeItemId = 2889,
     recipeItemName = "Recipe: Beer Basted Boar Ribs",
