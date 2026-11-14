@@ -10,7 +10,7 @@ local categories = {
   {"fish", "Fish", "Interface\\Icons\\INV_Misc_Fish_02"},
   {"recipes", "Recipes", "Interface\\Icons\\INV_Misc_Food_15"},
   {"zones", "Zones", "Interface\\Icons\\INV_Misc_Map_01"},
-  {"schools", "Schools", "Interface\\Icons\\INV_Misc_Fishingpole_02"},
+  {"schools", "Schools", "Interface\\Icons\\INV_Misc_Fish_02"},
   {"vendors", "Vendors", "Interface\\Icons\\INV_Misc_Bag_10"},
   {"gear", "Gear", "Interface\\Icons\\Trade_Fishing"},
   {"journal", "Journal", "Interface\\Icons\\INV_Misc_Book_09"}
@@ -22,12 +22,13 @@ UI.category, UI.query, UI.offset = "zones", "", 0
 UI.topPage = "Explorer"
 UI.filterFish, UI.filterLocations, UI.detailsTab = false, false, "Overview"
 UI.recipeFilter = "all"
+UI.searchAll = true
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
-local filterOne, filterTwo
+local filterOne, filterTwo, searchScopeButton
 local uiBusy = false
 UI.mapOverride, UI.selectedPoint = nil, nil
 local sourcePopup, sourceField, sourceCaption
@@ -414,6 +415,10 @@ renderDetails = function()
 end
 
 local function select(item)
+  if item and item.atlasCategory and item.atlasCategory ~= UI.category then
+    UI.selectCategory(item.atlasCategory, item.id)
+    return
+  end
   active = item
   UI.mapOverride, UI.selectedPoint = nil, nil
   UI.detailsTab = "Overview"
@@ -429,12 +434,15 @@ end
 function UI.draw()
   if not frame or uiBusy then return end
   uiBusy = true
-  listCount:SetText(UI.category:upper() .. " (" .. #results .. ")")
+  local globalResults = UI.searchAll and #UI.query >= 2
+  listCount:SetText((globalResults and "SEARCH" or UI.category:upper()) .. " (" .. #results .. ")")
   for i, btn in ipairs(rows) do
     local item = results[UI.offset + i]
     btn.item = item
     if item then
-      btn.text:SetText(item.name:sub(1, 29))
+      local display = item.atlasCategory and ("[" .. item.atlasCategory .. "] " .. item.name)
+        or item.name
+      btn.text:SetText(display:sub(1, 29))
       btn.icon:SetTexture(zoneIcon(item))
       btn.level:SetText("")
       if item.kind == "zone" then
@@ -458,6 +466,9 @@ function UI.draw()
   for _, btn in ipairs(tabs) do
     setActive(btn, btn.caption == UI.topPage)
   end
+  if searchScopeButton then
+    searchScopeButton.text:SetText(UI.searchAll and "Global" or "This tab")
+  end
   if filterOne and filterTwo then
     if UI.category == "recipes" then
       filterOne.text:SetText((UI.recipeFilter == "known" and "[x]" or "[ ]") .. " Known recipes")
@@ -474,7 +485,8 @@ end
 
 function UI.refresh(reset)
   if not frame then return end
-  local raw = ns.browser.list(UI.category, UI.query)
+  local raw = UI.searchAll and #UI.query >= 2
+    and ns.browser.searchAll(UI.query) or ns.browser.list(UI.category, UI.query)
   results = {}
   for _, item in ipairs(raw) do
     if applyFilter(item) then results[#results + 1] = item end
@@ -538,6 +550,16 @@ local function build()
   frame:SetSize(W, H)
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:SetFrameStrata("DIALOG")
+  -- Standard WoW Escape behavior, without consuming movement or chat keys.
+  if type(UISpecialFrames) == "table" then
+    local registered
+    for _, frameName in ipairs(UISpecialFrames) do
+      if frameName == "FishingAtlasExplorer" then registered = true; break end
+    end
+    if not registered then
+      UISpecialFrames[#UISpecialFrames + 1] = "FishingAtlasExplorer"
+    end
+  end
   frame:SetMovable(true)
   frame:EnableMouse(true)
   frame:RegisterForDrag("LeftButton")
@@ -590,7 +612,14 @@ local function build()
     UI.offset, active = 0, nil
     UI.refresh(true)
   end)
-  search:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+  search:SetScript("OnEscapePressed", function(self)
+    self:ClearFocus()
+    if frame then frame:Hide() end
+  end)
+  searchScopeButton = button(left, "Global", 105, -7, 79, 27, function()
+    UI.searchAll = not UI.searchAll
+    UI.refresh(true)
+  end)
   local counts = ns.viewModel.counts()
   for i, definition in ipairs(categories) do
     local key, text, icon = definition[1], definition[2], definition[3]
