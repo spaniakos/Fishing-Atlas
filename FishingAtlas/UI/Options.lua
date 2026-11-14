@@ -82,7 +82,7 @@ function O.start()
 
   local fishingMode = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
   fishingMode:SetPoint("TOPLEFT", panel, "TOPLEFT", 20, -274)
-  local castLabel = note(panel, 54, -276, "Use Space to manually cast Fishing (out of combat only)")
+  note(panel, 54, -276, "Use Space to manually cast Fishing (out of combat only)")
   fishingMode:SetScript("OnShow", function(self)
     self:SetChecked(ns.fishing and ns.fishing.isEnabled() or false)
   end)
