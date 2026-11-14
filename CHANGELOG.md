@@ -3,7 +3,8 @@
   C_TradeSkillUI.GetBaseProfessionInfo/ChildProfessionInfo, read modern
   learned recipe spell IDs, reject wrong-profession and changing-data windows,
   and preserve a separately tested Classic fallback. Shared scanner now drives
-  manual Scan Cooking and character knowledge observations.
+  manual Scan Cooking and character knowledge observations. Add /fa recipedebug
+  for read-only current-profession API diagnostics.
 
 - Begin canonical ID-based recipe index generated from 136 catalog spells, pinned
   Forever trainer observations and explicit spell-to-teaching-item references.

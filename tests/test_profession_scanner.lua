@@ -28,6 +28,9 @@ C_TradeSkillUI = {
   IsDataSourceChanging = function() return false end
 }
 assert(S.detect() == true, "GetBaseProfessionInfo must beat stale legacy UNKNOWN")
+assert(S.debug():find("base=Cooking", 1, true)
+  and S.debug():find("modern rows=4", 1, true),
+  "Scanner diagnostics must show the client's actual API state")
 local data = assert(S.readCooking())
 assert(data.backend == "Forever modern" and data.inspected == 4)
 assert(#data.entries == 2 and data.learned == 2)

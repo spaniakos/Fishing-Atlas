@@ -203,3 +203,26 @@ function S.readCooking()
   return nil, problem or oldProblem
     or "Cooking is open, but this client provides no readable recipe list"
 end
+
+-- Diagnostics are read-only and safe to run while Cooking is displayed.
+function S.debug()
+  local api = C_TradeSkillUI
+  local base = apiCall(api, "GetBaseProfessionInfo")
+  local child = apiCall(api, "GetChildProfessionInfo")
+  local ids = apiCall(api, "GetAllRecipeIDs")
+  local changing = apiCall(api, "IsDataSourceChanging")
+  local legacyName
+  if type(GetTradeSkillLine) == "function" then
+    local ok, name = pcall(GetTradeSkillLine)
+    if ok then legacyName = name end
+  end
+  local active, reason = S.detect()
+  return string.format(
+    "Cooking scanner: %s | base=%s | child=%s | legacy=%s | modern rows=%s | changing=%s",
+    active == true and "ready" or tostring(reason),
+    type(base) == "table" and label(base) or "nil",
+    type(child) == "table" and label(child) or "nil",
+    tostring(legacyName or "nil"),
+    type(ids) == "table" and tostring(#ids) or "nil",
+    tostring(changing))
+end
