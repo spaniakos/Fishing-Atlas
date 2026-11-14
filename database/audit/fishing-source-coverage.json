@@ -1,0 +1,1804 @@
+{
+  "items": [
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 15,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 118,
+      "name": "Unresolved item #118",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 39,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 64,
+        "usedAsIngredientBy": 2
+      },
+      "group": "associated_item",
+      "id": 159,
+      "name": "Refreshing Spring Water",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 787,
+      "name": "Item #787",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 3,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 1467,
+      "name": "Unresolved item #1467",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 30,
+        "usedAsIngredientBy": 3
+      },
+      "group": "associated_item",
+      "id": 2678,
+      "name": "Item #2678",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 25,
+        "usedAsIngredientBy": 2
+      },
+      "group": "associated_item",
+      "id": 2692,
+      "name": "Item #2692",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 31,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 3371,
+      "name": "Item #3371",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 6,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 3385,
+      "name": "Unresolved item #3385",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 3404,
+      "name": "Item #3404",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 3,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 3712,
+      "name": "Item #3712",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 20,
+        "usedAsIngredientBy": 4
+      },
+      "group": "associated_item",
+      "id": 3713,
+      "name": "Item #3713",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 3,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 3820,
+      "name": "Unresolved item #3820",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 25,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 4470,
+      "name": "Item #4470",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 4592,
+      "name": "Item #4592",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 4593,
+      "name": "Item #4593",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 4594,
+      "name": "Item #4594",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 7,
+        "usedAsIngredientBy": 2
+      },
+      "group": "fishing_catch",
+      "id": 4603,
+      "name": "Raw Spotted Yellowtail",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 5095,
+      "name": "Item #5095",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 68,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 32,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6256,
+      "name": "Fishing Pole",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 4,
+        "observedFishingZones": 8,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 10,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6289,
+      "name": "Raw Longjaw Mud Snapper",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 6290,
+      "name": "Item #6290",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 6,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 2
+      },
+      "group": "fishing_catch",
+      "id": 6291,
+      "name": "Raw Brilliant Smallfish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6294,
+      "name": "Unresolved item #6294",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6295,
+      "name": "Unresolved item #6295",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6299,
+      "name": "Unresolved item #6299",
+      "sourceStatus": "unknown_not_proven_absent"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 3,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 9,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6303,
+      "name": "Raw Slitherskin Mackerel",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 6,
+        "observedFishingZones": 5,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 8,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6308,
+      "name": "Raw Bristle Whisker Catfish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6309,
+      "name": "Unresolved item #6309",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 6316,
+      "name": "Item #6316",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6317,
+      "name": "Raw Loch Frenzy",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6355,
+      "name": "Unresolved item #6355",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6358,
+      "name": "Oily Blackmouth",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 2,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6359,
+      "name": "Firefin Snapper",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 2,
+        "observedFishingZones": 2,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6361,
+      "name": "Raw Rainbow Fin Albacore",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 8,
+        "usedAsIngredientBy": 2
+      },
+      "group": "fishing_catch",
+      "id": 6362,
+      "name": "Raw Rockscale Cod",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 22,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 1,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6365,
+      "name": "Strong Fishing Pole",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 1,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6367,
+      "name": "Big Iron Fishing Pole",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6457,
+      "name": "Unresolved item #6457",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 11,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6470,
+      "name": "Unresolved item #6470",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 6522,
+      "name": "Deviate Fish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 46,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 28,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6529,
+      "name": "Shiny Bauble",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 66,
+        "observedCreatureDrops": 1,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 29,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6530,
+      "name": "Nightcrawlers",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 57,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 20,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6532,
+      "name": "Bright Baubles",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 4,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 6550,
+      "name": "Unresolved item #6550",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 6657,
+      "name": "Item #6657",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 1,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 6811,
+      "name": "Aquadynamic Fish Attractor",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 6887,
+      "name": "Item #6887",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 1,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 7307,
+      "name": "Flesh Eating Worm",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 8364,
+      "name": "Item #8364",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 2
+      },
+      "group": "fishing_catch",
+      "id": 8365,
+      "name": "Raw Mithril Head Trout",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 8,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 8925,
+      "name": "Item #8925",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 8957,
+      "name": "Item #8957",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 6,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 8959,
+      "name": "Item #8959",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 12184,
+      "name": "Item #12184",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 1,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 12225,
+      "name": "Blump Family Fishing Pole",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 12238,
+      "name": "Unresolved item #12238",
+      "sourceStatus": "unknown_not_proven_absent"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 13422,
+      "name": "Stonescale Eel",
+      "sourceStatus": "unknown_not_proven_absent"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13754,
+      "name": "Raw Glossy Mightfish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13755,
+      "name": "Winter Squid",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13756,
+      "name": "Raw Summer Bass",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 13757,
+      "name": "Unresolved item #13757",
+      "sourceStatus": "unknown_not_proven_absent"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 2
+      },
+      "group": "fishing_catch",
+      "id": 13758,
+      "name": "Raw Redgill",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13759,
+      "name": "Raw Nightfin Snapper",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13760,
+      "name": "Raw Sunscale Salmon",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 3
+      },
+      "group": "fishing_catch",
+      "id": 13888,
+      "name": "Darkclaw Lobster",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13889,
+      "name": "Raw Whitescale Salmon",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 13890,
+      "name": "Item #13890",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13927,
+      "name": "Item #13927",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13928,
+      "name": "Item #13928",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13929,
+      "name": "Item #13929",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13930,
+      "name": "Item #13930",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13931,
+      "name": "Nightfin Soup",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13932,
+      "name": "Item #13932",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13933,
+      "name": "Item #13933",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 13935,
+      "name": "Item #13935",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 1,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 19022,
+      "name": "Nat Pagle's Extreme Angler FC-5000",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 1,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "equipment",
+      "id": 19970,
+      "name": "Arcanite Fishing Pole",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 2,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 20708,
+      "name": "Unresolved item #20708",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 21071,
+      "name": "Raw Sagefish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 21072,
+      "name": "Item #21072",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 21113,
+      "name": "Unresolved item #21113",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 21114,
+      "name": "Unresolved item #21114",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 1,
+        "observedPoolSources": 1,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "fishing_catch",
+      "id": 21150,
+      "name": "Unresolved item #21150",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "fishing_catch",
+      "id": 21153,
+      "name": "Raw Greater Sagefish",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 21217,
+      "name": "Item #21217",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 1
+      },
+      "group": "associated_item",
+      "id": 227813,
+      "name": "Item #227813",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 232436,
+      "name": "Item #232436",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 232438,
+      "name": "Item #232438",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 238641,
+      "name": "Item #238641",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 238642,
+      "name": "Item #238642",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 0,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 2
+      },
+      "group": "associated_item",
+      "id": 239017,
+      "name": "Item #239017",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 279965,
+      "name": "Item #279965",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 279967,
+      "name": "Item #279967",
+      "sourceStatus": "documented_reference_or_observation"
+    },
+    {
+      "evidence": {
+        "clientCraftSpells": 1,
+        "historicalCraftReferences": 0,
+        "historicalCreatureLoot": 0,
+        "historicalObjectLoot": 0,
+        "historicalQuestRewards": 0,
+        "historicalVendorSellers": 0,
+        "observedCreatureDrops": 0,
+        "observedFishingZones": 0,
+        "observedPoolSources": 0,
+        "observedVendorSellers": 0,
+        "usedAsIngredientBy": 0
+      },
+      "group": "associated_item",
+      "id": 286152,
+      "name": "Item #286152",
+      "sourceStatus": "documented_reference_or_observation"
+    }
+  ],
+  "meta": {
+    "counts": {
+      "associated_item": 41,
+      "equipment": 11,
+      "fishing_catch": 42
+    },
+    "noSourceMeans": "unknown_not_proven_absent",
+    "observationCredit": "Everloot, CC BY-SA 4.0",
+    "observedAt": "2026-11-13T14:10:21.029Z",
+    "purpose": "Fishing-only source coverage; not server availability",
+    "referenceCredit": "Blizzard-derived client metadata and separate GPLv3 historical references",
+    "totalRecords": 94,
+    "unknownSources": 4
+  }
+}
