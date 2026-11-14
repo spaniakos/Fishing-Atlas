@@ -33,6 +33,39 @@ function M.geometry(mapID)
       or rw < 0.045 or rh < 0.045 or rw > 0.96 or rh > 0.96 then
     return nil, "parent rectangle outside safe bounds"
   end
+  -- Some client art maps have a usable rectangle but belong to a different
+  -- world instance or do not align. Cross-check centers if these APIs exist.
+  if type(api.GetWorldPosFromMapPos) == "function" then
+    local function world(id, x, y)
+      local succeeded, instance, point = pcall(api.GetWorldPosFromMapPos,
+        id, {x = x, y = y})
+      if succeeded and type(instance) == "number" and type(point) == "table"
+          and type(point.x) == "number" and type(point.y) == "number"
+          and point.x == point.x and point.y == point.y then
+        return instance, point.x, point.y
+      end
+    end
+    local instance1, wx1, wy1 = world(mapID, 0.5, 0.5)
+    local instance2, wx2, wy2 = world(parent,
+      (x0 + x1) / 2, (y0 + y1) / 2)
+    if instance1 and instance2 then
+      if instance1 ~= instance2 then
+        return nil, "parent map uses a different world instance"
+      end
+      local sizeX, sizeY = 1000, 1000
+      if type(api.GetMapWorldSize) == "function" then
+        local sizeOK, sw, sh = pcall(api.GetMapWorldSize, mapID)
+        if sizeOK then
+          if type(sw) == "number" and sw > 0 then sizeX = sw end
+          if type(sh) == "number" and sh > 0 then sizeY = sh end
+        end
+      end
+      if math.abs(wx1 - wx2) > math.max(100, sizeX * 0.08)
+          or math.abs(wy1 - wy2) > math.max(100, sizeY * 0.08) then
+        return nil, "parent/child world coordinates do not align"
+      end
+    end
+  end
   return {mapID = mapID, parentID = parent,
     minX = x0, maxX = x1, minY = y0, maxY = y1,
     spanX = rw, spanY = rh}

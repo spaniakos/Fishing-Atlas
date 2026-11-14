@@ -29,6 +29,19 @@ end
 C_Map.IsCityMap = function() return true end
 assert(ns.mapContext.geometry(99) == nil, "City art must not inherit parent terrain")
 C_Map.IsCityMap = function() return false end
+-- When world-coordinate conversions are available, cross-check transforms.
+C_Map.GetWorldPosFromMapPos = function() return 1, {x = 1000, y = 2000} end
+C_Map.GetMapWorldSize = function() return 1000, 1000 end
+assert(ns.mapContext.geometry(99), "Aligned world coordinates permit context")
+C_Map.GetWorldPosFromMapPos = function(id)
+  return id == 99 and 1 or 2, {x = 1000, y = 2000}
+end
+assert(not ns.mapContext.geometry(99), "Different map instances must be rejected")
+C_Map.GetWorldPosFromMapPos = function(id)
+  return 1, id == 99 and {x = 1000, y = 2000} or {x = 3000, y = 4000}
+end
+assert(not ns.mapContext.geometry(99), "Misaligned world projections must be rejected")
+C_Map.GetWorldPosFromMapPos = nil
 ns.storage.db.settings.mapContext = false
 assert(#ns.mapContext.tiles(99, 0, 0, 256, 256) == 0)
 ns.storage.db.settings.mapContext = true

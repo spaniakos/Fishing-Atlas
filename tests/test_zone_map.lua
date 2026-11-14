@@ -88,6 +88,11 @@ C_Timer = {After = function(_, callback)
   scheduled[#scheduled + 1] = callback
 end}
 C_Map.GetMapArtBackgroundAtlas = function() return "TestMapBackground" end
+ns.mapContext = {
+  tiles = function() return {{texture = 999, x = 0, y = 0, w = 64, h = 64,
+    u0 = 0, u1 = 1, v0 = 0, v1 = 1}} end,
+  describe = function() return "test parent" end
+}
 assert(ns.zoneMap.render(fake, 1439, {}))
 assert(textures[1].atlas == "TestMapBackground",
   "Native background atlas must appear under transparent base art")
@@ -97,17 +102,23 @@ scheduled[1]()
 assert(#scheduled == 2, "A complete-ID art map gets two streaming retries")
 scheduled[2]()
 assert(#scheduled == 2, "Streaming retries must stop and never loop forever")
-local baseCount, explorationCount = 0, 0
+local baseCount, contextCount, explorationCount = 0, 0, 0
 for _, t in ipairs(textures) do
   if t.layer == "BACKGROUND" and type(t.texture) == "number" then
-    baseCount = baseCount + 1
+    if t.sublevel == 1 and t.texture == 999 then
+      contextCount = contextCount + 1
+    elseif t.sublevel == 2 then
+      baseCount = baseCount + 1
+    end
   elseif t.layer == "ARTWORK" and type(t.texture) == "number" then
     explorationCount = explorationCount + 1
   end
 end
-assert(baseCount == 4 and explorationCount == 2,
+assert(contextCount == 1 and baseCount == 4 and explorationCount == 2,
   "Preview must render both complete base layer AND two exploration textures")
 local loadReport = ns.zoneMap.describe(1439)
+assert(loadReport:find("context: test parent", 1, true),
+  "Map diagnostics must identify parent context geometry")
 assert(loadReport:find("3/4 loaded", 1, true),
   "The preview must distinguish rendered textures from C_Map file references")
 assert(loadReport:find("2:102", 1, true),

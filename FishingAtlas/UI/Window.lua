@@ -271,7 +271,7 @@ local function renderMap()
   local locations = ns.mapMarkers and ns.mapMarkers.collect(active, mapID,
     UI.selectedPoint) or (sourced and ns.viewModel.mapPoints(active) or {})
   if schoolModeButton then
-    schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
+    schoolModeButton.text:SetText(mode == "active" and "Schools: Live" or "Schools: All")
   end
   ns.zoneMap.render(mapSurface, mapID, locations)
   mapCaption:SetText(not mapID and "No map selected"
@@ -482,6 +482,7 @@ local function rowClick(record)
       kind = record.kind or "selected_position"} or nil
     renderMap()
     local opened = inGameMap(record.mapID)
+    if ns.mapPins then ns.mapPins.refresh() end
     if not opened then ns.commands.say("World map could not be opened by this client") end
     if record.x and record.y and type(TomTom) == "table"
         and type(TomTom.AddWaypoint) == "function" then
@@ -570,6 +571,7 @@ local function select(item)
     UI.detailsTab = "Overview"
     UI.draw()
     renderDetails()
+    if ns.mapPins then ns.mapPins.refresh() end
     return
   end
   if item.atlasCategory and item.atlasCategory ~= UI.category then
@@ -581,6 +583,7 @@ local function select(item)
   UI.detailsTab = "Overview"
   UI.draw()
   renderDetails()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 function UI.scroll(amount)
@@ -687,6 +690,7 @@ function UI.refresh(reset)
   UI.draw()
   renderDetails()
   hideContext()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 -- Category navigation is atomic: programmatically clearing search causes the
@@ -761,6 +765,7 @@ function UI.selectCategory(category, id, topPage, searchRecord)
   UI.draw()
   renderDetails()
   hideContext()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 function UI.selected()
