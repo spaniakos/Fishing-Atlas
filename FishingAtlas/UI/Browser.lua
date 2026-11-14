@@ -22,17 +22,68 @@ end
 function B.list(category, term)
   term = type(term) == "string" and term:lower() or ""
   local out, db = {}, ns.storage.db or {}
-  if category == "fish" or category == "gear" then
-    local kinds = category == "fish" and {"fish"} or {"fishing_pole", "lure"}
-    for _, kind in ipairs(kinds) do
+  if category == "items" then
+    local seen = {}
+    local scope = ns.fishingScope and ns.fishingScope.data() or nil
+    local relevant = scope and scope.items or nil
+    local caught = scope and scope.caught or {}
+    for _, entity in ipairs(ns.catalog.itemList and ns.catalog.itemList() or {}) do
+      if (not relevant or relevant[entity.id]) and not caught[entity.id] then
+        seen[entity.id] = true
+        push(out, row(entity.id, ns.catalog.name("item", entity.id), "item",
+          entity.confidence), term)
+      end
+    end
+    local observed = ns.data.everloot or {}
+    for id in pairs(observed.itemNames or {}) do
+      if not seen[id] and ((not relevant or relevant[id]) and not caught[id]) then
+        seen[id] = true
+        push(out, row(id, ns.catalog.name("item", id), "item",
+          "observed_confirmed"), term)
+      end
+    end
+    for _, group in ipairs({observed.vendorItems or {}, observed.drops or {},
+        observed.fishing or {}, observed.poolItems or {}}) do
+      for id in pairs(group) do
+        if not seen[id] and ((not relevant or relevant[id]) and not caught[id]) then
+          seen[id] = true
+          push(out, row(id, ns.catalog.name("item", id), "item",
+            "observed_provisional"), term)
+        end
+      end
+    end
+  elseif category == "fish" then
+    -- Fish is every item actually associated with fishing casts/pools or
+    -- documented fishing-water references, including non-fish catches.
+    -- An ordinary merchant/creature drop never makes an item fishable.
+    local caught = ns.fishingScope and ns.fishingScope.data().caught or {}
+    for id in pairs(caught) do
+      local entity = ns.catalog.entity("item", id)
+      local evidence = (ns.data.everloot and
+        ((ns.data.everloot.fishing or {})[id] or
+         (ns.data.everloot.poolItems or {})[id]))
+        and "observed_fishing" or entity and entity.confidence
+        or "classic_fishing_reference"
+      push(out, row(id, ns.catalog.name("item", id), "fish", evidence), term)
+    end
+  elseif category == "gear" then
+    for _, kind in ipairs({"fishing_pole", "lure"}) do
       for _, e in ipairs(ns.catalog.byCategory(kind, 200)) do
         push(out, row(e.id, e.name, kind, e.confidence), term)
       end
     end
   elseif category == "recipes" then
+    local seenRecipes = {}
     for _, r in ipairs(ns.catalog.recipeList()) do
+      seenRecipes[r.spellId] = true
       push(out, row(r.spellId, ns.catalog.name("spell", r.spellId),
         r.profession or "Cooking", r.confidence, r), term)
+    end
+    for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+      if not seenRecipes[id] then
+        push(out, row(id, ns.catalog.name("spell", id),
+          "gamefile_recipe", "game_files_unconfirmed", recipe), term)
+      end
     end
   elseif category == "zones" then
     for _, z in ipairs(ns.catalog.zones()) do
@@ -40,9 +91,16 @@ function B.list(category, term)
     end
   elseif category == "schools" then
     local seen = {}
-    for _, school in ipairs(ns.data.schoolTypes or {}) do
+    for _, school in ipairs(ns.sources and ns.sources.schools() or {}) do
+      push(out, row(school.name, school.name, "school_type",
+        "observed_provisional"), term)
       seen[school.name:lower()] = true
-      push(out, row(school.name, school.name, "school_type", "classic_reference"), term)
+    end
+    for _, school in ipairs(ns.data.schoolTypes or {}) do
+      if not seen[school.name:lower()] then
+        seen[school.name:lower()] = true
+        push(out, row(school.name, school.name, "school_type", "classic_reference"), term)
+      end
     end
     for _, sighting in ipairs(db.schoolCandidates or {}) do
       if type(sighting) == "table" and type(sighting.label) == "string"
@@ -52,6 +110,12 @@ function B.list(category, term)
         seen[sighting.label:lower()] = true
       end
     end
+  elseif category == "npcs" then
+    for id in pairs(ns.fishingScope and ns.fishingScope.data().mobs or {}) do
+      local name = ns.sources and ns.sources.npcName(id)
+        or ("Unidentified creature (NPC " .. id .. ")")
+      push(out, row(id, name, "observed_npc", "observed_source"), term)
+    end
   elseif category == "journal" then
     for id, r in pairs(db.catches or {}) do
       if type(r) == "table" then
@@ -59,13 +123,24 @@ function B.list(category, term)
       end
     end
   elseif category == "vendors" then
+    local seenNpcs = {}
     for _, vendor in ipairs(ns.data.referenceVendors or {}) do
-      push(out, row(vendor.id, vendor.name, "vendor_reference", "mixed_source_reference", vendor), term)
+      if not ns.fishingScope or ns.fishingScope.vendor(vendor.id) then
+        seenNpcs[vendor.id] = true
+        push(out, row(vendor.id, vendor.name, "vendor_reference", "mixed_source_reference", vendor), term)
+      end
     end
     for id, r in pairs(db.vendorObservations or {}) do
-      if type(r) == "table" then
+      if type(r) == "table" and (not ns.fishingScope or ns.fishingScope.vendor(id)) then
+        seenNpcs[id] = true
         push(out, row(id, r.name or ("Merchant NPC #" .. tostring(id)),
           "merchant_observation", "client_observed", r), term)
+      end
+    end
+    for id, npc in pairs((ns.data.everloot or {}).npcs or {}) do
+      if not seenNpcs[id] and (not ns.fishingScope or ns.fishingScope.vendor(id)) then
+        push(out, row(id, npc.name or ("NPC #" .. id), "observed_npc",
+          "observed_provisional", npc), term)
       end
     end
   end
@@ -74,6 +149,28 @@ function B.list(category, term)
     return a.name < b.name
   end)
   return out
+end
+
+-- Search across the fishing atlas. Keep category metadata for cross-tab routing.
+function B.searchAll(term, maxResults)
+  term = type(term) == "string" and term:lower() or ""
+  if #term < 2 then return {} end
+  local output, seen = {}, {}
+  local categories = {"fish", "recipes", "items", "schools", "zones",
+    "vendors", "npcs", "gear", "journal"}
+  local maxRows = math.max(1, math.min(tonumber(maxResults) or 150, 300))
+  for _, category in ipairs(categories) do
+    for _, entry in ipairs(B.list(category, term)) do
+      local key = tostring(entry.kind) .. ":" .. tostring(entry.id)
+      if not seen[key] then
+        seen[key] = true
+        entry.atlasCategory = category
+        output[#output + 1] = entry
+        if #output >= maxRows then return output end
+      end
+    end
+  end
+  return output
 end
 
 function B.schoolSightings(label)
@@ -221,23 +318,34 @@ end
 
 function B.icon(item)
   if not item then return unknownIcon end
-  if item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
+  if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
     return ns.catalog.icon("item", item.id)
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
-    local recipe = ns.catalog.recipe(item.id)
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
+    local recipe = ns.catalog.recipe(item.id) or
+      ((ns.data.gameFiles or {}).recipes or {})[item.id]
     if recipe and recipe.outputItemId then return ns.catalog.icon("item", recipe.outputItemId) end
     return ns.catalog.icon("spell", item.id)
   elseif item.kind == "catch" and item.extra and item.extra.id then
     return ns.catalog.icon("item", item.extra.id)
+  elseif item.kind == "school_type" then
+    -- A stable client icon, including schools without a corresponding item ID.
+    -- An item icon ID is not guaranteed to be cached or even loadable.
+    return "Interface\\Icons\\INV_Misc_Fish_02"
+  elseif item.kind == "observed_npc" then
+    return "Interface\\Icons\\Ability_Hunter_BeastCall"
+  elseif item.kind == "vendor_reference" or item.kind == "merchant_observation" then
+    return "Interface\\Icons\\INV_Misc_Bag_10"
   end
-  return unknownIcon
+  return "Interface\\Icons\\INV_Misc_Note_01"
 end
 
 function B.tooltip(item)
   if not item then return nil end
-  if item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
+  if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole" or item.kind == "lure" then
     return "item", tonumber(item.id)
-  elseif item.kind == "Cooking" or item.kind == "Fishing" then
+  elseif item.kind == "Cooking" or item.kind == "Fishing"
+      or item.kind == "gamefile_recipe" then
     return "spell", tonumber(item.id)
   end
   return nil
@@ -250,6 +358,13 @@ function B.waypoint(item)
   local candidate
   if item.kind == "school_type" then
     candidate = B.schoolSightings(item.name)[1]
+    if not candidate then
+      local guide = (ns.data.referenceSchoolLocations or {})[item.name] or {}
+      if guide[1] then
+        candidate = {mapID = guide[1].mapID, x = guide[1].x, y = guide[1].y,
+          label = item.name .. " (guide reference; check in game)", reference = true}
+      end
+    end
   elseif item.kind == "zone" then
     local all = B.zoneSightings(item.id)
     candidate = all.schools[1] or all.positions[1]
@@ -272,6 +387,18 @@ function B.waypoint(item)
         end
       end
       if candidate then break end
+    end
+  elseif item.kind == "observed_npc" and ns.sources then
+    local spots = ns.sources.vendorLocations(item.id)
+    candidate = spots[1]
+  elseif item.kind == "item" and ns.sources then
+    for _, seller in ipairs(ns.sources.vendorsForItem(item.id)) do
+      local places = ns.sources.vendorLocations(seller.npcId)
+      if places[1] then
+        candidate = places[1]
+        candidate.label = seller.title .. " (observed vendor)"
+        break
+      end
     end
   elseif item.kind == "merchant_observation" and item.extra then
     local e = item.extra

@@ -16,6 +16,16 @@ ADDON = ROOT / "FishingAtlas"
 FIXED_TIME = (2026, 1, 1, 0, 0, 0)
 
 
+def validate_observed_pack(source):
+    """A 0.99.6+ release must not accidentally ship the old empty placeholder."""
+    if not re.search(r'sourceSha256\s*=\s*"[0-9a-f]{64}"', source):
+        raise ValueError("Missing checksum-verified offline Everloot source pack")
+    if "Data from Everloot (https://everloot.app), CC BY-SA 4.0." not in source:
+        raise ValueError("Offline Everloot attribution missing")
+    if not re.search(r'dataAsOf\s*=\s*"[^"]+"', source):
+        raise ValueError("Offline Everloot snapshot timestamp missing")
+
+
 def build(output_dir, tag):
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,80}", tag):
         raise ValueError("Unsafe package tag")
@@ -26,6 +36,9 @@ def build(output_dir, tag):
     if tag.startswith("v") and re.fullmatch(r"v\d+\.\d+\.\d+", tag):
         if tag[1:] != match.group(1):
             raise ValueError("Tag must match TOC version")
+    if tuple(map(int, match.group(1).split("."))) >= (0, 99, 6):
+        validate_observed_pack(
+            (ADDON / "Data" / "EverlootObserved.lua").read_text(encoding="utf-8"))
     files = sorted(p for p in ADDON.rglob("*") if p.is_file() and p.suffix in {".toc", ".lua", ".tga"})
     if not any(p.name == "FishingAtlas.toc" for p in files):
         raise ValueError("Addon manifest missing")
@@ -33,6 +46,7 @@ def build(output_dir, tag):
     destination = output_dir / ("FishingAtlas-" + tag + ".zip")
     contents = [(p.relative_to(ROOT).as_posix(), p.read_bytes()) for p in files]
     contents.append(("FishingAtlas/LICENSE", (ROOT / "LICENSE").read_bytes()))
+    contents.append(("FishingAtlas/DATA-LICENSES.txt", (ADDON / "DATA-LICENSES.txt").read_bytes()))
     contents.sort(key=lambda item: item[0])
     with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for path, raw in contents:

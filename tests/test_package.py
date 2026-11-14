@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from package import build
+from package import build, validate_observed_pack
 
 
 class PackageTests(unittest.TestCase):
@@ -23,6 +23,7 @@ class PackageTests(unittest.TestCase):
                 files = zipped.namelist()
                 self.assertIn("FishingAtlas/FishingAtlas.toc", files)
                 self.assertIn("FishingAtlas/LICENSE", files)
+                self.assertIn("FishingAtlas/DATA-LICENSES.txt", files)
                 self.assertIn("FishingAtlas/Data/Catalog.lua", files)
                 self.assertIn("FishingAtlas/Art/atlas-emblem.tga", files)
                 self.assertIn("FishingAtlas/Art/deepwater-background.tga", files)
@@ -37,8 +38,18 @@ class PackageTests(unittest.TestCase):
 
     def test_current_version_package(self):
         with tempfile.TemporaryDirectory() as tmp:
-            artifact, _ = build(Path(tmp), "v0.99.5")
+            artifact, _ = build(Path(tmp), "v0.99.6")
             self.assertTrue(artifact.is_file())
+
+    def test_reject_missing_or_unattributed_offline_pack(self):
+        with self.assertRaisesRegex(ValueError, "checksum-verified"):
+            validate_observed_pack('sourceSha256 = "not-imported"')
+        with self.assertRaisesRegex(ValueError, "attribution"):
+            validate_observed_pack('sourceSha256 = "' + "a" * 64 +
+                                   '" dataAsOf = "2026-11-13"')
+        with self.assertRaisesRegex(ValueError, "timestamp"):
+            validate_observed_pack('sourceSha256 = "' + "a" * 64 +
+                                   '" Data from Everloot (https://everloot.app), CC BY-SA 4.0.')
 
     def test_reject_mismatched_tag(self):
         with tempfile.TemporaryDirectory() as tmp:

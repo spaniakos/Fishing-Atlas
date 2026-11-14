@@ -1,4 +1,4 @@
-# Fishing Atlas: v0.7 to v0.99 release train
+# Fishing Atlas: v0.7 to v0.99.6 release train
 
 Target: **WoW Forever 1.60.1.70888**, Interface **16001**, Lua **5.1**.
 Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, reviewed as a PR, and merged to `main` before beginning the next milestone. No tags until the associated release is actually packaged and verified.
@@ -61,3 +61,22 @@ Each milestone is developed on its own `feat/vX.Y-...` branch, validated in CI, 
 - External datasets are **not** automatically GPL compatible; maintain separate provenance and permissions.
 - Wowhead and reference addons are comparison sources until redistribution rights are established.
 - Never claim client data proves live vendor stock, active pool spawns or drop rates.
+
+
+## v0.99.6: linked atlas, offline open database tooling (draft PR)
+
+- [x] Make middle-panel recipe ingredients, products and related entries hoverable and clickable, with WoW native tooltips.
+- [x] Add item overview/vendor/drop/crafted/map navigation and recipe trainer/acquisition paths, with confidence labels.
+- [x] Include observed schools' named areas and separate actual object points from saved nearby positions.
+- [x] Improve map-preview scaling and contextual marker artwork; implement optional TomTom navigation.
+- [x] Improve minimap button art/radius and replace several vague question-mark icons.
+- [x] Build offline Everloot corpus ingester (3-install threshold, privacy stripping, snapshot consistency, diffs).
+- [x] Support *separate* build-matched game-file export import, preserving Blizzard attribution and unconfirmed status.
+- [x] Include data licenses/credit in the package and readable source links in explorer.
+- [x] Configure scheduled/dispatch Everloot source-refresh **review PR**, not unattended release.
+- [ ] Fetch and validate a real, complete Forever observed corpus; publish a nonempty release data pack. **Unblocked by either a licensed corpus.ndjson or API access sufficient to page the entire feed.**
+- [ ] Fetch and validate the current matching open game-file export, if available.
+- [ ] Confirm all map/tooltips/navigation/zone layouts inside the real Forever client. This is an external release gate.
+- [ ] Review full dataset size, source rights and unverified records; merge/release only after acceptance.
+
+**Gate:** static tests green, provenance not discarded, exact attribution, no fabricated coordinates. This is a code-complete *candidate pipeline*, not a claim of complete in-game database coverage or a verified stable release.

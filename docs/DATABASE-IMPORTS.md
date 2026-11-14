@@ -34,3 +34,12 @@ AHledger restricts API retention and large-scale archival. Do not bulk copy its 
 v0.8 is **incomplete** until fish, equipment, recipes, schools and acquisition data have useful
 coverage and public-source conflicts are resolved. Do not use passable unit tests as a substitute
 for populated content.
+
+
+## v0.99.6 automated Everloot offline adapters
+
+`scripts/import_everloot.py --input corpus.ndjson --write` loads licensed observed records (or `--fetch` pages the read-only public corpus). It checks `dataAsOf` across pages, deduplicates reported events, counts distinct installs and strips install pseudonyms. Generated artifacts: `FishingAtlas/Data/EverlootObserved.lua`, `database/observed/everloot-normalized.json`, `database/observed/last-diff.json`. One install remains provisional; three agreeing installations qualify for an `observed_confirmed` *relationship*, not proof of permanent spawn.
+
+`scripts/import_everloot_gamefiles.py --export <export-folder> --write` reads the **separately licensed**, game-file subset of a matching Everloot open data export and verifies manifest checksums. Generated artifacts: `FishingAtlas/Data/EverlootGameFiles.lua` and `database/game-files/everloot-gamefiles.json`. A mismatch with build `1.60.1.70888` is rejected. The client-game-file data is © Blizzard Entertainment, Inc., not CC BY-SA player observations.
+
+The `.github/workflows/everloot-refresh.yml` workflow requests a review PR for source updates. No API key is required by players. A missing, incomplete, throttled, inaccessible or unstable upstream response is a failed import, **not** evidence of a zero-size database.

@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Fishing Atlas 0.99.5: image-3-inspired three-column explorer.
+-- Fishing Atlas 0.99.6: image-3-inspired three-column explorer.
 -- All controls are functional FrameXML; visuals never invent game-world data.
 local _, ns = ...
 ns.ui = {}
@@ -8,25 +8,34 @@ local W, H = 1210, 755
 local rowHeight, visibleRows = 34, 12
 local categories = {
   {"fish", "Fish", "Interface\\Icons\\INV_Misc_Fish_02"},
+  {"items", "Items", "Interface\\Icons\\INV_Misc_Bag_10"},
   {"recipes", "Recipes", "Interface\\Icons\\INV_Misc_Food_15"},
   {"zones", "Zones", "Interface\\Icons\\INV_Misc_Map_01"},
-  {"schools", "Schools", "Interface\\Icons\\INV_Misc_Fishingpole_02"},
+  {"schools", "Schools", "Interface\\Icons\\INV_Misc_Fish_02"},
   {"vendors", "Vendors", "Interface\\Icons\\INV_Misc_Bag_10"},
   {"gear", "Gear", "Interface\\Icons\\Trade_Fishing"},
   {"journal", "Journal", "Interface\\Icons\\INV_Misc_Book_09"}
 }
-local topTabs = {"Explorer", "Journal", "Recipes", "Zones", "Schools", "Vendors", "Gear"}
-local categoryFor = {Explorer = "zones", Journal = "journal", Recipes = "recipes",
+local topTabs = {"Explorer", "Fish", "Items", "Journal", "Recipes",
+  "Zones", "Schools", "Vendors", "Gear"}
+local categoryFor = {Explorer = "zones", Fish = "fish", Items = "items",
+  Journal = "journal", Recipes = "recipes",
   Zones = "zones", Schools = "schools", Vendors = "vendors", Gear = "gear"}
 UI.category, UI.query, UI.offset = "zones", "", 0
 UI.topPage = "Explorer"
 UI.filterFish, UI.filterLocations, UI.detailsTab = false, false, "Overview"
+UI.recipeFilter = "all"
+UI.searchAll = true
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
+local fullMap, fullMapSurface, fullMapLabel, schoolModeButton
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
-local uiBusy = false
+local filterOne, filterTwo, searchScopeButton
+local uiBusy, suppressSearchChange = false, false
+UI.mapOverride, UI.selectedPoint = nil, nil
+local sourcePopup, sourceField, sourceCaption
 local renderDetails
 
 local function label(parent, font, width, height, x, y)
@@ -84,7 +93,7 @@ local function button(parent, title, x, y, width, height, handler, icon)
   texture:SetAllPoints()
   texture:SetTexture("Interface\\AddOns\\FishingAtlas\\Art\\bronze-button")
   btn.background = texture
-  local pad = icon and 37 or 8
+  local pad = icon and (height + 6) or 8
   if icon then
     local img = btn:CreateTexture(nil, "ARTWORK")
     img:SetTexture(icon)
@@ -105,18 +114,59 @@ local function setActive(btn, yes)
 end
 
 local function inGameMap(mapID)
-  if type(mapID) ~= "number" or not WorldMapFrame then return false end
-  if type(WorldMapFrame.SetMapID) == "function" then
-    local success = pcall(WorldMapFrame.SetMapID, WorldMapFrame, mapID)
-    if not success then return false end
+  -- Open the native map, but do not report success if the requested zone
+  -- could not actually be selected. OpenWorldMap may ignore its argument.
+  if type(OpenWorldMap) == "function" then
+    pcall(OpenWorldMap, mapID)
   end
-  if type(WorldMapFrame.Show) == "function" then WorldMapFrame:Show(); return true end
-  return false
+  local map = WorldMapFrame
+  if not map and type(C_AddOns) == "table" and type(C_AddOns.LoadAddOn) == "function" then
+    pcall(C_AddOns.LoadAddOn, "Blizzard_WorldMap")
+    map = WorldMapFrame
+  end
+  if not map and type(UIParentLoadAddOn) == "function" then
+    pcall(UIParentLoadAddOn, "Blizzard_WorldMap")
+    map = WorldMapFrame
+  end
+  if map and type(map.IsShown) == "function" and not map:IsShown()
+      and type(map.Show) == "function" then
+    pcall(map.Show, map)
+  elseif not map and type(ToggleWorldMap) == "function" then
+    pcall(ToggleWorldMap)
+    map = WorldMapFrame
+  end
+  if not (map and type(map.IsShown) == "function" and map:IsShown()) then
+    return false
+  end
+  if type(mapID) == "number" then
+    if type(map.SetMapID) == "function" then
+      local ok, why = pcall(map.SetMapID, map, mapID)
+      if not ok then
+        if ns.commands then
+          ns.commands.say("World Map opened, but zone " .. mapID
+            .. " could not be selected: " .. tostring(why))
+        end
+        return false
+      end
+    end
+    if type(map.GetMapID) == "function" then
+      local ok, actual = pcall(map.GetMapID, map)
+      if ok and type(actual) == "number" and actual ~= mapID then
+        if ns.commands then
+          ns.commands.say("World Map stayed on " .. actual
+            .. " instead of requested zone " .. mapID)
+        end
+        return false
+      end
+    end
+  end
+  return true
 end
+UI.openWorldMap = inGameMap
 
 local function waypoint()
   if not active then return end
-  local wp = ns.browser.waypoint(active)
+  local wp = UI.selectedPoint or ns.browser.waypoint(active)
   if not wp then
     ns.commands.say("No sourced location available for this entry")
     return
@@ -157,11 +207,16 @@ end
 local function zoneIcon(item)
   if item.kind == "zone" then return "Interface\\Icons\\INV_Misc_Map_01" end
   if item.kind == "vendor_reference" then return "Interface\\Icons\\INV_Misc_Bag_10" end
-  if item.kind == "school_type" then return "Interface\\Icons\\Trade_Fishing" end
+  if item.kind == "school_type" then return ns.browser.icon(item) end
   return ns.browser.icon(item)
 end
 
 local function applyFilter(item)
+  if UI.category == "recipes" and UI.recipeFilter ~= "all" and ns.recipeKnowledge then
+    local status = ns.recipeKnowledge.status(item.id)
+    if UI.recipeFilter == "known" and status ~= "known" then return false end
+    if UI.recipeFilter == "not_known" and status == "known" then return false end
+  end
   if UI.filterLocations and #ns.viewModel.mapPoints(item) == 0 then return false end
   if UI.filterFish and item.kind == "zone" then
     if #(ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}) == 0 then
@@ -191,17 +246,133 @@ local function tooltip(item, anchor)
   elseif kind == "spell" and type(GameTooltip.SetSpellByID) == "function" then
     found = pcall(GameTooltip.SetSpellByID, GameTooltip, id)
   end
+  if not found and kind and id and type(GameTooltip.SetHyperlink) == "function" then
+    found = pcall(GameTooltip.SetHyperlink, GameTooltip, kind .. ":" .. id)
+  end
   if not found then GameTooltip:AddLine(item.name) end
   GameTooltip:AddLine("Evidence: " .. (item.confidence or "unknown"), 0.6, 0.85, 0.9)
   GameTooltip:Show()
 end
 
+local function selectedMap()
+  local sourceMap = UI.mapOverride or ns.viewModel.mapID(active)
+  if sourceMap then return sourceMap, true end
+  if type(C_Map) == "table" and type(C_Map.GetBestMapForUnit) == "function" then
+    local ok, mapID = pcall(C_Map.GetBestMapForUnit, "player")
+    if ok and type(mapID) == "number" then return mapID, false end
+  end
+  return nil, false
+end
+
 local function renderMap()
   if not mapSurface then return end
-  local mapID = ns.viewModel.mapID(active)
-  ns.zoneMap.render(mapSurface, mapID, ns.viewModel.mapPoints(active))
-  mapCaption:SetText(mapID and ("MAP " .. mapID .. " | pins are sourced observations")
-    or "Select a zone or mapped vendor")
+  local mapID, sourced = selectedMap()
+  local mode = ns.viewModel.schoolMapMode and ns.viewModel.schoolMapMode() or "active"
+  local locations = sourced and ns.viewModel.mapPoints(active) or {}
+  -- The selected preview can fall back to the player's zone. Active-mode
+  -- observations must be drawn for the displayed map regardless of record.
+  if mode == "active" and mapID and ns.liveSchools then
+    locations = ns.liveSchools.inZone(mapID)
+  end
+  if schoolModeButton then
+    schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
+  end
+  ns.zoneMap.render(mapSurface, mapID, locations)
+  mapCaption:SetText(not mapID and "No map selected"
+    or mode == "active" and active
+        and (active.kind == "zone" or active.kind == "school_type")
+        and ("Active nearby | " .. #locations .. " recent sightings")
+    or ("Map " .. mapID .. (sourced and " | referenced positions"
+      or " | current zone, no evidence")))
+  if fullMap and fullMap:IsShown() then
+    ns.zoneMap.render(fullMapSurface, mapID, locations)
+    fullMapLabel:SetText(not mapID and "No map available"
+      or "Fishing Atlas | Map " .. mapID .. (sourced and " | sourced points"
+      or " | current player zone"))
+  end
+end
+
+function UI.refreshMap()
+  if frame and frame:IsShown() then renderMap() end
+end
+
+function UI.setSchoolMapMode(mode)
+  if mode ~= "active" and mode ~= "probable" then return false end
+  local settings = ns.storage.db and ns.storage.db.settings
+  if not settings then return false end
+  settings.schoolMapMode = mode
+  UI.mapOverride, UI.selectedPoint = nil, nil
+  if ns.mapPins then ns.mapPins.refresh() end
+  if frame then UI.refresh(false) end
+  return true
+end
+
+function UI.scanSchools()
+  local count, message, mapID
+  if ns.liveSchools then count, message, mapID = ns.liveSchools.scan() end
+  -- Explicit manual scans focus the actual scanned map. Passive scans never
+  -- hijack navigation when the user is browsing another zone.
+  if mapID and count and count > 0 then
+    UI.mapOverride, UI.selectedPoint = mapID, nil
+  end
+  if ns.commands and ns.commands.say then
+    ns.commands.say(message or "School detector unavailable on this client")
+  end
+  if ns.mapPins then ns.mapPins.refresh() end
+  UI.refreshMap()
+  return count or 0
+end
+
+function UI.mapDiagnostics()
+  local mapID = selectedMap()
+  return ns.zoneMap.describe and ns.zoneMap.describe(mapID)
+    or "Client map-art diagnostics unavailable"
+end
+
+function UI.openFullMap()
+  if not frame then return false end
+  local mapID = selectedMap()
+  -- The client owns the complete interactive world map. Never upscale a
+  -- partially loaded small preview as the default "full map".
+  -- Native map pins are supplied by FishingAtlas/Atlas/MapPins.lua.
+  if inGameMap(mapID) then return true end
+  -- Only use the custom large fallback when this client has no native map.
+  if not fullMap then
+    fullMap = CreateFrame("Frame", "FishingAtlasFullMap", UIParent)
+    fullMap:SetSize(1008, 746)
+    fullMap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    fullMap:SetFrameStrata("FULLSCREEN_DIALOG")
+    paint(fullMap, {0.035, 0.07, 0.11, 0.97})
+    border(fullMap)
+    if type(UISpecialFrames) == "table" then
+      local present
+      for _, name in ipairs(UISpecialFrames) do
+        if name == "FishingAtlasFullMap" then present = true; break end
+      end
+      if not present then
+        UISpecialFrames[#UISpecialFrames + 1] = "FishingAtlasFullMap"
+      end
+    end
+    fullMapLabel = label(fullMap, "GameFontNormalLarge", 480, 35, 15, -10)
+    button(fullMap, "Scan nearby", 490, -10, 142, 30, function()
+      UI.scanSchools()
+    end)
+    button(fullMap, "Toggle probable", 640, -10, 145, 30, function()
+      local mode = ns.viewModel.schoolMapMode()
+      UI.setSchoolMapMode(mode == "active" and "probable" or "active")
+    end)
+    button(fullMap, "Close", 893, -10, 98, 30, function()
+      fullMap:Hide()
+    end)
+    fullMapSurface = panel(fullMap, 13, -53, 980, 672)
+    fullMap:Hide()
+  end
+  local sw, sh = UIParent:GetWidth() or 1008, UIParent:GetHeight() or 746
+  fullMap:SetScale(math.max(0.58, math.min(1,
+    (sw - 28) / 1008, (sh - 28) / 746)))
+  fullMap:Show()
+  renderMap()
+  return true
 end
 
 local function updateRight()
@@ -229,6 +400,20 @@ local function updateRight()
   elseif item.kind == "fish" then
     relatedTitle:SetText("REFERENCE ZONES")
     related = ns.viewModel.fishZones(item.id)
+  elseif item.kind == "item" then
+    relatedTitle:SetText("SELLERS / ACQUISITION")
+    related = ns.viewModel.itemVendors(item.id)
+  elseif item.kind == "school_type" then
+    relatedTitle:SetText("OBSERVED ZONES")
+    local points = ns.viewModel.mapPoints(item)
+    related = {}
+    local seen = {}
+    for _, point in ipairs(points) do
+      if not seen[point.mapID] then
+        seen[point.mapID] = true
+        related[#related + 1] = {name = "Map " .. point.mapID, mapID = point.mapID}
+      end
+    end
   else
     relatedTitle:SetText("RELATED INFORMATION")
     related = {}
@@ -236,10 +421,17 @@ local function updateRight()
   for i, btn in ipairs(rightRows) do
     local record = related[i]
     if record then
+      btn.record = record
       btn.text:SetText(record.name:sub(1, 33))
       btn:SetScript("OnClick", function()
-        if item.kind == "zone" then UI.selectCategory("vendors", record.id)
-        elseif item.kind == "fish" then UI.selectCategory("zones", record.mapID) end
+        if item.kind == "zone" or item.kind == "item" then
+          UI.selectCategory("vendors", record.id)
+        elseif item.kind == "fish" then
+          UI.selectCategory("zones", record.mapID)
+        elseif item.kind == "school_type" then
+          UI.mapOverride = record.mapID
+          renderMap()
+        end
       end)
       btn:Show()
     else
@@ -247,6 +439,62 @@ local function updateRight()
     end
   end
   renderMap()
+end
+
+local function rowTooltip(record, owner)
+  if not record or not GameTooltip then return end
+  GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+  local shown = false
+  if record.itemId and type(GameTooltip.SetItemByID) == "function" then
+    shown = pcall(GameTooltip.SetItemByID, GameTooltip, record.itemId)
+  elseif record.spellId and type(GameTooltip.SetSpellByID) == "function" then
+    shown = pcall(GameTooltip.SetSpellByID, GameTooltip, record.spellId)
+  end
+  if not shown and record.itemId and type(GameTooltip.SetHyperlink) == "function" then
+    shown = pcall(GameTooltip.SetHyperlink, GameTooltip, "item:" .. record.itemId)
+  end
+  if not shown then GameTooltip:AddLine(record.title or "Fishing Atlas") end
+  if record.detail and record.detail ~= "" then
+    GameTooltip:AddLine(record.detail, 1, 1, 1, true)
+  end
+  GameTooltip:AddLine("Evidence: " .. tostring(record.confidence or "unknown"),
+    0.6, 0.85, 0.9)
+  if record.vendorId or record.npcId or record.mapID then
+    GameTooltip:AddLine("Click to inspect source", 0.3, 0.9, 0.65)
+  end
+  GameTooltip:Show()
+end
+
+local function rowClick(record)
+  if not record then return end
+  if record.toggleRecipe and ns.recipeKnowledge then
+    if record.recipeReadOnly then
+      ns.commands.say("Recipe confirmed learned by the client; cannot mark unknown")
+    else
+      ns.recipeKnowledge.cycle(record.recipeId)
+      UI.refresh(false)
+    end
+  elseif record.vendorId then
+    UI.selectCategory("vendors", record.vendorId)
+  elseif record.npcId then
+    UI.openNpc(record.npcId)
+  elseif record.recipeId then
+    UI.selectCategory("recipes", record.recipeId)
+  elseif record.mapID then
+    UI.mapOverride = record.mapID
+    UI.selectedPoint = record.x and record.y and {mapID = record.mapID,
+      x = record.x, y = record.y, label = record.title or "Fishing Atlas"} or nil
+    renderMap()
+    local opened = inGameMap(record.mapID)
+    if not opened then ns.commands.say("World map could not be opened by this client") end
+    if record.x and record.y and type(TomTom) == "table"
+        and type(TomTom.AddWaypoint) == "function" then
+      pcall(TomTom.AddWaypoint, TomTom, record.mapID, record.x, record.y,
+        {title = "Fishing Atlas: " .. tostring(record.title), persistent = false})
+    end
+  elseif record.itemId then
+    UI.openItem(record.itemId)
+  end
 end
 
 renderDetails = function()
@@ -272,7 +520,7 @@ renderDetails = function()
   for i, item in ipairs(details) do
     local card = detailRows[i]
     if not card then
-      card = CreateFrame("Frame", nil, detailsChild)
+      card = CreateFrame("Button", nil, detailsChild)
       card:SetSize(375, 47)
       local bg = paint(card, {0.06, 0.15, 0.19, 0.82})
       bg:SetVertexColor(0.06, 0.14, 0.18, 0.84)
@@ -281,13 +529,33 @@ renderDetails = function()
       card.icon:SetPoint("LEFT", card, "LEFT", 7, 0)
       card.title = label(card, "GameFontNormal", 325, 20, 45, -4)
       card.detail = label(card, "GameFontHighlightSmall", 325, 17, 45, -26)
+      card:RegisterForClicks("LeftButtonUp")
+      card:SetScript("OnEnter", function(self) rowTooltip(self.record, self) end)
+      card:SetScript("OnLeave", function()
+        if GameTooltip then GameTooltip:Hide() end
+      end)
+      card:SetScript("OnClick", function(self) rowClick(self.record) end)
       detailRows[i] = card
     end
     card:ClearAllPoints()
     card:SetPoint("TOPLEFT", detailsChild, "TOPLEFT", 0, -(i - 1) * 50)
+    card.record = item
     card.title:SetText(item.title)
     card.detail:SetText(item.detail)
-    card.icon:SetTexture(item.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+    if item.toggleRecipe and ns.recipeKnowledge then
+      local knowledge = ns.recipeKnowledge.status(item.recipeId)
+      if knowledge == "known" then
+        card.title:SetTextColor(0.42, 0.92, 0.60)
+        card.detail:SetTextColor(0.42, 0.92, 0.60)
+      else
+        card.title:SetTextColor(1, 0.63, 0.40)
+        card.detail:SetTextColor(1, 0.63, 0.40)
+      end
+    else
+      card.title:SetTextColor(1, 0.82, 0)
+      card.detail:SetTextColor(1, 1, 1)
+    end
+    card.icon:SetTexture(item.icon or "Interface\\Icons\\INV_Misc_Note_01")
     card:Show()
   end
   for i = #details + 1, #detailRows do detailRows[i]:Hide() end
@@ -296,10 +564,27 @@ renderDetails = function()
 end
 
 local function select(item)
+  if not item then return end
+  -- Clicking a global result must not rebuild a different category's list
+  -- and accidentally select that category's default (index zero).
+  -- Preserve the query and exact clicked record until explicit navigation.
+  if item.atlasCategory and UI.searchAll and #UI.query >= 2 then
+    active = item
+    UI.mapOverride, UI.selectedPoint = nil, nil
+    UI.detailsTab = "Overview"
+    UI.draw()
+    renderDetails()
+    return
+  end
+  if item.atlasCategory and item.atlasCategory ~= UI.category then
+    UI.selectCategory(item.atlasCategory, item.id, nil, item)
+    return
+  end
   active = item
+  UI.mapOverride, UI.selectedPoint = nil, nil
   UI.detailsTab = "Overview"
-  renderDetails()
   UI.draw()
+  renderDetails()
 end
 
 function UI.scroll(amount)
@@ -310,12 +595,28 @@ end
 function UI.draw()
   if not frame or uiBusy then return end
   uiBusy = true
-  listCount:SetText(UI.category:upper() .. " (" .. #results .. ")")
+  local globalResults = UI.searchAll and #UI.query >= 2
+  listCount:SetText((globalResults and "SEARCH" or UI.category:upper()) .. " (" .. #results .. ")")
   for i, btn in ipairs(rows) do
     local item = results[UI.offset + i]
     btn.item = item
     if item then
-      btn.text:SetText(item.name:sub(1, 29))
+      local display = item.atlasCategory and ("[" .. item.atlasCategory .. "] " .. item.name)
+        or item.name
+      btn.text:SetText(display:sub(1, 29))
+      if item.atlasCategory == "recipes" or (UI.category == "recipes"
+          and (item.kind == "Cooking" or item.kind == "Fishing"
+            or item.kind == "gamefile_recipe")) then
+        local knowledge = ns.recipeKnowledge and ns.recipeKnowledge.status(item.id)
+          or "unknown"
+        if knowledge == "known" then
+          btn.text:SetTextColor(0.42, 0.92, 0.60)
+        else
+          btn.text:SetTextColor(1, 0.63, 0.40)
+        end
+      else
+        btn.text:SetTextColor(1, 0.82, 0)
+      end
       btn.icon:SetTexture(zoneIcon(item))
       btn.level:SetText("")
       if item.kind == "zone" then
@@ -330,11 +631,28 @@ function UI.draw()
   listSlider:SetValue(UI.offset)
   listSlider:SetShown(#results > visibleRows)
   for _, btn in ipairs(sidebar) do
+    if btn.category == "vendors" or btn.category == "recipes"
+        or btn.category == "fish" or btn.category == "items" then
+      btn.count = #ns.browser.list(btn.category, "")
+    end
     btn.text:SetText(btn.caption .. "  (" .. btn.count .. ")")
     setActive(btn, btn.category == UI.category)
   end
   for _, btn in ipairs(tabs) do
     setActive(btn, btn.caption == UI.topPage)
+  end
+  if searchScopeButton then
+    searchScopeButton.text:SetText(UI.searchAll and "All tabs" or "This tab")
+  end
+  if filterOne and filterTwo then
+    if UI.category == "recipes" then
+      filterOne.text:SetText((UI.recipeFilter == "known" and "[x]" or "[ ]") .. " Known recipes")
+      filterTwo.text:SetText((UI.recipeFilter == "not_known" and "[x]" or "[ ]") ..
+        " Unknown recipes")
+    else
+      filterOne.text:SetText((UI.filterFish and "[x]" or "[ ]") .. " Zones with fish")
+      filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")
+    end
   end
   updateFooter()
   uiBusy = false
@@ -342,7 +660,8 @@ end
 
 function UI.refresh(reset)
   if not frame then return end
-  local raw = ns.browser.list(UI.category, UI.query)
+  local raw = UI.searchAll and #UI.query >= 2
+    and ns.browser.searchAll(UI.query) or ns.browser.list(UI.category, UI.query)
   results = {}
   for _, item in ipairs(raw) do
     if applyFilter(item) then results[#results + 1] = item end
@@ -351,7 +670,17 @@ function UI.refresh(reset)
   if active then
     local matched
     for _, item in ipairs(results) do
-      if item.id == active.id and item.kind == active.kind then matched = item; break end
+      if item.id == active.id and item.kind == active.kind then
+        matched = item
+        break
+      end
+    end
+    if not matched and UI.query == ""
+        and active.pinnedForCategory == UI.category then
+      -- A global search can discover valid records missing from a restricted
+      -- category listing. Keep that exact entry selected on later refreshes.
+      table.insert(results, 1, active)
+      matched = active
     end
     active = matched
   end
@@ -364,16 +693,113 @@ function UI.refresh(reset)
   hideContext()
 end
 
-function UI.selectCategory(category, id, topPage)
-  UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
-  UI.topPage = topPage or "Explorer"
-  search:SetText("")
-  active = nil
-  UI.refresh(true)
-  if id then
-    for _, item in ipairs(results) do
-      if item.id == id then select(item); break end
+-- Category navigation is atomic: programmatically clearing search causes the
+-- WoW EditBox OnTextChanged handler to fire synchronously. Suppress that
+-- callback while selecting by stable record ID, then render only the resolved
+-- record. A global hit may not occur in a category's current indexed subset.
+function UI.selectCategory(category, id, topPage, searchRecord)
+  UI.mapOverride, UI.selectedPoint = nil, nil
+  UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations =
+    category, 0, "", false, false
+  UI.topPage = topPage or (category == "fish" and "Fish"
+    or category == "items" and "Items"
+    or category == "recipes" and "Recipes" or category == "vendors" and "Vendors"
+    or category == "schools" and "Schools" or category == "gear" and "Gear"
+    or category == "zones" and "Zones" or "Explorer")
+  suppressSearchChange = true
+  if search and search:GetText() ~= "" then search:SetText("") end
+  suppressSearchChange = false
+
+  local wanted = id ~= nil and (tonumber(id) or id) or nil
+  local raw = ns.browser.list(category, "")
+  results = {}
+  for _, entry in ipairs(raw) do
+    if applyFilter(entry) then results[#results + 1] = entry end
+  end
+  if wanted ~= nil then
+    local foundIndex
+    for i, record in ipairs(results) do
+      if record.id == wanted
+          and (not searchRecord or record.kind == searchRecord.kind) then
+        foundIndex = i
+        break
+      end
     end
+    if foundIndex then
+      active = results[foundIndex]
+      UI.offset = math.max(0, math.min(foundIndex - 1,
+        math.max(0, #results - visibleRows)))
+    else
+      -- Preserve the actual global-search hit in the destination list even
+      -- when the underlying index does not contain it.
+      local record = searchRecord and searchRecord.id == wanted and searchRecord
+      if not record then
+        local kind = category == "fish" and "fish"
+          or category == "items" and "item"
+          or category == "npcs" and "observed_npc"
+          or category == "gear" and "fishing_pole"
+          or category == "zones" and "zone"
+          or category == "schools" and "school_type"
+          or category == "vendors" and "vendor_reference"
+          or category == "recipes" and "Cooking" or nil
+        if kind then
+          local recordName = kind == "school_type" and tostring(wanted)
+            or kind == "observed_npc" and ns.sources and ns.sources.npcName(wanted)
+            or ns.catalog.name(kind == "Cooking" and "spell" or "item", wanted)
+          record = {id = wanted, kind = kind, name = recordName,
+            confidence = "source_unindexed"}
+        end
+      end
+      if record then
+        record.pinnedForCategory = category
+        table.insert(results, 1, record)
+        active = record
+      else
+        active = nil
+      end
+    end
+  else
+    active = findDefault(results)
+  end
+  UI.detailsTab = "Overview"
+  UI.draw()
+  renderDetails()
+  hideContext()
+end
+
+function UI.selected()
+  return active
+end
+
+function UI.openNpc(id)
+  id = tonumber(id)
+  if not id or id <= 0 then return end
+  UI.selectCategory("npcs", id, "Explorer")
+  if not active or active.id ~= id then
+    active = {id = id, kind = "observed_npc",
+      name = ns.sources and ns.sources.npcName(id) or ("NPC " .. id),
+      confidence = "observed_source"}
+    UI.detailsTab = "Overview"
+    renderDetails()
+  end
+end
+
+function UI.openItem(id)
+  id = tonumber(id)
+  if not id or id <= 0 then return end
+  local entity = ns.catalog.entity and ns.catalog.entity("item", id)
+  -- Fish need the Fish inspector, never a defaulted Items selection.
+  if (entity and entity.category == "fish")
+      or (ns.fishingScope and ns.fishingScope.caught(id)) then
+    UI.selectCategory("fish", id)
+    return
+  end
+  UI.selectCategory("items", id)
+  if not active or active.id ~= id then
+    active = {id = id, kind = "item", name = ns.catalog.name("item", id),
+      confidence = "source_relationship"}
+    UI.detailsTab = "Overview"
+    renderDetails()
   end
 end
 
@@ -391,6 +817,16 @@ local function build()
   frame:SetSize(W, H)
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:SetFrameStrata("DIALOG")
+  -- Standard WoW Escape behavior, without consuming movement or chat keys.
+  if type(UISpecialFrames) == "table" then
+    local registered
+    for _, frameName in ipairs(UISpecialFrames) do
+      if frameName == "FishingAtlasExplorer" then registered = true; break end
+    end
+    if not registered then
+      UISpecialFrames[#UISpecialFrames + 1] = "FishingAtlasExplorer"
+    end
+  end
   frame:SetMovable(true)
   frame:EnableMouse(true)
   frame:RegisterForDrag("LeftButton")
@@ -413,7 +849,7 @@ local function build()
   label(frame, "GameFontNormalHuge", 665, 42, 105, -7):SetText("Fishing Atlas")
   label(frame, "GameFontHighlight", 670, 25, 108, -51):SetText("The Azeroth Fishing Compendium")
   versionLabel = label(frame, "GameFontHighlightSmall", 267, 30, 851, -21)
-  versionLabel:SetText("v0.99.5  |  Data: mixed-source")
+  versionLabel:SetText("v0.99.6  |  Data: sourced + reference")
   button(frame, "X", 1167, -10, 30, 31, function() frame:Hide() end)
   button(frame, "?", 1132, -10, 30, 31, function()
     if ns.issues then ns.issues.open() end
@@ -424,40 +860,49 @@ local function build()
     for _, definition in ipairs(categories) do
       if definition[1] == itemCategory then icon = definition[3]; break end
     end
-    local btn = button(frame, title, 15 + (i - 1) * 169, -101, 163, 51, function()
+    if title == "Items" then icon = "Interface\\Icons\\INV_Misc_Bag_10" end
+    local btn = button(frame, title, 12 + (i - 1) * 132, -101, 126, 51, function()
       UI.selectCategory(itemCategory, nil, title)
     end, icon)
     btn.caption, btn.category = title, itemCategory
     tabs[#tabs + 1] = btn
   end
   local left = panel(frame, 13, -167, 194, 523, {0.025, 0.06, 0.08, 0.96})
-  label(left, "GameFontNormal", 165, 24, 12, -8):SetText("SEARCH ATLAS")
+  label(left, "GameFontNormal", 91, 24, 12, -8):SetText("SEARCH")
   search = CreateFrame("EditBox", nil, left, "InputBoxTemplate")
   search:SetSize(170, 24)
   search:SetPoint("TOPLEFT", left, "TOPLEFT", 15, -38)
   search:SetAutoFocus(false)
   search:SetMaxLetters(70)
   search:SetScript("OnTextChanged", function(self)
+    if suppressSearchChange then return end
     UI.query = self:GetText() or ""
     UI.offset, active = 0, nil
     UI.refresh(true)
   end)
-  search:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+  search:SetScript("OnEscapePressed", function(self)
+    self:ClearFocus()
+    if frame then frame:Hide() end
+  end)
+  searchScopeButton = button(left, "All tabs", 108, -7, 78, 27, function()
+    UI.searchAll = not UI.searchAll
+    UI.refresh(true)
+  end)
   local counts = ns.viewModel.counts()
   for i, definition in ipairs(categories) do
     local key, text, icon = definition[1], definition[2], definition[3]
-    local btn = button(left, text, 9, -78 - (i - 1) * 44, 176, 40, function()
+    local btn = button(left, text, 9, -78 - (i - 1) * 39, 176, 36, function()
       UI.selectCategory(key)
     end, icon)
     btn.category, btn.caption, btn.count = key, text, counts[key] or 0
     sidebar[#sidebar + 1] = btn
   end
   label(left, "GameFontNormal", 170, 22, 13, -394):SetText("QUICK FILTERS")
-  local filterOne = button(left, "", 10, -421, 173, 28, function()
+  filterOne = button(left, "", 10, -421, 173, 28, function()
     UI.filterFish = not UI.filterFish
     UI.refresh(true)
   end)
-  local filterTwo = button(left, "", 10, -454, 173, 28, function()
+  filterTwo = button(left, "", 10, -454, 173, 28, function()
     UI.filterLocations = not UI.filterLocations
     UI.refresh(true)
   end)
@@ -465,10 +910,24 @@ local function build()
     filterOne.text:SetText((UI.filterFish and "[x]" or "[ ]") .. " Zones with fish")
     filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")
   end
-  filterOne:SetScript("OnClick", function() UI.filterFish = not UI.filterFish
-    filters(); UI.refresh(true) end)
-  filterTwo:SetScript("OnClick", function() UI.filterLocations = not UI.filterLocations
-    filters(); UI.refresh(true) end)
+  filterOne:SetScript("OnClick", function()
+    if UI.category == "recipes" then
+      UI.recipeFilter = UI.recipeFilter == "known" and "all" or "known"
+    else UI.filterFish = not UI.filterFish end
+    if ns.storage.db and ns.storage.db.settings then
+      ns.storage.db.settings.recipeFilter = UI.recipeFilter
+    end
+    UI.refresh(true)
+  end)
+  filterTwo:SetScript("OnClick", function()
+    if UI.category == "recipes" then
+      UI.recipeFilter = UI.recipeFilter == "not_known" and "all" or "not_known"
+    else UI.filterLocations = not UI.filterLocations end
+    if ns.storage.db and ns.storage.db.settings then
+      ns.storage.db.settings.recipeFilter = UI.recipeFilter
+    end
+    UI.refresh(true)
+  end)
   filters()
   label(left, "GameFontHighlightSmall", 178, 25, 12, -492):SetText("Sources labeled | not all live verified")
 
@@ -520,8 +979,8 @@ local function build()
   hero:SetVertexColor(0.64, 0.77, 0.85, 0.67)
   headerName = label(header, "GameFontNormalLarge", 368, 33, 13, -13)
   headerMeta = label(header, "GameFontHighlight", 373, 30, 13, -53)
-  for i = 1, 5 do
-    local tab = button(middle, "", 6 + (i - 1) * 79, -128, 77, 32)
+  for i = 1, 6 do
+    local tab = button(middle, "", 6 + (i - 1) * 65, -128, 62, 32)
     subTabs[i] = tab
   end
   local detailPanel = panel(middle, 6, -171, 395, 344)
@@ -533,14 +992,24 @@ local function build()
   detailsScroll:SetScrollChild(detailsChild)
 
   local right = panel(frame, 904, -167, 293, 523)
-  label(right, "GameFontNormal", 263, 24, 12, -8):SetText("ZONE MAP  |  Map art from game")
+  label(right, "GameFontNormal", 87, 24, 12, -8):SetText("ZONE MAP")
+  schoolModeButton = button(right, "Active only", 97, -6, 104, 27, function()
+    local mode = ns.viewModel.schoolMapMode()
+    UI.setSchoolMapMode(mode == "active" and "probable" or "active")
+  end)
+  button(right, "Expand", 205, -6, 78, 27, function() UI.openFullMap() end)
   mapSurface = panel(right, 9, -37, 275, 195)
   mapCaption = label(right, "GameFontHighlightSmall", 267, 19, 14, -237)
-  button(right, "World Map", 156, -263, 126, 27, function()
-    local id = ns.viewModel.mapID(active)
-    if not inGameMap(id) then ns.commands.say("World map unavailable") end
+  button(right, "Scan now", 9, -263, 85, 27, function()
+    UI.scanSchools()
   end)
-  button(right, "TomTom", 9, -263, 136, 27, waypoint)
+  button(right, "World Map", 185, -263, 98, 27, function()
+    local id = selectedMap()
+    if not inGameMap(id) then
+      ns.commands.say("Native World Map unavailable; use Expand for map-art preview")
+    end
+  end)
+  button(right, "TomTom", 99, -263, 80, 27, waypoint)
   local info = panel(right, 9, -304, 275, 92)
   label(info, "GameFontNormal", 252, 23, 10, -6):SetText("ZONE / ITEM INFO")
   zoneInfo = label(info, "GameFontHighlightSmall", 252, 61, 10, -29)
@@ -550,6 +1019,18 @@ local function build()
   for i = 1, 3 do
     rightRows[i] = button(related, "", 9, -30 - (i - 1) * 25, 255, 24,
       function() end)
+    rightRows[i]:SetScript("OnEnter", function(self)
+      if not GameTooltip or not self.record then return end
+      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+      GameTooltip:AddLine(self.record.name or "Source")
+      GameTooltip:AddLine(self.record.confidence or
+        self.record.evidence or "Source reference", 0.5, 0.9, 0.85)
+      GameTooltip:AddLine("Click to navigate", 1, 1, 1)
+      GameTooltip:Show()
+    end)
+    rightRows[i]:SetScript("OnLeave", function()
+      if GameTooltip then GameTooltip:Hide() end
+    end)
   end
 
   local footer = panel(frame, 13, -699, 1184, 44)
@@ -573,8 +1054,34 @@ local function build()
   button(footer, "Report issue on GitHub", 642, -6, 237, 30, function()
     if ns.issues then ns.issues.open() end
   end)
-  footerStatus = label(footer, "GameFontHighlightSmall", 260, 30, 895, -7)
-  footerStatus:SetText("Data sources: client + reference + yours")
+  button(footer, "Source link", 883, -6, 106, 30, function()
+    if not sourcePopup then return end
+    local url = ns.sources and ns.sources.linkFor(active) or nil
+    if not url then url = "No documented upstream page for this record" end
+    sourceField:SetText(url)
+    sourceField:HighlightText()
+    sourceField:SetFocus()
+    local meta = ns.sources and ns.sources.metadata() or {}
+    sourceCaption:SetText("Record source: " .. tostring(active and active.confidence or "unknown")
+      .. " | Observed snapshot: " .. tostring(meta.dataAsOf or "Not imported")
+      .. "\\n" .. (ns.sources and ns.sources.creditFor(active) or "No source metadata"))
+    sourcePopup:Show()
+  end)
+  footerStatus = label(footer, "GameFontHighlightSmall", 180, 30, 999, -7)
+  footerStatus:SetText("Client + references + yours")
+  sourcePopup = panel(frame, 290, -272, 635, 175, {0.03, 0.10, 0.14, 0.99})
+  sourcePopup:SetFrameStrata("TOOLTIP")
+  label(sourcePopup, "GameFontNormal", 595, 25, 13, -10):SetText("SOURCE AND ATTRIBUTION")
+  sourceCaption = label(sourcePopup, "GameFontHighlightSmall", 605, 49, 13, -40)
+  sourceCaption:SetJustifyV("TOP")
+  sourceField = CreateFrame("EditBox", nil, sourcePopup, "InputBoxTemplate")
+  sourceField:SetSize(580, 25)
+  sourceField:SetPoint("TOPLEFT", sourcePopup, "TOPLEFT", 20, -100)
+  sourceField:SetAutoFocus(false)
+  sourceField:SetScript("OnEscapePressed", function() sourcePopup:Hide() end)
+  button(sourcePopup, "Close", 520, -134, 90, 29,
+    function() sourcePopup:Hide() end)
+  sourcePopup:Hide()
   context = panel(frame, 480, -345, 215, 150, {0.04, 0.10, 0.13, 0.99})
   context:SetFrameStrata("TOOLTIP")
   contextButtons = {
@@ -597,6 +1104,8 @@ local function build()
     end)
   }
   context:Hide()
+  UI.recipeFilter = (ns.storage.db and ns.storage.db.settings
+    and ns.storage.db.settings.recipeFilter) or "all"
   frame:Hide()
   fitFrame()
 end
@@ -607,6 +1116,11 @@ function UI.show()
   hideContext()
   fitFrame()
   frame:Show()
+  if ns.recipeKnowledge then
+    ns.recipeKnowledge.scanCatalog()
+    ns.recipeKnowledge.scanModern()
+    ns.recipeKnowledge.scanOpenProfession()
+  end
   UI.refresh(false)
   return true
 end

@@ -1,14 +1,40 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Conservative overlay for WorldMapFrame canvas: markers represent user positions only.
+-- Sourced WorldMapFrame overlays: personal places and confirmed independent observations.
 local _, ns = ...
 ns.mapPins = {}
 local M = ns.mapPins
 local MAX_PINS = 120
-local pins, lastMap, lastCount = {}, nil, -1
+local pins, lastMap, lastCount, lastMode = {}, nil, -1, nil
 local elapsed = 0
 
 function M.points(mapID)
   local out = {}
+  local mode = ns.storage.db and ns.storage.db.settings
+    and ns.storage.db.settings.schoolMapMode or "active"
+  if mode == "active" then
+    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID) or {}) do
+      out[#out + 1] = {x = rec.x, y = rec.y, label = rec.label,
+        kind = "school_live_nearby", verifiedSpawn = false}
+    end
+    return out
+  end
+  -- Probable mode contains explicit reference layers, not a live scan.
+  for name, places in pairs(ns.data.classicSchoolLocations or {}) do
+    for _, loc in ipairs(places) do
+      if loc.mapID == mapID then
+        out[#out + 1] = {x = loc.x, y = loc.y, label = name,
+          kind = "school_classic_reference", verifiedSpawn = false}
+      end
+    end
+  end
+  for name, places in pairs(ns.data.referenceSchoolLocations or {}) do
+    for _, loc in ipairs(places) do
+      if loc.mapID == mapID then
+        out[#out + 1] = {x = loc.x, y = loc.y, label = name,
+          kind = "school_classic_reference", verifiedSpawn = false}
+      end
+    end
+  end
   for _, node in ipairs(ns.storage.inZone(mapID)) do
     if ns.util.validCoordinate(node.x) and ns.util.validCoordinate(node.y) then
       out[#out + 1] = {x = node.x, y = node.y, label = node.label,
@@ -18,6 +44,17 @@ function M.points(mapID)
   for _, node in ipairs(ns.schools.inZone(mapID)) do
     out[#out + 1] = {x = node.x, y = node.y, label = node.label,
       kind = "school_candidate", verifiedSpawn = false}
+  end
+  if ns.sources then
+    for _, school in ipairs(ns.sources.schools()) do
+      for _, loc in ipairs(school.spots or {}) do
+        if loc.mapID == mapID and (loc.installs or 0) >= 3
+            and ns.util.validCoordinate(loc.x) and ns.util.validCoordinate(loc.y) then
+          out[#out + 1] = {x = loc.x, y = loc.y, label = school.name,
+            kind = "observed_school", verifiedSpawn = true}
+        end
+      end
+    end
   end
   return out
 end
@@ -40,18 +77,19 @@ function M.refresh()
   if not w or not h or w <= 0 or h <= 0 then hidePins(); return false end
   local candidates = M.points(mapID)
   local count = math.min(MAX_PINS, #candidates)
-  if mapID == lastMap and count == lastCount then return true end
-  lastMap, lastCount = mapID, count
+  local mode = settings and settings.schoolMapMode or "active"
+  if mapID == lastMap and count == lastCount and mode == lastMode then return true end
+  lastMap, lastCount, lastMode = mapID, count, mode
   hidePins()
   for i = 1, count do
     local loc = candidates[i]
     local pin = pins[i]
     if not pin then
       pin = CreateFrame("Frame", nil, canvas)
-      pin:SetSize(9, 9)
+      pin:SetSize(15, 15)
       local texture = pin:CreateTexture(nil, "OVERLAY")
       texture:SetAllPoints()
-      texture:SetTexture("Interface\\Buttons\\WHITE8X8")
+      texture:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
       pin.marker = texture
       pins[i] = pin
     end
@@ -59,8 +97,22 @@ function M.refresh()
     pin:ClearAllPoints()
     pin:SetPoint("CENTER", canvas, "TOPLEFT", w * loc.x, -h * loc.y)
     if pin.marker.SetVertexColor then
-      if loc.kind == "school_candidate" then pin.marker:SetVertexColor(1, 0.65, 0.12, 0.9)
-      else pin.marker:SetVertexColor(0.1, 0.8, 0.8, 0.85) end
+      if loc.kind == "school_live_nearby" then
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
+        pin.marker:SetVertexColor(0.3, 1, 0.55, 0.98)
+      elseif loc.kind == "school_classic_reference" then
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
+        pin.marker:SetVertexColor(1, 0.8, 0.3, 0.65)
+      elseif loc.kind == "observed_school" then
+        pin.marker:SetTexture("Interface\\Icons\\Trade_Fishing")
+        pin.marker:SetVertexColor(0.6, 1, 0.9, 0.95)
+      elseif loc.kind == "school_candidate" then
+        pin.marker:SetTexture("Interface\\Icons\\Trade_Fishing")
+        pin.marker:SetVertexColor(1, 0.65, 0.12, 0.9)
+      else
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
+        pin.marker:SetVertexColor(0.1, 0.8, 0.8, 0.85)
+      end
     end
     pin:Show()
   end
@@ -74,7 +126,7 @@ function M.start()
     elapsed = elapsed + (delta or 0)
     if elapsed >= 2 then
       elapsed = 0
-      lastMap, lastCount = nil, -1
+      lastMap, lastCount, lastMode = nil, -1, nil
       M.refresh()
     end
   end)

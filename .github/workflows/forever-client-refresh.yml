@@ -1,0 +1,41 @@
+name: Refresh build-matched Forever client game data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 4 * * 1'
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: fishingatlas-client-data-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import client catalogs from pinned upstream commit
+        run: |
+          python3 scripts/import_everloot_client_git.py --write
+      - name: Validate generated client snapshot
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 scripts/build_catalog.py --check
+      - name: Submit reviewed game-file update PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'data: update build-matched Everloot client extraction'
+          title: 'data: refresh build-matched unconfirmed game-file references'
+          body: |
+            Source: Everloot public client catalogs, sourced from pinned GitHub commit.
+            These are Blizzard game-file-derived item categories, recipes and relationships,
+            not Everloot CC BY-SA observed player evidence.
+            No release should claim server-side availability based on these rows.
+            Review source hashes, build id, object count changes and client acceptance.
+            New/mismatched client builds intentionally fail until a version migration is reviewed.
+          branch: data/forever-client-file-refresh
+          delete-branch: true
+          add-paths: |
+            FishingAtlas/Data/EverlootGameFiles.lua
+            database/game-files/everloot-gamefiles.json

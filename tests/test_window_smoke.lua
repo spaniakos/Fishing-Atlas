@@ -1,5 +1,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 -- Mock enough FrameXML to catch nil callbacks/layout wiring before client tests.
+local created = {}
+local renderSnapshot = {}
 local function element()
   local f = {shown = true, width = 0, height = 0, scripts = {}, text = ""}
   local methods = {
@@ -8,7 +10,7 @@ local function element()
     "StopMovingOrSizing", "SetJustifyH", "SetJustifyV", "SetSize", "SetWordWrap",
     "RegisterForClicks", "SetMinMaxValues", "SetValueStep", "SetOrientation",
     "SetThumbTexture", "SetVerticalScroll", "SetText", "SetAutoFocus",
-    "SetMaxLetters", "SetFocus", "ClearFocus", "SetEnabled", "SetScale"
+    "SetMaxLetters", "SetFocus", "ClearFocus", "SetEnabled", "SetScale", "SetTextColor"
   }
   for _, method in ipairs(methods) do
     f[method] = function(self, ...) if method == "SetText" then self.text = (...) end end
@@ -23,6 +25,13 @@ local function element()
     self.value = n
     if self.scripts.OnValueChanged then self.scripts.OnValueChanged(self, n) end
   end
+  f.SetTextColor = function(self, r, g, b)
+    self.textColor = {r, g, b}
+  end
+  f.SetText = function(self, value)
+    self.text = value
+    if self.scripts.OnTextChanged then self.scripts.OnTextChanged(self) end
+  end
   f.SetScript = function(self, k, callback) self.scripts[k] = callback end
   f.Show = function(self) self.shown = true end
   f.Hide = function(self) self.shown = false end
@@ -34,28 +43,63 @@ local function element()
   f.SetScrollChild = function(self, child) self.child = child end
   return f
 end
-CreateFrame = function() return element() end
+CreateFrame = function(kind)
+  local frame = element()
+  frame.kind = kind
+  created[#created + 1] = frame
+  return frame
+end
 UIParent = element()
 UIParent:SetSize(1400, 860)
 local ns = {
   storage = {db = {settings = {notifications = true, mapPins = true}}},
   catalog = {name = function(_, id) return "Fish " .. id end,
-    icon = function() return "Icon" end},
+    icon = function() return "Icon" end,
+    entity = function(_, id)
+      if id == 12 or id == 13 then return {category = "fish"} end
+    end},
   data = {zoneFishingSkill = {[1440] = {minimum = 55, reliable = 150}},
     referenceZoneFish = {[1440] = {{id = 12}}}},
   browser = {},
   viewModel = {},
-  zoneMap = {render = function() return true end},
+  zoneMap = {render = function(_, mapID, points)
+    renderSnapshot.map, renderSnapshot.points = mapID, points
+    return true
+  end},
   issues = {open = function() return true end},
   options = {open = function() return true end},
   commands = {say = function() end},
   mapPins = {refresh = function() end}
 }
 local zone = {id = 1440, kind = "zone", name = "Ashenvale", confidence = "verified_client"}
-local fish = {id = 12, kind = "fish", name = "Fish", confidence = "reference"}
+local fish = {id = 12, kind = "fish", name = "Darkclaw Lobster", confidence = "reference"}
+local otherFish = {id = 13, kind = "fish", name = "Raw Nightfin Snapper", confidence = "reference"}
 ns.browser.list = function(category)
   if category == "zones" then return {zone} end
-  if category == "fish" then return {fish} end
+  if category == "fish" then return {fish, otherFish} end
+  return {}
+end
+ns.browser.searchAll = function(query)
+  if query == "multi" then
+    return {
+      {id = 1440, kind = "zone", name = "Ashenvale", atlasCategory = "zones"},
+      {id = 13, kind = "fish", name = "Raw Nightfin Snapper",
+        atlasCategory = "fish", confidence = "reference"},
+      {id = 515, kind = "item", name = "Fishing Widget",
+        atlasCategory = "items", confidence = "reference"},
+      {id = 777, kind = "Cooking", name = "Fish Soup",
+        atlasCategory = "recipes", confidence = "reference"},
+    }
+  elseif query == "night" then
+    return {{id = 13, kind = "fish", name = "Raw Nightfin Snapper",
+      atlasCategory = "fish", confidence = "reference"}}
+  elseif query == "pole" then
+    return {{id = 6256, kind = "fishing_pole", name = "Fishing Pole",
+      atlasCategory = "gear", confidence = "reference"}}
+  elseif query == "lobster" then
+    return {{id = 12, kind = "fish", name = "Darkclaw Lobster",
+      atlasCategory = "fish", confidence = "reference"}}
+  end
   return {}
 end
 ns.browser.icon = function() return "Icon" end
@@ -67,14 +111,146 @@ ns.viewModel.section = function() return {{title = "Fishing skill", detail = "55
 ns.viewModel.summary = function() return {subtitle = "ZONE", source = "client_reference",
   note = "Reference only", skill = 55, reliable = 150} end
 ns.viewModel.zoneVendors = function() return {} end
+ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
 ns.viewModel.mapPoints = function() return {} end
+ns.recipeKnowledge = {
+  status = function(id) return id == 777 and "unknown" or "known" end,
+  scanCatalog = function() return 0 end,
+  scanModern = function() return 0 end,
+  scanOpenProfession = function() return 0 end
+}
+ns.liveSchools = {
+  inZone = function(mapID)
+    if mapID == 1413 then
+      return {{mapID = 1413, x = 0.3, y = 0.4,
+        kind = "school_live_nearby", name = "Firefin Snapper School"}}
+    end
+    return {}
+  end,
+  scan = function() return 1, "One recent nearby observation", 1413 end
+}
+C_Map = {GetBestMapForUnit = function() return 1413 end}
 assert(loadfile("FishingAtlas/UI/Window.lua"))("FishingAtlas", ns)
 assert(ns.ui.toggle())
 assert(ns.ui.category == "zones")
+ns.ui.selectCategory("fish")
+assert(renderSnapshot.map == 1413 and #renderSnapshot.points == 1,
+  "Active mode must show schools when preview falls back to player zone")
+assert(ns.ui.scanSchools() == 1 and ns.ui.mapOverride == 1413,
+  "Manual Scan now should focus its actually scanned zone")
+assert(renderSnapshot.map == 1413 and #renderSnapshot.points == 1,
+  "Manual scan must refresh displayed pins, not just print a chat count")
+ns.ui.selectCategory("zones")
+assert(ns.ui.category == "zones")
 assert(ns.ui.selectCategory("fish") == nil)
 assert(ns.ui.category == "fish")
+ns.ui.selectCategory("fish", 13)
+assert(ns.ui.selected().id == 13, "Fish click-by-ID must not always select Darkclaw Lobster")
+ns.ui.openItem(12)
+assert(ns.ui.category == "fish" and ns.ui.selected().id == 12,
+  "Known fish item should open in the Fish inspector")
+ns.ui.selectCategory("fish", 99999)
+assert(ns.ui.selected().id == 99999, "Unindexed fish must not fall back to first list entry")
+-- Global results may not exist in a freshly opened destination index.
+-- The exact selected record must survive even then, across every category.
+for _, category in ipairs({"gear", "items", "recipes", "vendors", "schools"}) do
+  local record = {id = 998877, name = "Exact search hit",
+    kind = category == "gear" and "fishing_pole"
+      or category == "recipes" and "Cooking"
+      or category == "vendors" and "vendor_reference"
+      or category == "schools" and "school_type" or "item",
+    confidence = "reference", atlasCategory = category}
+  ns.ui.selectCategory(category, record.id, nil, record)
+  assert(ns.ui.selected().id == record.id and
+    ns.ui.selected().name == "Exact search hit",
+    "Global search must never land on category[1]: " .. category)
+end
+-- Reproduce the player's real flow rather than calling selectCategory:
+-- typing -> OnTextChanged -> global results -> actual frame OnClick ->
+-- SetText("") event -> new list. This previously selected item index zero.
+local searchBox
+for _, frame in ipairs(created) do
+  if frame.kind == "EditBox" and frame.scripts.OnTextChanged then
+    searchBox = frame
+    break
+  end
+end
+assert(searchBox, "Search EditBox must be wired")
+ns.ui.selectCategory("zones")
+searchBox:SetText("multi")
+local function clickResult(wanted)
+  for _, entry in ipairs(created) do
+    if entry.item and entry.item.id == wanted and entry.scripts.OnClick then
+      entry.scripts.OnClick(entry, "LeftButton")
+      return entry
+    end
+  end
+  error("Result not clickable " .. tostring(wanted))
+end
+clickResult(13)
+assert(ns.ui.selected().id == 13 and ns.ui.query == "multi"
+  and searchBox:GetText() == "multi",
+  "Clicking second global hit must not select first entry")
+local recipeRow = clickResult(777)
+assert(ns.ui.selected().id == 777 and ns.ui.selected().name == "Fish Soup"
+  and ns.ui.query == "multi",
+  "Clicking fourth global hit must preserve exact recipe")
+assert(recipeRow.text.textColor[1] == 1 and recipeRow.text.textColor[2] == 0.63,
+  "Unknown recipe must be orange, not the known-green text")
+clickResult(515)
+assert(ns.ui.selected().id == 515 and ns.ui.query == "multi",
+  "Clicking third global hit must open exact item")
+ns.ui.refresh(false)
+assert(ns.ui.selected().id == 515 and ns.ui.query == "multi",
+  "Refresh must not reset selected global hit to index zero")
+ns.ui.selectCategory("zones")
+searchBox:SetText("night")
+assert(ns.ui.query == "night")
+local searchRow
+for _, frame in ipairs(created) do
+  if frame.item and frame.item.id == 13 and frame.item.atlasCategory == "fish"
+      and frame.scripts.OnClick then searchRow = frame end
+end
+assert(searchRow, "Global search result must be a clickable row")
+searchRow.scripts.OnClick(searchRow, "LeftButton")
+assert(ns.ui.selected().id == 13,
+  "Search click must land on selected fish, not Darkclaw Lobster index zero")
+assert(ns.ui.query == "night" and searchBox:GetText() == "night",
+  "Search click must preserve the typed query")
+searchBox:SetText("pole")
+local poleRow
+for _, frame in ipairs(created) do
+  if frame.item and frame.item.id == 6256
+      and frame.item.atlasCategory == "gear"
+      and frame.scripts.OnClick then poleRow = frame end
+end
+assert(poleRow, "Gear search hit should be clickable")
+poleRow.scripts.OnClick(poleRow, "LeftButton")
+assert(ns.ui.selected().id == 6256,
+  "Search click must preserve gear result missing from destination listing")
+assert(ns.ui.selected().name == "Fishing Pole" and ns.ui.query == "pole")
+ns.ui.refresh(false)
+assert(ns.ui.selected().id == 6256,
+  "Refresh must not replace selected global result with index zero")
+WorldMapFrame = element()
+WorldMapFrame:Hide()
+WorldMapFrame.SetMapID = function(self, id) self.mapID = id end
+WorldMapFrame.GetMapID = function(self) return self.mapID end
+assert(ns.ui.openWorldMap(nil), "World Map must open with no mapped item zone")
+assert(ns.ui.openWorldMap(1413), "World Map should open with a selected map")
+assert(WorldMapFrame.mapID == 1413)
+local properSetMapID = WorldMapFrame.SetMapID
+WorldMapFrame.SetMapID = function(self) self.mapID = 999 end
+assert(not ns.ui.openWorldMap(1413),
+  "A visible World Map on the wrong zone must not count as success")
+WorldMapFrame.SetMapID = function() error("Cannot select map") end
+assert(not ns.ui.openWorldMap(1413),
+  "A World Map SetMapID exception must not count as selection success")
+WorldMapFrame.SetMapID = properSetMapID
+assert(ns.ui.selectCategory("items", nil, "Items") == nil)
+assert(ns.ui.category == "items" and ns.ui.topPage == "Items")
 assert(ns.ui.refresh(true) == nil)
 assert(ns.ui.toggle())
 print("FrameXML explorer mock smoke test passed")

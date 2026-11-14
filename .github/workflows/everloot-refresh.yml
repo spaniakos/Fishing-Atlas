@@ -1,0 +1,45 @@
+name: Refresh sourced Forever observations
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 3 * * *'
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: fishingatlas-everloot-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read a consistent full Everloot snapshot
+        env:
+          EVERLOOT_API_KEY: ${{ secrets.EVERLOOT_API_KEY }}
+        run: |
+          python3 scripts/seed_offline.py
+      - name: Validate generated snapshot
+        run: |
+          python3 scripts/build_catalog.py --check
+          python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Open review PR for evidence changes
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'data: refresh attributed Everloot observed data'
+          title: 'data: update Forever observed evidence pack'
+          body: |
+            Automated daily snapshot of Everloot public observed records.
+            Individual install IDs have been stripped. Counts below 3 remain
+            provisional. The generated dataset has its own CC BY-SA 4.0
+            attribution, separate from Fishing Atlas GPL code and client art.
+            Inspect database/observed/last-diff.json before merging.
+            No Classic references are promoted to verified Forever facts.
+          branch: data/everloot-refresh
+          delete-branch: true
+          add-paths: |
+            FishingAtlas/Data/EverlootObserved.lua
+            database/observed/everloot-normalized.json
+            database/observed/last-diff.json

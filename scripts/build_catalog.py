@@ -103,8 +103,8 @@ def lua(value, level=0):
         return "{" + ", ".join(lua(v, level + 1) for v in value) + "}"
     if isinstance(value, dict):
         fields = []
-        for key in sorted(value):
-            attr = key if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) else "[" + lua(key) + "]"
+        for key in sorted(value, key=lambda k: (type(k).__name__, str(k))):
+            attr = key if isinstance(key, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) else "[" + lua(key) + "]"
             fields.append(attr + " = " + lua(value[key], level + 1))
         return "{" + ", ".join(fields) + "}"
     raise ValueError("Unsupported value: " + repr(value))

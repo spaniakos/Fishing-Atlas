@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> **v0.99 pre-v1 candidate:** built for Forever 1.60.1.70888/interface 16001, with automated CI coverage. **Client-side acceptance testing remains pending**; full school-spawn/vendor datasets are incomplete.
+> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.
@@ -89,3 +89,55 @@ Fishing-related vendor NPCs, inventory candidates and map locations are now sour
 
 ## v0.99.5 | Image-3 atlas explorer
 The Explorer was redesigned around the third approved concept: branded panorama header, icon navigation, category sidebar, search/filters, sorted record list, dedicated section inspector, native zone map-art preview (when the Forever client exposes C_Map map layers), source-marked points, quick zone skill information and contextual vendor/fish links. Layout auto-scales to the available game viewport. The pictured concept's illustrative fish/school counts and "verified" flags are **not** treated as proof of live spawns. The actual client UI still requires acceptance testing.
+
+
+## Offline-first usage and data updates
+
+**Everloot is NOT a player-side dependency.** The complete set of data that
+FishingAtlas currently knows is bundled inside its installable ZIP. No player
+needs Everloot installed, an API key or Internet access. See
+[Offline data packs](docs/OFFLINE-DATA-PACKS.md).
+
+The initial v0.99.6 bundle contains the existing client and reference catalog;
+the Everloot observed layer has been populated from the complete public corpus via the keyed API. Snapshot 2026-11-13T14:10:21.029Z (60,550 public observations), independently labeled per edge. The separately credited build-70888 game-file pack is now populated with 136 Cooking/Fishing recipes, 1,854 item categories and 3,356 selected item-spell relations. Neither pack requires Everloot on the player's computer.
+
+For future refreshed observation snapshots, the configured `EVERLOOT_API_KEY` repository secret is used by the offline build runner only. Keep the key out of source files and installable releases. The scheduled/dispatchable
+`everloot-refresh.yml` builds a reviewed, versioned source-data PR with proper
+CC BY-SA attribution. It will never silently replace released data.
+The key is used only by the builder, never embedded in the addon.
+
+## v0.99.6 | Linked explorer and evidence-based data pipeline
+
+- The middle inspector has hoverable, clickable item and spell rows. Recipe outputs and ingredients can show native tooltips; clicking goods follows their item record.
+- Every item record has **Vendors / Drops / Crafted / Map** sections. Sellers lead to vendor detail, source evidence is labelled `observed_confirmed` (3 independent installs), `observed_provisional`, `verified_client`, or an appropriately qualified reference.
+- Recipes have **Sources** for observed trainers, recipe scroll sellers and eligible drops, separate from skill/reagent/client-file definitions. Missing acquisition is explicitly unknown.
+- Schools show object sightings with zone names and coordinates **only when object positions are actually observed**; saved personal nearby coordinates are still distinct.
+- Map thumbnails preserve the native map artwork aspect ratio when `C_Map` layers exist. Map pins and navigation now use recognizable icons rather than anonymous squares; optional TomTom is still capability-dependent.
+- The minimap emblem is larger, with a centered ring and adaptive radius.
+- The **Source link** action shows a selectable upstream URL and attribution; WoW itself does not open websites.
+- `FishingAtlas/Data/EverlootObserved.lua`: separately licensed **CC BY-SA 4.0** observed-data pack.
+- `FishingAtlas/Data/EverlootGameFiles.lua`: separate **Blizzard client-game-file** pack; its rows are build-specific and always `game_files_unconfirmed`.
+- `FishingAtlas/DATA-LICENSES.txt` is included in the installable ZIP.
+
+### Importing the open database
+
+The repository now includes a nonempty, attributed Everloot public observation snapshot (2026-11-13T14:10:21.029Z). It is not an exhaustive game-file database. The matching client-game-file pack is also populated, but deliberately marked game_files_unconfirmed (Blizzard data, not the observed-data CC BY-SA license).
+
+```sh
+# Existing corpus.ndjson or a saved public API response (preferred for reproducibility)
+python3 scripts/import_everloot.py --input /path/to/corpus.ndjson --write
+# Or page the public API. Optional free key stays on the builder, never in game.
+EVERLOOT_API_KEY=... python3 scripts/import_everloot.py --fetch --write
+# Refresh the pinned, build-matched public client catalogs (separate game-file credit)
+python3 scripts/import_everloot_client_git.py --write
+# Alternative if Everloot publishes a validated open-data export folder
+python3 scripts/import_everloot_gamefiles.py --export /path/to/everloot-open-export --write
+python3 scripts/build_catalog.py --check
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+Observed records from Everloot must remain credited: **Data from Everloot (https://everloot.app), CC BY-SA 4.0.** Their install identifiers never enter the shipped pack. The client-game-file export is © Blizzard Entertainment, Inc., **not** under Everloot's CC BY-SA data license. Do not treat its items, recipes, category metadata or relation edges as in-game availability.
+
+A scheduled/dispatchable [data refresh workflow](.github/workflows/everloot-refresh.yml) generates a **review PR** for changed observations; it does not auto-publish unreviewed assertions. If an unauthenticated full harvest exceeds Everloot's limits, configure the repository's optional `EVERLOOT_API_KEY` secret, or supply the complete licensed bulk corpus manually. The game addon never needs a key or makes HTTP requests.
+
+See [Everloot integration contract](docs/EVERLOOT-INTEGRATION.md), [database coverage](docs/DATABASE-COVERAGE.md) and [v0.99.6 client acceptance](docs/CLIENT-TESTING.md).

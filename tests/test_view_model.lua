@@ -5,6 +5,9 @@ local ns = {
     referenceZoneFish = {[1440] = {{id = 13759, evidence = "cmangos_classic_reference"}},
       [1438] = {{id = 13759, evidence = "player_observed"}}},
     zoneFishingSkill = {[1440] = {minimum = 55, reliable = 150}},
+    referenceAcquisition = {[12225] = {{kind = "quest_reward",
+      title = "The Family and the Fishing Pole", questId = 1141,
+      mapID = 1439, confidence = "classic_reference"}}},
     referenceVendors = {{id = 42, name = "Fishing Merchant", side = "Alliance",
       spots = {{mapID = 1440, x = 0.42, y = 0.63}}, items = {6256}}},
   },
@@ -45,6 +48,8 @@ local summary = V.summary(zone)
 assert(summary.skill == 55 and summary.reliable == 150)
 assert(#V.zoneVendors(1440) == 1)
 assert(#V.recordedLocations(1440) == 2)
+assert(#V.mapPoints(zone) == 0, "Active-only default must not show historical positions")
+ns.storage.db.settings = {schoolMapMode = "probable"}
 assert(#V.mapPoints(zone) == 3)
 assert(V.mapID(zone) == 1440)
 assert(#V.section(zone, "Fish") == 1)
@@ -55,10 +60,17 @@ assert(V.section(zone, "Overview")[1].title == "Fishing skill")
 local fish = {kind = "fish", id = 13759, name = "Nightfin", confidence = "reference"}
 assert(#V.fishZones(13759) == 2)
 assert(#V.section(fish, "Zones") == 2)
-assert(#V.tabs(zone) == 5 and #V.tabs(fish) == 4)
+assert(#V.tabs(zone) == 5 and #V.tabs(fish) == 5)
 assert(#V.mapPoints({kind = "school_type", name = "Fishing School"}) == 1)
 local vendor = {kind = "vendor_reference", name = "Fishing Merchant",
   extra = ns.data.referenceVendors[1]}
 assert(#V.section(vendor, "Goods") == 1)
 assert(V.mapPoints(vendor)[1].source == "mixed_source_reference")
-print("image3 view model tests passed")
+local pole = {kind = "fishing_pole", id = 12225,
+  name = "Blump Family Fishing Pole", confidence = "classic_reference"}
+assert(#V.tabs(pole) == 6, "Gear must provide a Quest source tab")
+assert(#V.itemQuests(pole.id) == 1)
+assert(V.section(pole, "Quest")[1].title == "The Family and the Fishing Pole")
+assert(V.section(pole, "Overview")[1].title == "Item Name")
+assert(V.section(fish, "Overview")[1].title == "Item Name")
+print("image3 view model / gear quest acquisition tests passed")

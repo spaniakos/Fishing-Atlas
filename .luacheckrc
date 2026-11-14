@@ -1,14 +1,18 @@
 std = "lua51"
 globals = {
-  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "Settings", "Minimap", "GameTooltip", "GetCursorPosition", "InterfaceOptions_AddCategory", "InterfaceOptionsFrame_OpenToCategory", "C_Item", "C_Spell", "TomTom",
-  "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "UnitName", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
+  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "C_MapExplorationInfo", "Settings", "Minimap", "GameTooltip", "GameTooltipTextLeft1", "issecretvalue", "C_Timer", "WorldFrame", "GetCursorPosition", "InterfaceOptions_AddCategory", "InterfaceOptionsFrame_OpenToCategory", "C_Item", "C_Spell", "C_TradeSkillUI", "C_AddOns", "GetNumTradeSkills", "GetTradeSkillInfo", "GetTradeSkillRecipeLink", "UISpecialFrames", "TomTom", "UIParentLoadAddOn", "UnitFullName", "GetRealmName", "IsSpellKnown",
+  "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "UnitName", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "OpenWorldMap", "ToggleWorldMap", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
 }
 max_line_length = 140
 
 -- Generated deterministic catalog is syntax-checked and compared to the source JSON in CI.
 exclude_files = {
   "FishingAtlas/Data/Catalog.lua",
+  "FishingAtlas/Data/EverlootObserved.lua",
+  "FishingAtlas/Data/EverlootGameFiles.lua",
   "FishingAtlas/Data/ReferenceVendors.lua",
   "FishingAtlas/Data/ReferenceFishZones.lua",
-  "FishingAtlas/Data/ZoneSkill.lua"
+  "FishingAtlas/Data/ZoneSkill.lua",
+  "FishingAtlas/Data/ClassicSchoolLocations.lua",
+  "FishingAtlas/Data/ClassicNPCNames.lua"
 }
