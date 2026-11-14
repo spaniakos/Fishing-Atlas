@@ -25,6 +25,7 @@ Guides/Search.lua
 Fishing/Gear.lua
 Fishing/Mode.lua
 Atlas/Schools.lua
+Atlas/LiveSchools.lua
 Atlas/Nearby.lua
 Atlas/MapPins.lua
 Data/ReferenceSchools.lua
