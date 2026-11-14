@@ -117,7 +117,7 @@ def pretty_lua(value, depth=0):
                 else "[" + lua(key) + "]"
             lines.append(indent + attr + " = " +
                          pretty_lua(value[key], depth + 1) + ",")
-    return "{\\n".replace("\\\\n", "\\n") + "\\n".join(lines) + "\\n" + pad + "}"
+    return "{\n" + "\n".join(lines) + "\n" + pad + "}"
 
 def main():
     parser = argparse.ArgumentParser()
