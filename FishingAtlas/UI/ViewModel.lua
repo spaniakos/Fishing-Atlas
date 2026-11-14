@@ -406,7 +406,7 @@ function V.summary(item)
     summary.subtitle = "NPC  |  ID " .. item.id
     summary.note = "Player sightings; interaction coordinates are approximate."
   elseif item.kind == "fish" then
-    summary.subtitle = "FISH  |  Item " .. item.id
+    summary.subtitle = "FISHING CATCH  |  Item " .. item.id
     summary.note = "Mapped Classic reference catches, not proven server drop rates."
   elseif item.kind == "vendor_reference" then
     summary.subtitle = "VENDOR  |  NPC " .. item.id
@@ -434,7 +434,9 @@ function V.tabs(item)
       or item.kind == "gamefile_recipe") then
     return {"Overview", "Ingredients", "Sources", "Map"}
   end
-  if item and item.kind == "fish" then return {"Overview", "Zones", "Recipes", "Map"} end
+  if item and item.kind == "fish" then
+    return {"Overview", "Zones", "Sources", "Recipes", "Map"}
+  end
   if item and (item.kind == "fishing_pole" or item.kind == "lure") then
     return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
@@ -456,6 +458,7 @@ function V.section(item, section)
     local vendors, drops, crafts = V.itemVendors(item.id),
       V.itemDrops(item.id), V.itemCrafts(item.id)
     if section == "Overview" then
+      add("Item Name", item.name, ns.catalog.icon("item", item.id), item.confidence)
       add("Item ID", item.id, ns.catalog.icon("item", item.id), item.confidence,
         {itemId = item.id})
       add("Vendors", #vendors .. " referenced/observed sellers",
@@ -615,13 +618,37 @@ function V.section(item, section)
     end
   elseif item.kind == "fish" then
     local places = V.fishZones(item.id)
+    local sellers, drops = V.itemVendors(item.id), V.itemDrops(item.id)
     if section == "Overview" then
+      add("Item Name", item.name, ns.catalog.icon("item", item.id), item.confidence)
       add("Item ID", item.id, ns.catalog.icon("item", item.id), item.confidence)
-      add("Reference zones", #places .. " zone-water relationships", nil, "mixed_sources")
-      add("Live drop rates", "Not verified; no estimates supplied", nil, "unknown")
+      add("Fishing-water locations", #places .. " sourced/reference zones",
+        "Interface\\Icons\\INV_Misc_Fish_02", "mixed_sources")
+      add("Vendor sellers", #sellers .. " recorded/reference candidates",
+        "Interface\\Icons\\INV_Misc_Bag_10", "mixed_sources")
+      add("Other loot sources", #drops .. " creature/pool/reference relations",
+        "Interface\\Icons\\INV_Misc_Map_01", "mixed_sources")
     elseif section == "Zones" or section == "Map" then
       for _, place in ipairs(places) do
-        add(place.name, "Map " .. place.mapID .. " | " .. place.evidence, nil, place.evidence)
+        add(place.name, "Map " .. place.mapID .. " | " .. place.evidence,
+          "Interface\\Icons\\INV_Misc_Map_01", place.evidence,
+          {mapID = place.mapID})
+      end
+    elseif section == "Sources" then
+      for _, seller in ipairs(sellers) do
+        add(seller.name, "Vendor | " .. tostring(seller.confidence),
+          "Interface\\Icons\\INV_Misc_Bag_10", seller.confidence,
+          {vendorId = seller.id})
+      end
+      for _, drop in ipairs(drops) do
+        add(drop.title, "Loot | " .. tostring(drop.confidence),
+          "Interface\\Icons\\Ability_Hunter_BeastCall", drop.confidence,
+          {npcId = drop.npcId, objectId = drop.objectId,
+            mapID = drop.mapID, x = drop.x, y = drop.y})
+      end
+      if #sellers == 0 and #drops == 0 then
+        add("Other sources unknown", "No observed vendor or creature source yet",
+          "Interface\\Icons\\INV_Misc_QuestionMark", "unknown")
       end
     elseif section == "Recipes" then
       for _, r in ipairs(ns.catalog.recipeList()) do
@@ -629,7 +656,8 @@ function V.section(item, section)
           if ing.itemId == item.id then
             add(ns.catalog.name("spell", r.spellId),
               ing.amount .. " x ingredient | Spell " .. r.spellId,
-              r.outputItemId and ns.catalog.icon("item", r.outputItemId), "verified_client")
+              r.outputItemId and ns.catalog.icon("item", r.outputItemId),
+              "game_files_unconfirmed", {recipeId = r.spellId})
           end
         end
       end
@@ -711,6 +739,8 @@ function V.section(item, section)
     local vendors, drops, crafts = V.itemVendors(item.id), V.itemDrops(item.id),
       V.itemCrafts(item.id)
     if section == "Overview" then
+      add("Item Name", item.name, ns.catalog.icon("item", item.id), item.confidence)
+      add("Item ID", item.id, ns.catalog.icon("item", item.id), item.confidence)
       add("Equipment", item.kind == "lure" and "Fishing lure" or "Fishing pole",
         ns.catalog.icon("item", item.id), item.confidence, {itemId = item.id})
       add("Vendor candidates", #vendors .. " potential sellers",
