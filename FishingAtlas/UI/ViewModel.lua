@@ -315,6 +315,15 @@ function V.mapPoints(item)
   for _, vendor in ipairs(V.zoneVendors(mapID)) do
     results[#results + 1] = vendor
   end
+  for name, spots in pairs(ns.data.referenceSchoolLocations or {}) do
+    for _, spot in ipairs(spots) do
+      if spot.mapID == mapID and validPlace(spot) then
+        results[#results + 1] = {mapID = mapID, x = spot.x, y = spot.y,
+          kind = "school_guide", label = name .. " (guide reference)",
+          source = "guide_reference", url = spot.url}
+      end
+    end
+  end
   return results
 end
 
@@ -515,6 +524,15 @@ function V.section(item, section)
         end
       end
     elseif section == "Schools" then
+      for name, spots in pairs(ns.data.referenceSchoolLocations or {}) do
+        for _, spot in ipairs(spots) do
+          if spot.mapID == item.id and validPlace(spot) then
+            add(name, string.format("Published guide lead %.1f, %.1f",
+              spot.x * 100, spot.y * 100), "Interface\\Icons\\INV_Misc_Fish_02",
+              "guide_reference", spot)
+          end
+        end
+      end
       for _, observed in ipairs(source() and source().schools() or {}) do
         for _, loc in ipairs(observed.spots or {}) do
           if loc.mapID == item.id then
