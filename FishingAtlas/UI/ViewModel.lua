@@ -463,7 +463,7 @@ function V.section(item, section)
       add("Drops / fishing pools", #drops .. " observed source relationships",
         "Interface\\Icons\\INV_Misc_Map_01", "observed")
       add("Created by", #crafts .. " observed/client recipes",
-        "Interface\\Icons\\Trade_Cooking", "mixed_sources")
+        "Interface\\Icons\\INV_Misc_Food_15", "mixed_sources")
     elseif section == "Vendors" then
       for _, vendor in ipairs(vendors) do
         add(vendor.name, vendor.confidence .. (vendor.installs and
@@ -793,7 +793,7 @@ function V.section(item, section)
       end
     elseif plan then
       add("Cooking skill", plan.minimumSkill or "Unknown",
-        "Interface\\Icons\\Trade_Cooking", "verified_client")
+        "Interface\\Icons\\INV_Misc_Food_15", "verified_client")
       local recipe = ns.catalog.recipe(item.id)
       add("Produces", plan.output,
         recipe and recipe.outputItemId and ns.catalog.icon("item", recipe.outputItemId),
@@ -813,7 +813,7 @@ function V.section(item, section)
         add("Profession", rec.profession or "Unknown",
           "Interface\\Icons\\INV_Misc_Book_09", "game_files_unconfirmed")
         add("Minimum skill", rec.minimumSkill or "Unknown",
-          "Interface\\Icons\\Trade_Cooking", "game_files_unconfirmed")
+          "Interface\\Icons\\INV_Misc_Food_15", "game_files_unconfirmed")
         if rec.outputItemId then
           add("Produces", ns.catalog.name("item", rec.outputItemId),
             ns.catalog.icon("item", rec.outputItemId), "game_files_unconfirmed",
