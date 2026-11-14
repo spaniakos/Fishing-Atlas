@@ -47,4 +47,30 @@ GetNumTradeSkills = nil
 GetTradeSkillInfo = nil
 GetTradeSkillRecipeLink = nil
 GetTradeSkillItemLink = nil
-print("personal and scanned Cooking discoveries, dedupe and identity tests passed")
+-- Exact regression: Forever exposes ONLY modern base-profession info;
+-- GetTradeSkillLine is unavailable even though Cooking is open.
+C_TradeSkillUI = {
+  GetBaseProfessionInfo = function()
+    return {professionID = 185, professionName = "Cooking", profession = 5}
+  end,
+  GetAllRecipeIDs = function() return {15935, 900100, 88881} end,
+  GetRecipeInfo = function(id)
+    return {recipeID = id, learned = id ~= 88881,
+      name = id == 15935 and "Crispy Bat Wing"
+        or id == 900100 and "New Forever Cooking" or "Not Learned"}
+  end,
+  GetProfessionInfoByRecipeID = function()
+    return {professionID = 185, professionName = "Cooking"}
+  end,
+}
+local newCount, modernMessage = D.scan()
+assert(newCount == 1
+  and modernMessage:find("Cooking: 2 learned recipes", 1, true),
+  "Modern-only Forever Cooking scan must import learned spells")
+assert(D.get(900100).source == "client_profession" and auto[900100],
+  "New spell must appear as character-learned in saved discoveries")
+assert(D.get(15935).source == "client_profession" and auto[15935],
+  "Existing manual entry must be upgraded to positively verified Known")
+assert(D.scan() == 0, "Repeated modern scans must not duplicate recipes")
+C_TradeSkillUI = nil
+print("personal, legacy and Forever modern Cooking discoveries passed")
