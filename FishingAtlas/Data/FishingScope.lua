@@ -34,7 +34,7 @@ local function ingredients(recipe)
 end
 
 function S.build()
-  local roots, items, vendors = {}, {}, {}
+  local roots, items, vendors, mobs = {}, {}, {}, {}
   local observed = ns.data.everloot or {}
   for _, ent in ipairs(ns.catalog.itemList()) do
     if ent.category == "fish" or ent.category == "fishing_pole"
@@ -84,18 +84,22 @@ function S.build()
     for _, rec in ipairs((observed.vendorItems or {})[itemId] or {}) do
       add(vendors, rec.npcId)
     end
+    for _, rec in ipairs((observed.drops or {})[itemId] or {}) do
+      add(mobs, rec.npcId)
+    end
   end
   for id, entry in pairs((ns.storage.db and ns.storage.db.vendorObservations) or {}) do
     for _, good in ipairs(entry.items or {}) do
       if items[good] then add(vendors, id); break end
     end
   end
-  cached = {items = items, roots = roots, vendors = vendors}
+  cached = {items = items, roots = roots, vendors = vendors, mobs = mobs}
   return cached
 end
 
 function S.data() return cached or S.build() end
 function S.item(id) return S.data().items[tonumber(id)] == true end
 function S.vendor(id) return S.data().vendors[tonumber(id)] == true end
+function S.mob(id) return S.data().mobs[tonumber(id)] == true end
 function S.isFishingRoot(id) return S.data().roots[tonumber(id)] == true end
 function S.invalidate() cached = nil end
