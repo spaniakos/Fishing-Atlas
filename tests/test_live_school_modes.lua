@@ -12,6 +12,7 @@ local ns = {data = {schoolTypes = {{name = "Firefin Snapper School"}},
   end}
 }
 assert(loadfile("FishingAtlas/Atlas/LiveSchools.lua"))("FishingAtlas", ns)
+assert(loadfile("FishingAtlas/Atlas/MapMarkers.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Atlas/MapPins.lua"))("FishingAtlas", ns)
 local P, L = ns.mapPins, ns.liveSchools
 assert(#P.points(1413) == 0, "Default active must not show historical school pins")
