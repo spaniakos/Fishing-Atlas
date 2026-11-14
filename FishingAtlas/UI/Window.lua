@@ -860,8 +860,8 @@ local function build()
   hero:SetVertexColor(0.64, 0.77, 0.85, 0.67)
   headerName = label(header, "GameFontNormalLarge", 368, 33, 13, -13)
   headerMeta = label(header, "GameFontHighlight", 373, 30, 13, -53)
-  for i = 1, 5 do
-    local tab = button(middle, "", 6 + (i - 1) * 79, -128, 77, 32)
+  for i = 1, 6 do
+    local tab = button(middle, "", 6 + (i - 1) * 65, -128, 62, 32)
     subTabs[i] = tab
   end
   local detailPanel = panel(middle, 6, -171, 395, 344)
