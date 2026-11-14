@@ -13,6 +13,25 @@ L.revision = 0
 local lastScan = "Not scanned yet"
 local monitor
 local elapsed = 0
+local lastAlert = {}
+local ALERT_COOLDOWN = 300
+
+local function alertVisible(name, mapID, x, y)
+  local settings = ns.storage and ns.storage.db and ns.storage.db.settings
+  if not settings or settings.schoolAlerts ~= true then return end
+  local key = name .. ":" .. mapID .. ":" .. math.floor(x * 10) ..
+    ":" .. math.floor(y * 10)
+  local at = type(GetTime) == "function" and GetTime() or 0
+  if lastAlert[key] and at >= lastAlert[key]
+    and at - lastAlert[key] < ALERT_COOLDOWN then return end
+  lastAlert[key] = at
+  if ns.commands and ns.commands.say then
+    ns.commands.say("Visible fishing school: " .. name ..
+      " (observed tooltip; position is yours, not the pool's)")
+  end
+  if type(PlaySound) == "function" and type(SOUNDKIT) == "table"
+    and SOUNDKIT.TELL_MESSAGE then PlaySound(SOUNDKIT.TELL_MESSAGE) end
+end
 
 local function now()
   if type(GetTime) == "function" then return GetTime() end
@@ -122,6 +141,7 @@ function L.recordVisible(name, mapID, x, y)
   L.revision = L.revision + 1
   lastScan = "Seen on world tooltip: " .. name ..
     " (player position; expires after 60 sec)"
+  alertVisible(name, mapID, x, y)
   return true, true
 end
 
