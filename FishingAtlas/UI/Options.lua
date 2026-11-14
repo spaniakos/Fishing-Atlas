@@ -155,7 +155,9 @@ function O.start()
     if ns.ui then ns.ui.recipeFilter = settings.recipeFilter; ns.ui.refresh(true) end
   end)
   updateRecipeFilter()
-  note(panel, 20, -549, "Recipe overrides are character-specific; open a recipe to mark it known, not learned, or unchecked. Other settings are account-wide.")
+  note(panel, 20, -549,
+    "Recipe overrides are character-specific. Open a recipe to mark it known, " ..
+    "not learned, or unchecked. Other settings are account-wide.")
   if type(Settings) == "table" and type(Settings.RegisterCanvasLayoutCategory) == "function"
       and type(Settings.RegisterAddOnCategory) == "function" then
     category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
