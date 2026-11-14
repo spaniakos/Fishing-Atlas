@@ -2,6 +2,18 @@
 -- Exercise image-3 presentation model without a WoW runtime.
 local ns = {
   data = {
+    recipeLearningReferences = {[2795] = {
+      minimumSkill = 25, recipeItemId = 2889,
+      source = "forever_client_public_reference",
+      sources = {
+        {kind = "vendor", label = "Kendor Kabonka", npcId = 340,
+          mapID = 1453, x = 0.775, y = 0.527,
+          source = "classic_vendor_reference"},
+        {kind = "quest", label = "Beer Basted Boar Ribs", questId = 384,
+          giver = "Ragnar Thunderbrew", mapID = 1426, x = 0.468,
+          y = 0.524, source = "classic_quest_reference"}
+      }
+    }},
     referenceZoneFish = {[1440] = {{id = 13759, evidence = "cmangos_classic_reference"}},
       [1438] = {{id = 13759, evidence = "player_observed"}}},
     zoneFishingSkill = {[1440] = {minimum = 55, reliable = 150}},
@@ -122,3 +134,14 @@ assert(#refs == 3 and refs[1].detail:find("2889", 1, true)
   and refs[3].sourceMapFirst,
   "Cooking sources must link scroll, vendor map and quest map independently")
 print("image3 view model / gear quest and Cooking acquisition tests passed")
+
+local teachingItem = {kind = "item", id = 2889,
+  name = "Recipe: Beer Basted Boar Ribs"}
+assert(#V.itemVendors(2889) == 1)
+assert(V.itemVendors(2889)[1].name == "Kendor Kabonka")
+assert(#V.itemQuests(2889) == 1 and V.itemQuests(2889)[1].questId == 384)
+assert(#V.itemMapPoints(2889) == 2)
+assert(#V.tabs(teachingItem) == 6, "Teaching item quest should have a tab")
+assert(V.section(teachingItem, "Overview")[6].title == "Teaches Cooking")
+assert(V.section(teachingItem, "Vendors")[1].sourceMapFirst)
+assert(V.section(teachingItem, "Quest")[1].sourceMapFirst)

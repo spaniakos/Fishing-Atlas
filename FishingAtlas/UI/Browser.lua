@@ -52,6 +52,15 @@ function B.list(category, term)
         end
       end
     end
+    -- Cooking teaching items are actual items, even if not fishable.
+    for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+      local id = ref.recipeItemId
+      if type(id) == "number" and id > 0 and not seen[id] then
+        seen[id] = true
+        push(out, row(id, ref.recipeItemName or ns.catalog.name("item", id),
+          "item", ref.source or "forever_public_reference"), term)
+      end
+    end
   elseif category == "fish" then
     -- Fish is every item actually associated with fishing casts/pools or
     -- documented fishing-water references, including non-fish catches.

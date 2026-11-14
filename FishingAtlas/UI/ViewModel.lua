@@ -135,6 +135,18 @@ function V.itemVendors(itemID)
       end
     end
   end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "vendor" and (not lead.npcId or not seen[lead.npcId]) then
+          out[#out + 1] = {id = lead.npcId, name = lead.label,
+            kind = "vendor", confidence = lead.source or "classic_reference",
+            mapID = lead.mapID, x = lead.x, y = lead.y}
+          if lead.npcId then seen[lead.npcId] = true end
+        end
+      end
+    end
+  end
   table.sort(out, function(a, b) return a.name < b.name end)
   return out
 end
@@ -197,6 +209,20 @@ function V.itemQuests(itemID)
   for _, record in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
     if record.kind == "quest_reward" then out[#out + 1] = record end
   end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "quest" then
+          out[#out + 1] = {kind = "quest_reward", title = lead.label,
+            note = "Quest giver: " .. tostring(lead.giver or "Unknown") ..
+              " | availability not verified",
+            questId = lead.questId, mapID = lead.mapID,
+            x = lead.x, y = lead.y,
+            confidence = lead.source or "classic_quest_reference"}
+        end
+      end
+    end
+  end
   return out
 end
 
@@ -223,6 +249,16 @@ function V.itemMapPoints(itemID)
       if ref.id == vendor.id then
         for _, loc in ipairs(ref.spots or {}) do
           add(loc, ref.name .. " (reference)", "vendor", "mixed_source_reference")
+        end
+      end
+    end
+  end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "vendor" or lead.kind == "quest" then
+          add(lead, lead.label, lead.kind == "quest" and "npc" or "vendor",
+            lead.source or "classic_reference")
         end
       end
     end
@@ -434,6 +470,9 @@ end
 function V.tabs(item)
   if item and item.kind == "zone" then return {"Overview", "Fish", "Schools", "Vendors", "Map"} end
   if item and item.kind == "item" then
+    if #V.itemQuests(item.id) > 0 then
+      return {"Overview", "Vendors", "Drops", "Crafted", "Quest", "Map"}
+    end
     return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
   if item and item.kind == "observed_npc" then
@@ -476,12 +515,22 @@ function V.section(item, section)
         "Interface\\Icons\\INV_Misc_Map_01", "observed")
       add("Created by", #crafts .. " observed/client recipes",
         "Interface\\Icons\\INV_Misc_Food_15", "mixed_sources")
+      for spellId, ref in pairs(ns.data.recipeLearningReferences or {}) do
+        if ref.recipeItemId == item.id then
+          add("Teaches Cooking", ns.catalog.name("spell", spellId) ..
+            " | Required Cooking " .. tostring(ref.minimumSkill or "Unknown"),
+            "Interface\\Icons\\INV_Misc_Book_09", ref.source,
+            {recipeId = spellId})
+        end
+      end
     elseif section == "Vendors" then
       for _, vendor in ipairs(vendors) do
         add(vendor.name, vendor.confidence .. (vendor.installs and
           (" | " .. vendor.installs .. " installs") or ""),
           "Interface\\Icons\\INV_Misc_Bag_10", vendor.confidence,
-          {vendorId = vendor.id})
+          {vendorId = vendor.id, mapID = vendor.mapID,
+            x = vendor.x, y = vendor.y,
+            sourceMapFirst = vendor.x ~= nil and vendor.y ~= nil})
       end
     elseif section == "Drops" then
       for _, drop in ipairs(drops) do
@@ -498,6 +547,15 @@ function V.section(item, section)
         add(craft.title, "Spell " .. craft.spellId .. " | " .. craft.confidence,
           ns.catalog.icon("spell", craft.spellId), craft.confidence,
           {spellId = craft.spellId, recipeId = craft.spellId})
+      end
+    elseif section == "Quest" then
+      for _, quest in ipairs(V.itemQuests(item.id)) do
+        add(quest.title, quest.note or "Reference quest reward",
+          "Interface\\Icons\\INV_Misc_Book_09",
+          quest.confidence or "classic_reference",
+          {questId = quest.questId, mapID = quest.mapID,
+            x = quest.x, y = quest.y, sourceMapFirst = quest.x ~= nil
+              and quest.y ~= nil})
       end
     elseif section == "Map" then
       for _, loc in ipairs(V.itemMapPoints(item.id)) do

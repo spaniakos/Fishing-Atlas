@@ -2,7 +2,10 @@
 local ns = {
  data = {schoolTypes={{name="Floating Wreckage"}}, referenceVendors={{id=66,name="Vendor",trainer=false,title="Shop",
     spots={{mapID=1411,x=0.6,y=0.4}},items={6256},side="Horde"}},
- zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={{id=6303,evidence="classic_reference"}}}},
+ zoneFishingSkill={[1411]={minimum=1,reliable=25}}, referenceZoneFish={[1411]={{id=6303,evidence="classic_reference"}}},
+ recipeLearningReferences = {[2795] = {minimumSkill = 25,
+   recipeItemId = 2889, recipeItemName = "Recipe: Beer Basted Boar Ribs",
+   source = "forever_client_public_reference"}}},
  util = {validCoordinate = function(n) return type(n) == "number" and n >= 0 and n <= 1 end},
  storage = {db = {
   catches = {fish = {name = "Nightfin", count = 8, mapID = 1411}},
@@ -47,8 +50,9 @@ ns.catalog = {
 assert(loadfile("FishingAtlas/UI/Browser.lua"))("FishingAtlas", ns)
 assert(#ns.browser.list("fish", "night") == 1)
 assert(#ns.browser.list("fish", "") == 1, "Fish means fishing catches, not every item")
-assert(#ns.browser.list("items", "") == 2,
-  "Items should contain supplies/cooked items, not duplicate fish catches")
+assert(#ns.browser.list("items", "") == 3,
+  "Items include Cooking teaching scrolls but no duplicate fish catches")
+assert(ns.browser.list("items", "2889")[1].name == "Recipe: Beer Basted Boar Ribs")
 assert(#ns.browser.list("fish", "other") == 0)
 assert(#ns.browser.list("recipes", "18243") == 1)
 assert(#ns.browser.list("zones", "") == 1)
