@@ -102,6 +102,23 @@ def refresh():
     INPUT.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
     return result
 
+def pretty_lua(value, depth=0):
+    # Stable, readable Lua 5.1; multi-line data avoids Luacheck 631 and makes
+    # a review of source coordinates/provenance practical.
+    if not isinstance(value, (list, dict)):
+        return lua(value)
+    pad, indent = "  " * depth, "  " * (depth + 1)
+    lines = []
+    if isinstance(value, list):
+        lines = [indent + pretty_lua(item, depth + 1) + "," for item in value]
+    else:
+        for key in sorted(value):
+            attr = key if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) \
+                else "[" + lua(key) + "]"
+            lines.append(indent + attr + " = " +
+                         pretty_lua(value[key], depth + 1) + ",")
+    return "{\\n".replace("\\\\n", "\\n") + "\\n".join(lines) + "\\n" + pad + "}"
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--refresh", action="store_true")
@@ -110,7 +127,7 @@ def main():
     raw = refresh() if args.refresh else json.loads(INPUT.read_text())
     if raw["meta"]["sourceCommit"] != PIN or raw["meta"]["license"] != "CC BY 4.0":
         raise ValueError("Unexpected source commit or license")
-    generated = HEADER + lua(raw) + "\n"
+    generated = HEADER + pretty_lua(raw) + "\n"
     if args.check:
         if OUTPUT.read_text() != generated: raise ValueError("EG Cooking source is stale")
     else:
