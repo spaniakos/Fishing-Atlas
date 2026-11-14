@@ -140,13 +140,70 @@ function M.exploredForMap(mapID, meta, ox, oy, viewW, viewH)
     ox, oy, viewW, viewH)
 end
 
+-- Differentiate references provided by C_Map from textures that have
+-- actually finished loading in this instance of the preview. A nonzero
+-- FileDataID is NOT proof of successful rendering on a newer Forever build.
+local function previewLoadStatus(mapID)
+  local chosen, width
+  for parent, state in pairs(pool) do
+    if state.renderedMap == mapID then
+      local currentWidth = parent.GetWidth and parent:GetWidth() or 0
+      if not chosen or currentWidth < width then
+        chosen, width = state, currentWidth
+      end
+    end
+  end
+  if not chosen then return nil end
+  local report = {loaded = 0, pending = 0, unknown = 0,
+    assigned = 0, unavailable = {}}
+  for index, fileID in ipairs(chosen.tileIDs or {}) do
+    local tile = chosen.tiles[index]
+    if tile and fileID then
+      report.assigned = report.assigned + 1
+      local loaded
+      if type(tile.IsObjectLoaded) == "function" then
+        local ok, value = pcall(tile.IsObjectLoaded, tile)
+        if ok and type(value) == "boolean" then loaded = value end
+      end
+      if loaded == true then
+        report.loaded = report.loaded + 1
+      elseif loaded == false then
+        report.pending = report.pending + 1
+        if #report.unavailable < 12 then
+          report.unavailable[#report.unavailable + 1] =
+            tostring(index) .. ":" .. tostring(fileID)
+        end
+      else
+        report.unknown = report.unknown + 1
+      end
+    end
+  end
+  return report
+end
+
 function M.describe(mapID)
   if type(mapID) ~= "number" then return "No map selected" end
   local tiles, ox, oy, w, h, meta = M.artForMap(mapID, 275, 195)
   local explored = M.exploredForMap(mapID, meta, ox, oy, w, h)
-  return string.format("Map %d: layer %s; %d/%d base texture IDs; %d drawn; %d explored-overlay tiles",
+  local summary = string.format(
+    "Map %d: layer %s; %d/%d base file references; %d layout tiles; %d exploration tiles",
     mapID, tostring(meta.layer or "none"), meta.tiles or 0,
     meta.expected or 0, #tiles, #explored)
+  local preview = previewLoadStatus(mapID)
+  if not preview then
+    return summary .. " | no matching visible preview for load test"
+  end
+  if preview.unknown == preview.assigned then
+    return summary .. " | texture-load API unavailable in this client"
+  end
+  local detail = string.format(
+    " | preview: %d/%d loaded, %d pending, %d unknown",
+    preview.loaded, preview.assigned, preview.pending, preview.unknown)
+  if #preview.unavailable > 0 then
+    detail = detail .. " | pending slots (slot:fileID) " ..
+      table.concat(preview.unavailable, ",")
+  end
+  return summary .. detail
 end
 
 local function state(parent)
@@ -224,6 +281,7 @@ function M.render(parent, mapID, locations)
   if not width or width <= 0 or not height or height <= 0 then return false end
   local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
+  s.renderedMap, s.tileIDs = mapID, {}
   -- Retain the safe local fallback when this client lacks world-map tiles.
   s.fallback:Show()
   -- Some map assets arrive after the first request. Retry once, without an
@@ -255,6 +313,7 @@ function M.render(parent, mapID, locations)
       texture = parent:CreateTexture(nil, "BACKGROUND")
       s.tiles[index] = texture
     end
+    s.tileIDs[index] = tile.texture
     texture:SetTexture(tile.texture)
     texture:SetTexCoord(0, tile.u, 0, tile.v)
     texture:ClearAllPoints()
