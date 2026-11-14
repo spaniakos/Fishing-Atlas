@@ -86,6 +86,20 @@ assert(ns.ui.category == "fish" and ns.ui.selected().id == 12,
   "Known fish item should open in the Fish inspector")
 ns.ui.selectCategory("fish", 99999)
 assert(ns.ui.selected().id == 99999, "Unindexed fish must not fall back to first list entry")
+-- Global results may not exist in a freshly opened destination index.
+-- The exact selected record must survive even then, across every category.
+for _, category in ipairs({"gear", "items", "recipes", "vendors", "schools"}) do
+  local record = {id = 998877, name = "Exact search hit",
+    kind = category == "gear" and "fishing_pole"
+      or category == "recipes" and "Cooking"
+      or category == "vendors" and "vendor_reference"
+      or category == "schools" and "school_type" or "item",
+    confidence = "reference", atlasCategory = category}
+  ns.ui.selectCategory(category, record.id, nil, record)
+  assert(ns.ui.selected().id == record.id and
+    ns.ui.selected().name == "Exact search hit",
+    "Global search must never land on category[1]: " .. category)
+end
 WorldMapFrame = element()
 WorldMapFrame:Hide()
 WorldMapFrame.SetMapID = function(self, id) self.mapID = id end
