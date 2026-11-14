@@ -54,7 +54,6 @@ function S.vendorsForItem(id)
   local found = {}
   for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.vendorItems)[tonumber(id)])) do
     if isPositive(rec.npcId) then
-      local npc = S.vendor(rec.npcId) or {}
       found[#found + 1] = {kind = "vendor", npcId = rec.npcId,
         title = S.npcName(rec.npcId), installs = rec.installs or 0,
         reports = rec.reports or 0, confidence = support(rec.installs),
@@ -67,9 +66,8 @@ function S.dropsForItem(id)
   local found = {}
   for _, rec in ipairs(tableOrEmpty(tableOrEmpty(O.drops)[tonumber(id)])) do
     if isPositive(rec.npcId) then
-      local npc = S.vendor(rec.npcId) or {}
       found[#found + 1] = {kind = "drop", npcId = rec.npcId,
-        title = npc.name or ("NPC " .. rec.npcId), installs = rec.installs or 0,
+        title = S.npcName(rec.npcId), installs = rec.installs or 0,
         reports = rec.windows or 0, confidence = support(rec.installs)}
     end
   end
