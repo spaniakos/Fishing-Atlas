@@ -62,6 +62,34 @@ local function recipesByName()
   return map
 end
 
+-- Query the exact spell IDs from our offline catalog. Unlike
+-- GetFilteredRecipeIDs, this does not depend on a profession-panel filter.
+-- Positive learned state is authoritative; a nil/false response alone is
+-- not enough to infer a recipe is unlearned if its profession is not loaded.
+function K.scanCatalog()
+  local api = C_TradeSkillUI
+  if type(api) ~= "table" or type(api.GetRecipeInfo) ~= "function" then return 0 end
+  local auto = characterStore("recipeAutoByCharacter")
+  if not auto then return 0 end
+  local found, changed = {}, 0
+  local function visit(id)
+    id = tonumber(id)
+    if not id or found[id] then return end
+    found[id] = true
+    local ok, info = pcall(api.GetRecipeInfo, id)
+    if ok and type(info) == "table" and info.learned == true
+        and not auto[id] then
+      auto[id] = true
+      changed = changed + 1
+    end
+  end
+  for _, recipe in ipairs(ns.catalog and ns.catalog.recipeList() or {}) do
+    visit(recipe.spellId)
+  end
+  for id in pairs((ns.data.gameFiles or {}).recipes or {}) do visit(id) end
+  return changed
+end
+
 function K.scanModern()
   local api = C_TradeSkillUI
   if type(api) ~= "table" or type(api.GetRecipeInfo) ~= "function" then return 0 end
@@ -106,6 +134,15 @@ function K.status(spellId)
   spellId = tonumber(spellId)
   if not spellId then return "unchecked", "unverified" end
   if clientSpellKnown(spellId) then return "known", "client_spellbook" end
+  -- Forever's profession API accepts recipe spell IDs directly. Querying one
+  -- ID also handles Cooking before the visible recipe list has been refreshed.
+  if type(C_TradeSkillUI) == "table"
+      and type(C_TradeSkillUI.GetRecipeInfo) == "function" then
+    local ok, info = pcall(C_TradeSkillUI.GetRecipeInfo, spellId)
+    if ok and type(info) == "table" and info.learned == true then
+      return "known", "client_recipe_info"
+    end
+  end
   local auto = characterStore("recipeAutoByCharacter")
   if auto and auto[spellId] ~= nil then
     return auto[spellId] and "known" or "unknown", "profession_scan"
@@ -185,7 +222,7 @@ function K.scanOpenProfession()
 end
 
 function K.refresh()
-  local added = K.scanModern() + K.scanOpenProfession()
+  local added = K.scanCatalog() + K.scanModern() + K.scanOpenProfession()
   if ns.ui and ns.ui.refresh then ns.ui.refresh(false) end
   return added
 end
