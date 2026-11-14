@@ -33,7 +33,7 @@ local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {},
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
 local filterOne, filterTwo, searchScopeButton
-local uiBusy = false
+local uiBusy, suppressSearchChange = false, false
 UI.mapOverride, UI.selectedPoint = nil, nil
 local sourcePopup, sourceField, sourceCaption
 local renderDetails
@@ -614,51 +614,77 @@ function UI.refresh(reset)
   hideContext()
 end
 
+-- Category navigation is atomic: programmatically clearing search causes the
+-- WoW EditBox OnTextChanged handler to fire synchronously. Suppress that
+-- callback while selecting by stable record ID, then render only the resolved
+-- record. A global hit may not occur in a category's current indexed subset.
 function UI.selectCategory(category, id, topPage, searchRecord)
   UI.mapOverride, UI.selectedPoint = nil, nil
-  UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
+  UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations =
+    category, 0, "", false, false
   UI.topPage = topPage or (category == "fish" and "Fish"
     or category == "items" and "Items"
     or category == "recipes" and "Recipes" or category == "vendors" and "Vendors"
     or category == "schools" and "Schools" or category == "gear" and "Gear"
     or category == "zones" and "Zones" or "Explorer")
-  search:SetText("")
-  active = nil
-  UI.refresh(true)
-  if id ~= nil then
-    local wanted = tonumber(id) or id
-    for _, item in ipairs(results) do
-      if item.id == wanted then
-        select(item)
-        return
+  suppressSearchChange = true
+  if search and search:GetText() ~= "" then search:SetText("") end
+  suppressSearchChange = false
+
+  local wanted = id ~= nil and (tonumber(id) or id) or nil
+  local raw = ns.browser.list(category, "")
+  results = {}
+  for _, entry in ipairs(raw) do
+    if applyFilter(entry) then results[#results + 1] = entry end
+  end
+  if wanted ~= nil then
+    local foundIndex
+    for i, record in ipairs(results) do
+      if record.id == wanted
+          and (not searchRecord or record.kind == searchRecord.kind) then
+        foundIndex = i
+        break
       end
     end
-    -- Search entries already carry the exact record identity. Never
-    -- replace one with the category's [1] item when switching tabs.
-    local fallbackKind = category == "fish" and "fish"
-      or category == "items" and "item"
-      or category == "npcs" and "observed_npc"
-      or category == "gear" and "fishing_pole"
-      or category == "zones" and "zone"
-      or category == "schools" and "school_type"
-      or category == "vendors" and "vendor_reference"
-      or category == "recipes" and "Cooking" or nil
-    if searchRecord and searchRecord.id == wanted then
-      active = searchRecord
-    elseif fallbackKind then
-      active = {id = wanted, kind = fallbackKind,
-        name = fallbackKind == "observed_npc"
-          and (ns.sources and ns.sources.npcName(wanted) or ("NPC " .. wanted))
-          or fallbackKind == "school_type" and tostring(wanted)
-          or (ns.catalog.name(fallbackKind == "Cooking" and "spell" or "item", wanted)),
-        confidence = "source_unindexed"}
+    if foundIndex then
+      active = results[foundIndex]
+      UI.offset = math.max(0, math.min(foundIndex - 1,
+        math.max(0, #results - visibleRows)))
     else
-      active = nil
+      -- Preserve the actual global-search hit in the destination list even
+      -- when the underlying index does not contain it.
+      local record = searchRecord and searchRecord.id == wanted and searchRecord
+      if not record then
+        local kind = category == "fish" and "fish"
+          or category == "items" and "item"
+          or category == "npcs" and "observed_npc"
+          or category == "gear" and "fishing_pole"
+          or category == "zones" and "zone"
+          or category == "schools" and "school_type"
+          or category == "vendors" and "vendor_reference"
+          or category == "recipes" and "Cooking" or nil
+        if kind then
+          local recordName = kind == "school_type" and tostring(wanted)
+            or kind == "observed_npc" and ns.sources and ns.sources.npcName(wanted)
+            or ns.catalog.name(kind == "Cooking" and "spell" or "item", wanted)
+          record = {id = wanted, kind = kind, name = recordName,
+            confidence = "source_unindexed"}
+        end
+      end
+      if record then
+        table.insert(results, 1, record)
+        active = record
+      else
+        active = nil
+      end
     end
-    UI.detailsTab = "Overview"
-    renderDetails()
-    UI.draw()
+  else
+    active = findDefault(results)
   end
+  UI.detailsTab = "Overview"
+  UI.draw()
+  renderDetails()
+  hideContext()
 end
 
 function UI.selected()
@@ -769,6 +795,7 @@ local function build()
   search:SetAutoFocus(false)
   search:SetMaxLetters(70)
   search:SetScript("OnTextChanged", function(self)
+    if suppressSearchChange then return end
     UI.query = self:GetText() or ""
     UI.offset, active = 0, nil
     UI.refresh(true)
