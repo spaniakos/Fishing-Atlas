@@ -57,7 +57,7 @@ assert(V.section(zone, "Overview")[1].title == "Fishing skill")
 local fish = {kind = "fish", id = 13759, name = "Nightfin", confidence = "reference"}
 assert(#V.fishZones(13759) == 2)
 assert(#V.section(fish, "Zones") == 2)
-assert(#V.tabs(zone) == 5 and #V.tabs(fish) == 4)
+assert(#V.tabs(zone) == 5 and #V.tabs(fish) == 5)
 assert(#V.mapPoints({kind = "school_type", name = "Fishing School"}) == 1)
 local vendor = {kind = "vendor_reference", name = "Fishing Merchant",
   extra = ns.data.referenceVendors[1]}
