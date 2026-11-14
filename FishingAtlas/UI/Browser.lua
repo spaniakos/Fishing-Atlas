@@ -24,14 +24,17 @@ function B.list(category, term)
   local out, db = {}, ns.storage.db or {}
   if category == "items" then
     local seen = {}
+    local relevant = ns.fishingScope and ns.fishingScope.data().items or nil
     for _, entity in ipairs(ns.catalog.itemList and ns.catalog.itemList() or {}) do
-      seen[entity.id] = true
-      push(out, row(entity.id, ns.catalog.name("item", entity.id), "item",
-        entity.confidence), term)
+      if not relevant or relevant[entity.id] then
+        seen[entity.id] = true
+        push(out, row(entity.id, ns.catalog.name("item", entity.id), "item",
+          entity.confidence), term)
+      end
     end
     local observed = ns.data.everloot or {}
     for id in pairs(observed.itemNames or {}) do
-      if not seen[id] then
+      if not seen[id] and (not relevant or relevant[id]) then
         seen[id] = true
         push(out, row(id, ns.catalog.name("item", id), "item",
           "observed_confirmed"), term)
@@ -40,7 +43,7 @@ function B.list(category, term)
     for _, group in ipairs({observed.vendorItems or {}, observed.drops or {},
         observed.fishing or {}, observed.poolItems or {}}) do
       for id in pairs(group) do
-        if not seen[id] then
+        if not seen[id] and (not relevant or relevant[id]) then
           seen[id] = true
           push(out, row(id, ns.catalog.name("item", id), "item",
             "observed_provisional"), term)
@@ -101,18 +104,20 @@ function B.list(category, term)
   elseif category == "vendors" then
     local seenNpcs = {}
     for _, vendor in ipairs(ns.data.referenceVendors or {}) do
-      seenNpcs[vendor.id] = true
-      push(out, row(vendor.id, vendor.name, "vendor_reference", "mixed_source_reference", vendor), term)
+      if not ns.fishingScope or ns.fishingScope.vendor(vendor.id) then
+        seenNpcs[vendor.id] = true
+        push(out, row(vendor.id, vendor.name, "vendor_reference", "mixed_source_reference", vendor), term)
+      end
     end
     for id, r in pairs(db.vendorObservations or {}) do
-      if type(r) == "table" then
+      if type(r) == "table" and (not ns.fishingScope or ns.fishingScope.vendor(id)) then
         seenNpcs[id] = true
         push(out, row(id, r.name or ("Merchant NPC #" .. tostring(id)),
           "merchant_observation", "client_observed", r), term)
       end
     end
     for id, npc in pairs((ns.data.everloot or {}).npcs or {}) do
-      if not seenNpcs[id] then
+      if not seenNpcs[id] and (not ns.fishingScope or ns.fishingScope.vendor(id)) then
         push(out, row(id, npc.name or ("NPC #" .. id), "observed_npc",
           "observed_provisional", npc), term)
       end
@@ -281,7 +286,13 @@ function B.icon(item)
   elseif item.kind == "catch" and item.extra and item.extra.id then
     return ns.catalog.icon("item", item.extra.id)
   elseif item.kind == "school_type" then
-    return "Interface\\Icons\\Trade_Fishing"
+    for _, school in ipairs(ns.data.schoolTypes or {}) do
+      if school.name == item.name then
+        if school.iconItemId then return ns.catalog.icon("item", school.iconItemId) end
+        break
+      end
+    end
+    return "Interface\\Icons\\INV_Misc_Fish_02"
   elseif item.kind == "vendor_reference" or item.kind == "merchant_observation"
       or item.kind == "observed_npc" then
     return "Interface\\Icons\\INV_Misc_Bag_10"
