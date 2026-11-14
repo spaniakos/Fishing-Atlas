@@ -329,8 +329,8 @@ local function rowTooltip(record, owner)
   end
   GameTooltip:AddLine("Evidence: " .. tostring(record.confidence or "unknown"),
     0.6, 0.85, 0.9)
-  if record.vendorId or record.mapID then
-    GameTooltip:AddLine("Click to navigate", 0.3, 0.9, 0.65)
+  if record.vendorId or record.npcId or record.mapID then
+    GameTooltip:AddLine("Click to inspect source", 0.3, 0.9, 0.65)
   end
   GameTooltip:Show()
 end
@@ -342,6 +342,8 @@ local function rowClick(record)
     UI.refresh(false)
   elseif record.vendorId then
     UI.selectCategory("vendors", record.vendorId)
+  elseif record.npcId then
+    UI.openNpc(record.npcId)
   elseif record.recipeId then
     UI.selectCategory("recipes", record.recipeId)
   elseif record.mapID then
@@ -522,6 +524,19 @@ function UI.selectCategory(category, id, topPage)
     for _, item in ipairs(results) do
       if item.id == id then select(item); break end
     end
+  end
+end
+
+function UI.openNpc(id)
+  id = tonumber(id)
+  if not id or id <= 0 then return end
+  UI.selectCategory("npcs", id, "Explorer")
+  if not active or active.id ~= id then
+    active = {id = id, kind = "observed_npc",
+      name = ns.sources and ns.sources.npcName(id) or ("NPC " .. id),
+      confidence = "observed_source"}
+    UI.detailsTab = "Overview"
+    renderDetails()
   end
 end
 
