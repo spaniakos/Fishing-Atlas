@@ -39,6 +39,17 @@ function commands.run(raw)
     say("Item: " .. tostring(d.itemAPI) .. "; spell: " .. tostring(d.spellAPI) ..
       "; bags: " .. tostring(d.bagAPI) .. "; secure cast: " .. tostring(d.secureCast) ..
       "; TomTom: " .. tostring(d.tomtom))
+  elseif command == "mapdebug" then
+    local mapID = tonumber(rest)
+    if not mapID and ns.ui and ns.ui.mapDiagnostics then
+      say(ns.ui.mapDiagnostics())
+      return
+    end
+    if mapID and ns.zoneMap and ns.zoneMap.describe then
+      say(ns.zoneMap.describe(mapID))
+      return
+    end
+    say("Choose a zone or use /fa mapdebug <mapID>")
   elseif command == "plan" then
     local id, count = rest:match("^(%d+)%s*(%d*)$")
     local plan, err = ns.kitchen.catalogPlan(id, count ~= "" and count or 1)
@@ -206,7 +217,7 @@ function commands.run(raw)
     say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
     say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
-    say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>")
+    say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>, mapdebug [mapID]")
     say("Feedback: /fa issue opens a copyable GitHub Issues URL")
   end
 end
