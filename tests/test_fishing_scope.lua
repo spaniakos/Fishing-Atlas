@@ -12,7 +12,8 @@ local ns = {
       poolItems = {},
       vendorItems = {
         [6256] = {{npcId = 11, installs = 3}},
-        [9999] = {{npcId = 13, installs = 4}}
+        [9999] = {{npcId = 13, installs = 4}},
+        [8959] = {{npcId = 99, installs = 2}}
       },
       itemNames = {[9999] = {name = "Random sword"}},
       npcs = {[11] = {name = "Fishing store"}, [13] = {name = "Weapon shop"}}
@@ -31,7 +32,9 @@ local ns = {
       return {{spellId = 1, outputItemId = 9000,
         ingredients = {{itemId = 6522}, {itemId = 2678}}},
         {spellId = 2, outputItemId = 9001,
-        ingredients = {{itemId = 9999}}}}
+        ingredients = {{itemId = 9999}}},
+        {spellId = 3, outputItemId = 8957,
+        ingredients = {{itemId = 8959}}}}
     end,
     recipe = function() return nil end,
     entity = function(_, id)
@@ -47,6 +50,11 @@ local S = ns.fishingScope
 assert(S.item(6256) and S.item(6522), "Fishing roots absent")
 assert(S.item(9000) and S.item(2678), "Fish recipe graph not expanded")
 assert(not S.item(9999) and not S.item(9001), "Unrelated items included")
+assert(S.item(8959) and S.item(8957),
+  "Raw Spinefin Halibut and its cooked recipe must be in fishing-related Items")
+assert(not S.isFishingRoot(8959),
+  "Vendor/cooking relevance must never claim a fish was caught by fishing")
+assert(S.vendor(99), "A vendor selling a fishing-related Cooking reagent is relevant")
 assert(S.vendor(10) and S.vendor(11), "Fishing merchants missing")
 assert(not S.vendor(12) and not S.vendor(13), "Unrelated merchants included")
 print("fishing-only catalog scope tests passed")
