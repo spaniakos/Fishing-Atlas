@@ -1,5 +1,6 @@
 ## Interface: 16001
 ## Title: Fishing Atlas
+## IconTexture: Interface\AddOns\FishingAtlas\Art\atlas-emblem
 ## Notes: Fishing discovery journal and guide for WoW Forever
 ## Version: 0.99.6
 ## Author: Georgios Spanos and contributors
