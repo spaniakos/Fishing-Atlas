@@ -127,6 +127,8 @@ function commands.run(raw)
     name = name or rest
     local item, err = ns.journal.record(nil, name, tonumber(count) or 1, "manual")
     if item then say("Recorded " .. item.count .. " total: " .. item.name) else say(err) end
+  elseif command == "lootdebug" then
+    say(ns.loot and ns.loot.debug and ns.loot.debug() or "Loot tracker unavailable")
   elseif command == "collection" then
     say("Collected " .. ns.journal.total() .. " catches across " .. ns.journal.unique() .. " item types")
   elseif command == "catalog" then
