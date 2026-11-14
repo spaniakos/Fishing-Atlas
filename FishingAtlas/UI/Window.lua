@@ -25,6 +25,7 @@ UI.recipeFilter = "all"
 UI.searchAll = true
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
+local fullMap, fullMapSurface, fullMapLabel
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
@@ -237,12 +238,63 @@ local function tooltip(item, anchor)
   GameTooltip:Show()
 end
 
+local function selectedMap()
+  local sourceMap = UI.mapOverride or ns.viewModel.mapID(active)
+  if sourceMap then return sourceMap, true end
+  if type(C_Map) == "table" and type(C_Map.GetBestMapForUnit) == "function" then
+    local ok, mapID = pcall(C_Map.GetBestMapForUnit, "player")
+    if ok and type(mapID) == "number" then return mapID, false end
+  end
+  return nil, false
+end
+
 local function renderMap()
   if not mapSurface then return end
-  local mapID = UI.mapOverride or ns.viewModel.mapID(active)
-  ns.zoneMap.render(mapSurface, mapID, ns.viewModel.mapPoints(active))
-  mapCaption:SetText(mapID and ("MAP " .. mapID .. " | pins are sourced observations")
-    or "Select a zone or mapped vendor")
+  local mapID, sourced = selectedMap()
+  local locations = sourced and ns.viewModel.mapPoints(active) or {}
+  ns.zoneMap.render(mapSurface, mapID, locations)
+  mapCaption:SetText(not mapID and "No source or player map available"
+    or sourced and ("MAP " .. mapID .. " | historical/reference locations")
+    or ("MAP " .. mapID .. " | current zone, not a source"))
+  if fullMap and fullMap:IsShown() then
+    ns.zoneMap.render(fullMapSurface, mapID, locations)
+    fullMapLabel:SetText(not mapID and "No map available"
+      or "Fishing Atlas | Map " .. mapID .. (sourced and " | sourced points"
+      or " | current player zone"))
+  end
+end
+
+function UI.openFullMap()
+  if not frame then return false end
+  if not fullMap then
+    fullMap = CreateFrame("Frame", "FishingAtlasFullMap", UIParent)
+    fullMap:SetSize(1008, 746)
+    fullMap:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    fullMap:SetFrameStrata("FULLSCREEN_DIALOG")
+    paint(fullMap, {0.035, 0.07, 0.11, 0.97})
+    border(fullMap)
+    if type(UISpecialFrames) == "table" then
+      local present
+      for _, name in ipairs(UISpecialFrames) do
+        if name == "FishingAtlasFullMap" then present = true; break end
+      end
+      if not present then
+        UISpecialFrames[#UISpecialFrames + 1] = "FishingAtlasFullMap"
+      end
+    end
+    fullMapLabel = label(fullMap, "GameFontNormalLarge", 835, 35, 15, -10)
+    button(fullMap, "Close", 893, -10, 98, 30, function()
+      fullMap:Hide()
+    end)
+    fullMapSurface = panel(fullMap, 13, -53, 980, 672)
+    fullMap:Hide()
+  end
+  local sw, sh = UIParent:GetWidth() or 1008, UIParent:GetHeight() or 746
+  fullMap:SetScale(math.max(0.58, math.min(1,
+    (sw - 28) / 1008, (sh - 28) / 746)))
+  fullMap:Show()
+  renderMap()
+  return true
 end
 
 local function updateRight()
@@ -739,12 +791,15 @@ local function build()
   detailsScroll:SetScrollChild(detailsChild)
 
   local right = panel(frame, 904, -167, 293, 523)
-  label(right, "GameFontNormal", 263, 24, 12, -8):SetText("ZONE MAP  |  Map art from game")
+  label(right, "GameFontNormal", 188, 24, 12, -8):SetText("ZONE MAP | Game art")
+  button(right, "Expand", 205, -6, 78, 27, function() UI.openFullMap() end)
   mapSurface = panel(right, 9, -37, 275, 195)
   mapCaption = label(right, "GameFontHighlightSmall", 267, 19, 14, -237)
   button(right, "World Map", 156, -263, 126, 27, function()
-    local id = ns.viewModel.mapID(active)
-    if not inGameMap(id) then ns.commands.say("World map unavailable") end
+    local id = selectedMap()
+    if not inGameMap(id) then
+      ns.commands.say("Native World Map unavailable; use Expand for map-art preview")
+    end
   end)
   button(right, "TomTom", 9, -263, 136, 27, waypoint)
   local info = panel(right, 9, -304, 275, 92)
