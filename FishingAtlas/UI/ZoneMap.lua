@@ -19,7 +19,7 @@ function M.layout(layer, textures, width, height)
     for x = 0, cols - 1 do
       local index = y * cols + x + 1
       local texture = textures[index]
-      if texture then
+      if texture and texture ~= 0 and texture ~= "" then
         out[#out + 1] = {texture = texture,
           x = x * tileW / totalW * width, y = y * tileH / totalH * height,
           w = math.min(tileW, totalW - x * tileW) / totalW * width,
@@ -32,20 +32,61 @@ function M.layout(layer, textures, width, height)
   return out
 end
 
-local function art(mapID, w, h)
+local function validTile(texture)
+  return type(texture) == "string" and texture ~= ""
+    or type(texture) == "number" and texture > 0
+end
+
+-- World map clients can expose multiple art layers and missing/zero file IDs.
+-- Prefer a complete layer; otherwise show the most complete and label the gap.
+function M.artForMap(mapID, w, h)
   if type(C_Map) ~= "table" or type(C_Map.GetMapArtLayers) ~= "function"
-      or type(C_Map.GetMapArtLayerTextures) ~= "function" then return {} end
+      or type(C_Map.GetMapArtLayerTextures) ~= "function" then
+    return {}, 0, 0, w, h, {reason = "Map art APIs missing", tiles = 0}
+  end
   local ok, layers = pcall(C_Map.GetMapArtLayers, mapID)
-  if not ok or type(layers) ~= "table" or not layers[1] then return {} end
-  local layer = layers[1]
-  local result, textures = pcall(C_Map.GetMapArtLayerTextures, mapID, 1)
-  if not result or type(textures) ~= "table" then return {} end
-  local aw, ah = tonumber(layer.layerWidth), tonumber(layer.layerHeight)
-  if not aw or not ah or aw <= 0 or ah <= 0 then return {} end
-  local scale = math.min(w / aw, h / ah)
-  local vw, vh = aw * scale, ah * scale
+  if not ok or type(layers) ~= "table" then
+    return {}, 0, 0, w, h, {reason = "No art layers", tiles = 0}
+  end
+  local best, bestInfo
+  for index, layer in ipairs(layers) do
+    local aw, ah, tw, th = tonumber(layer.layerWidth),
+      tonumber(layer.layerHeight), tonumber(layer.tileWidth),
+      tonumber(layer.tileHeight)
+    if aw and ah and tw and th and aw > 0 and ah > 0 and tw > 0 and th > 0 then
+      local got, textures = pcall(C_Map.GetMapArtLayerTextures, mapID, index)
+      if got and type(textures) == "table" then
+        local expected = math.ceil(aw / tw) * math.ceil(ah / th)
+        local present = 0
+        for i = 1, expected do
+          if validTile(textures[i]) then present = present + 1 end
+        end
+        local score = present / math.max(1, expected)
+        if not best or score > bestInfo.coverage
+            or (score == bestInfo.coverage and aw * ah > bestInfo.area) then
+          best = {layer = layer, textures = textures, width = aw, height = ah}
+          bestInfo = {layer = index, tiles = present, expected = expected,
+            coverage = score, area = aw * ah}
+        end
+      end
+    end
+  end
+  if not best then
+    return {}, 0, 0, w, h, {reason = "No valid tiles", tiles = 0}
+  end
+  local scale = math.min(w / best.width, h / best.height)
+  local vw, vh = best.width * scale, best.height * scale
   local ox, oy = (w - vw) / 2, (h - vh) / 2
-  return M.layout(layer, textures, vw, vh), ox, oy, vw, vh
+  local tiles = M.layout(best.layer, best.textures, vw, vh)
+  return tiles, ox, oy, vw, vh, bestInfo
+end
+
+function M.describe(mapID)
+  if type(mapID) ~= "number" then return "No map selected" end
+  local tiles, _, _, _, _, meta = M.artForMap(mapID, 275, 195)
+  return string.format("Map %d art: layer %s; %d/%d valid tiles; %d drawn",
+    mapID, tostring(meta.layer or "none"), meta.tiles or 0,
+    meta.expected or 0, #tiles)
 end
 
 local function state(parent)
@@ -116,9 +157,9 @@ function M.render(parent, mapID, locations)
   end
   local width, height = parent:GetWidth(), parent:GetHeight()
   if not width or width <= 0 or not height or height <= 0 then return false end
-  local tiles, ox, oy, vw, vh = art(mapID, width, height)
+  local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
-  s.fallback:SetShown(#tiles == 0)
+  s.fallback:Show() -- Fill missing tiles instead of leaving hard black rectangles
   for index, tile in ipairs(tiles) do
     if index > 36 then break end
     local texture = s.tiles[index]
@@ -159,7 +200,10 @@ function M.render(parent, mapID, locations)
     end
   end
   if #tiles == 0 then
-    s.caption:SetText("Client map artwork unavailable | use World Map")
+    s.caption:SetText("Map artwork missing | open the full World Map")
+  elseif info and info.tiles < info.expected then
+    s.caption:SetText("Map " .. mapID .. " | partial client art (" ..
+      info.tiles .. "/" .. info.expected .. " tiles)")
   else
     s.caption:SetText("Map " .. mapID .. " | " .. count .. " sourced positions")
   end
