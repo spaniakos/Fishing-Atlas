@@ -16,6 +16,35 @@ function S.itemName(id)
   local rec = tableOrEmpty(O.itemNames)[tonumber(id)]
   return type(rec) == "table" and rec.name or nil
 end
+function S.npcName(id)
+  id = tonumber(id)
+  local npc = tableOrEmpty(O.npcs)[id]
+  if npc and type(npc.name) == "string" and npc.name ~= "" then return npc.name end
+  for _, ref in ipairs(ns.data.referenceVendors or {}) do
+    if ref.id == id and type(ref.name) == "string" then return ref.name end
+  end
+  local observed = ns.storage and ns.storage.db
+    and ns.storage.db.recordedNpcNames or {}
+  if type(observed[id]) == "string" and observed[id] ~= "" then return observed[id] end
+  return "Unidentified creature (NPC " .. tostring(id or "?") .. ")"
+end
+
+function S.dropsByNpc(npcId)
+  npcId = tonumber(npcId)
+  local results = {}
+  for itemId, sources in pairs(tableOrEmpty(O.drops)) do
+    if not ns.fishingScope or ns.fishingScope.item(itemId) then
+      for _, rec in ipairs(tableOrEmpty(sources)) do
+        if rec.npcId == npcId then
+          results[#results + 1] = {itemId = itemId, installs = rec.installs or 0,
+            windows = rec.windows or 0, confidence = support(rec.installs)}
+        end
+      end
+    end
+  end
+  table.sort(results, function(a, b) return a.itemId < b.itemId end)
+  return results
+end
 function S.vendor(id) return tableOrEmpty(O.npcs)[tonumber(id)] end
 function S.vendorLocations(id)
   local npc = S.vendor(id)
@@ -27,7 +56,7 @@ function S.vendorsForItem(id)
     if isPositive(rec.npcId) then
       local npc = S.vendor(rec.npcId) or {}
       found[#found + 1] = {kind = "vendor", npcId = rec.npcId,
-        title = npc.name or ("NPC " .. rec.npcId), installs = rec.installs or 0,
+        title = S.npcName(rec.npcId), installs = rec.installs or 0,
         reports = rec.reports or 0, confidence = support(rec.installs),
         url = "https://everloot.app/database/npcs/" .. rec.npcId}
     end
