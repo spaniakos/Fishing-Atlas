@@ -97,8 +97,15 @@ end
 function L.scan()
   local visible = worldTooltip()
   if not visible then
-    lastScan = "No visible school under the world cursor. " ..
-      "Hover a real pool in the world to register a nearby sighting."
+    local mapID = playerPosition()
+    local recent = mapID and L.inZone(mapID) or {}
+    if #recent > 0 then
+      lastScan = #recent .. " recently observed nearby schools in this zone. " ..
+        "These are approximate player positions, not guaranteed current spawns."
+      return #recent, lastScan
+    end
+    lastScan = "No nearby school detected. Hover a visible school in the " ..
+      "world to register it. This client cannot scan all active pools remotely."
     return 0, lastScan
   end
   local mapID, x, y = playerPosition()
