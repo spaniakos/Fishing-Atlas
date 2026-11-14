@@ -557,7 +557,7 @@ function UI.draw()
     setActive(btn, btn.caption == UI.topPage)
   end
   if searchScopeButton then
-    searchScopeButton.text:SetText(UI.searchAll and "Global" or "This tab")
+    searchScopeButton.text:SetText(UI.searchAll and "All tabs" or "This tab")
   end
   if filterOne and filterTwo then
     if UI.category == "recipes" then
@@ -704,7 +704,7 @@ local function build()
     tabs[#tabs + 1] = btn
   end
   local left = panel(frame, 13, -167, 194, 523, {0.025, 0.06, 0.08, 0.96})
-  label(left, "GameFontNormal", 165, 24, 12, -8):SetText("SEARCH ATLAS")
+  label(left, "GameFontNormal", 91, 24, 12, -8):SetText("SEARCH")
   search = CreateFrame("EditBox", nil, left, "InputBoxTemplate")
   search:SetSize(170, 24)
   search:SetPoint("TOPLEFT", left, "TOPLEFT", 15, -38)
@@ -719,7 +719,7 @@ local function build()
     self:ClearFocus()
     if frame then frame:Hide() end
   end)
-  searchScopeButton = button(left, "Global", 105, -7, 79, 27, function()
+  searchScopeButton = button(left, "All tabs", 108, -7, 78, 27, function()
     UI.searchAll = not UI.searchAll
     UI.refresh(true)
   end)
@@ -952,6 +952,7 @@ function UI.show()
   fitFrame()
   frame:Show()
   if ns.recipeKnowledge then
+    ns.recipeKnowledge.scanCatalog()
     ns.recipeKnowledge.scanModern()
     ns.recipeKnowledge.scanOpenProfession()
   end
