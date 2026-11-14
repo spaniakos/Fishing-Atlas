@@ -233,7 +233,11 @@ function M.render(parent, mapID, locations)
   end
   -- Some art is streamed asynchronously. Retry at most three times, only
   -- while this preview is visible. Never poll every frame or use stale maps.
-  if info and info.expected and info.tiles < info.expected
+  -- Presence of file IDs is not proof their textures have finished streaming.
+  -- Retry a couple of complete 12/12 maps too, not only sparse-ID maps.
+  -- This is bounded to 3 retries and never calls protected map operations.
+  if (info and info.expected and info.tiles < info.expected
+      or (s.retries or 0) < 2 and #tiles > 0)
       and (s.retries or 0) < 3 and not s.retryScheduled
       and type(C_Timer) == "table" and type(C_Timer.After) == "function" then
     s.retryScheduled = true
