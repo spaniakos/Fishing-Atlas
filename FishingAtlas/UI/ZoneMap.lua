@@ -173,14 +173,20 @@ function M.render(parent, mapID, locations)
   -- Some map assets arrive after the first request. Retry once, without an
   -- OnUpdate loop that would hammer C_Map during ordinary gameplay.
   if s.requestedMap ~= mapID then
-    s.requestedMap = mapID
-    if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
-      C_Timer.After(1, function()
-        if s.requestedMap == mapID and parent:IsShown() then
-          M.render(parent, mapID, locations)
-        end
-      end)
-    end
+    s.requestedMap, s.retries, s.retryScheduled = mapID, 0, false
+  end
+  -- Some art is streamed asynchronously. Retry at most three times, only
+  -- while this preview is visible. Never poll every frame or use stale maps.
+  if info and info.expected and info.tiles < info.expected
+      and (s.retries or 0) < 3 and not s.retryScheduled
+      and type(C_Timer) == "table" and type(C_Timer.After) == "function" then
+    s.retryScheduled = true
+    local attempt = s.retries + 1
+    C_Timer.After(attempt * 2, function()
+      if s.requestedMap ~= mapID then return end
+      s.retryScheduled, s.retries = false, attempt
+      if parent:IsShown() then M.render(parent, mapID, locations) end
+    end)
   end
   for index, tile in ipairs(tiles) do
     if index > 256 then break end
