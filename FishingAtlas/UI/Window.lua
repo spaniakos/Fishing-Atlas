@@ -283,7 +283,8 @@ function UI.setSchoolMapMode(mode)
 end
 
 function UI.scanSchools()
-  local count, message = ns.liveSchools and ns.liveSchools.scan()
+  local count, message
+  if ns.liveSchools then count, message = ns.liveSchools.scan() end
   if ns.commands and ns.commands.say then
     ns.commands.say(message or "School detector unavailable on this client")
   end
