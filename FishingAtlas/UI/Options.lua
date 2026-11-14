@@ -51,6 +51,43 @@ function O.start()
   local description = panel:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
   description:SetPoint("TOPLEFT", heading, "BOTTOMLEFT", 0, -12)
   description:SetText("Saved fishing positions are historical observations, not active school spawns.")
+  note(panel, 300, -72, "School map visibility:")
+  local modeNote = note(panel, 300, -191, "")
+  local function updateMode()
+    local value = ns.storage.db and ns.storage.db.settings
+      and ns.storage.db.settings.schoolMapMode or "active"
+    modeNote:SetText(value == "active"
+      and "Active only (default): recently visible nearby schools. " ..
+        "Nothing shown if no live sighting was detected."
+      or "All probable: historical locations, not guaranteed active.")
+  end
+  action(panel, 300, -100, "Active only", function()
+    if ns.ui and ns.ui.setSchoolMapMode then
+      ns.ui.setSchoolMapMode("active")
+    elseif ns.storage.db then
+      ns.storage.db.settings.schoolMapMode = "active"
+      if ns.mapPins then ns.mapPins.refresh() end
+    end
+    updateMode()
+  end)
+  action(panel, 415, -100, "All probable", function()
+    if ns.ui and ns.ui.setSchoolMapMode then
+      ns.ui.setSchoolMapMode("probable")
+    elseif ns.storage.db then
+      ns.storage.db.settings.schoolMapMode = "probable"
+      if ns.mapPins then ns.mapPins.refresh() end
+    end
+    updateMode()
+  end)
+  action(panel, 300, -138, "Scan nearby", function()
+    local found, message = ns.liveSchools and ns.liveSchools.scan()
+    if ns.commands and ns.commands.say then
+      ns.commands.say(message or "No live-school detection API available")
+    end
+    if found and found > 0 and ns.ui then ns.ui.refresh(false) end
+    if ns.mapPins then ns.mapPins.refresh() end
+  end)
+  updateMode()
   checkbox(panel, -88, "Show minimap launcher", "showMinimap", function()
     if ns.minimap then ns.minimap.update() end
   end)
