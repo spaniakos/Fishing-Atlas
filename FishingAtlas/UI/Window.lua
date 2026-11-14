@@ -838,6 +838,7 @@ function UI.show()
   hideContext()
   fitFrame()
   frame:Show()
+  if ns.recipeKnowledge then ns.recipeKnowledge.scanOpenProfession() end
   UI.refresh(false)
   return true
 end
