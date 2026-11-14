@@ -21,11 +21,13 @@ local categoryFor = {Explorer = "zones", Items = "items", Journal = "journal", R
 UI.category, UI.query, UI.offset = "zones", "", 0
 UI.topPage = "Explorer"
 UI.filterFish, UI.filterLocations, UI.detailsTab = false, false, "Overview"
+UI.recipeFilter = "all"
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
+local filterOne, filterTwo
 local uiBusy = false
 UI.mapOverride, UI.selectedPoint = nil, nil
 local sourcePopup, sourceField, sourceCaption
@@ -86,7 +88,7 @@ local function button(parent, title, x, y, width, height, handler, icon)
   texture:SetAllPoints()
   texture:SetTexture("Interface\\AddOns\\FishingAtlas\\Art\\bronze-button")
   btn.background = texture
-  local pad = icon and 37 or 8
+  local pad = icon and (height + 6) or 8
   if icon then
     local img = btn:CreateTexture(nil, "ARTWORK")
     img:SetTexture(icon)
@@ -191,6 +193,11 @@ local function zoneIcon(item)
 end
 
 local function applyFilter(item)
+  if UI.category == "recipes" and UI.recipeFilter ~= "all" and ns.recipeKnowledge then
+    local status = ns.recipeKnowledge.status(item.id)
+    if UI.recipeFilter == "known" and status ~= "known" then return false end
+    if UI.recipeFilter == "not_known" and status == "known" then return false end
+  end
   if UI.filterLocations and #ns.viewModel.mapPoints(item) == 0 then return false end
   if UI.filterFish and item.kind == "zone" then
     if #(ns.data.referenceZoneFish and ns.data.referenceZoneFish[item.id] or {}) == 0 then
@@ -441,11 +448,24 @@ function UI.draw()
   listSlider:SetValue(UI.offset)
   listSlider:SetShown(#results > visibleRows)
   for _, btn in ipairs(sidebar) do
+    if btn.category == "vendors" or btn.category == "recipes" or btn.category == "fish" then
+      btn.count = #ns.browser.list(btn.category, "")
+    end
     btn.text:SetText(btn.caption .. "  (" .. btn.count .. ")")
     setActive(btn, btn.category == UI.category)
   end
   for _, btn in ipairs(tabs) do
     setActive(btn, btn.caption == UI.topPage)
+  end
+  if filterOne and filterTwo then
+    if UI.category == "recipes" then
+      filterOne.text:SetText((UI.recipeFilter == "known" and "[x]" or "[ ]") .. " Known recipes")
+      filterTwo.text:SetText((UI.recipeFilter == "not_known" and "[x]" or "[ ]") ..
+        " Not known / unchecked")
+    else
+      filterOne.text:SetText((UI.filterFish and "[x]" or "[ ]") .. " Zones with fish")
+      filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")
+    end
   end
   updateFooter()
   uiBusy = false
@@ -478,7 +498,10 @@ end
 function UI.selectCategory(category, id, topPage)
   UI.mapOverride, UI.selectedPoint = nil, nil
   UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
-  UI.topPage = topPage or "Explorer"
+  UI.topPage = topPage or (category == "items" and "Items"
+    or category == "recipes" and "Recipes" or category == "vendors" and "Vendors"
+    or category == "schools" and "Schools" or category == "gear" and "Gear"
+    or category == "zones" and "Zones" or "Explorer")
   search:SetText("")
   active = nil
   UI.refresh(true)
@@ -577,11 +600,11 @@ local function build()
     sidebar[#sidebar + 1] = btn
   end
   label(left, "GameFontNormal", 170, 22, 13, -394):SetText("QUICK FILTERS")
-  local filterOne = button(left, "", 10, -421, 173, 28, function()
+  filterOne = button(left, "", 10, -421, 173, 28, function()
     UI.filterFish = not UI.filterFish
     UI.refresh(true)
   end)
-  local filterTwo = button(left, "", 10, -454, 173, 28, function()
+  filterTwo = button(left, "", 10, -454, 173, 28, function()
     UI.filterLocations = not UI.filterLocations
     UI.refresh(true)
   end)
@@ -589,10 +612,24 @@ local function build()
     filterOne.text:SetText((UI.filterFish and "[x]" or "[ ]") .. " Zones with fish")
     filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")
   end
-  filterOne:SetScript("OnClick", function() UI.filterFish = not UI.filterFish
-    filters(); UI.refresh(true) end)
-  filterTwo:SetScript("OnClick", function() UI.filterLocations = not UI.filterLocations
-    filters(); UI.refresh(true) end)
+  filterOne:SetScript("OnClick", function()
+    if UI.category == "recipes" then
+      UI.recipeFilter = UI.recipeFilter == "known" and "all" or "known"
+    else UI.filterFish = not UI.filterFish end
+    if ns.storage.db and ns.storage.db.settings then
+      ns.storage.db.settings.recipeFilter = UI.recipeFilter
+    end
+    UI.refresh(true)
+  end)
+  filterTwo:SetScript("OnClick", function()
+    if UI.category == "recipes" then
+      UI.recipeFilter = UI.recipeFilter == "not_known" and "all" or "not_known"
+    else UI.filterLocations = not UI.filterLocations end
+    if ns.storage.db and ns.storage.db.settings then
+      ns.storage.db.settings.recipeFilter = UI.recipeFilter
+    end
+    UI.refresh(true)
+  end)
   filters()
   label(left, "GameFontHighlightSmall", 178, 25, 12, -492):SetText("Sources labeled | not all live verified")
 
@@ -759,6 +796,8 @@ local function build()
     end)
   }
   context:Hide()
+  UI.recipeFilter = (ns.storage.db and ns.storage.db.settings
+    and ns.storage.db.settings.recipeFilter) or "all"
   frame:Hide()
   fitFrame()
 end
