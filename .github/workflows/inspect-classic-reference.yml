@@ -26,15 +26,15 @@ jobs:
           with gzip.GzipFile(fileobj=io.BytesIO(raw)) as f:
             for line in f:
               text=line.decode('utf-8','replace')
-              if text.startswith("INSERT INTO \`gameobject_template\`"):
+              if text.startswith("INSERT INTO `gameobject_template`"):
                 for m in template_re.finditer(text):
                   name=m.group(4).replace("\\'","'")
                   if any(s in name.lower() for s in ("deviate fish","sagefish","firefin","blackmouth","wreckage","eel swarm")):
                     names[int(m.group(1))]=name
-              if text.startswith("INSERT INTO \`creature_template\`"):
+              if text.startswith("INSERT INTO `creature_template`"):
                 for m in creature_re.finditer(text):
                   if int(m.group(1)) in (4156,3556): npcs[int(m.group(1))]=m.group(2)
-              if text.startswith("INSERT INTO \`gameobject\`"):
+              if text.startswith("INSERT INTO `gameobject`"):
                 for m in object_re.finditer(text):
                   objects.append(tuple(float(m.group(i)) if i in (5,6) else int(m.group(i)) for i in range(1,7)))
           print("School template matches",len(names), list(names.items())[:50],flush=True)
