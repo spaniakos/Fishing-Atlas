@@ -31,6 +31,10 @@ Data/ReferenceSchools.lua
 Data/ReferenceVendors.lua
 Data/ZoneSkill.lua
 Data/ReferenceFishZones.lua
+Data/FishingScope.lua
+Data/ReferenceAcquisition.lua
+Data/ReferenceSchoolLocations.lua
+Kitchen/RecipeKnowledge.lua
 UI/Browser.lua
 UI/ViewModel.lua
 UI/ZoneMap.lua
