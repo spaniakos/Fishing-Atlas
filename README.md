@@ -5,7 +5,7 @@
 [![CI](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/spaniakos/Fishing-Atlas/actions/workflows/ci.yml)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-> **v0.99.6 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
+> **v0.99.7 pre-v1 candidate:** targets Forever 1.60.1.70888/interface 16001. Bundles a complete public Everloot observation corpus snapshot (2026-11-13T14:10:21.029Z) as offline Lua. Relevant build-70888 client catalogs are bundled separately; in-game acceptance remains outstanding; absence of observed evidence means unknown, not zero.
 
 ## Existing features and in-progress database
 - `/fa` or `/fishingatlas`: command help; `/fa list` shows guide entries.

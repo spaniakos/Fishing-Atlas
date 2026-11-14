@@ -277,6 +277,9 @@ function M.describe(mapID)
     summary = summary .. " | no exploration coverage available"
       .. " (loaded base files may contain transparent/fogged cells)"
   end
+  if ns.mapContext and ns.mapContext.describe then
+    summary = summary .. " | context: " .. ns.mapContext.describe(mapID)
+  end
   local preview = previewLoadStatus(mapID)
   if not preview then
     return summary .. " | no matching visible preview for load test"
@@ -305,10 +308,11 @@ end
 local function state(parent)
   local s = pool[parent]
   if s then return s end
-  s = {tiles = {}, explored = {}, pins = {}}
+  s = {tiles = {}, context = {}, explored = {}, pins = {}}
   pool[parent] = s
   s.fallback = parent:CreateTexture(nil, "BACKGROUND")
   s.fallback:SetAllPoints()
+  if s.fallback.SetDrawLayer then s.fallback:SetDrawLayer("BACKGROUND", 0) end
   -- A neutral backing identifies unexplored regions without showing an
   -- unrelated panorama through an apparent map-art "hole".
   s.fallback:SetTexture("Interface\\Buttons\\WHITE8X8")
@@ -386,6 +390,7 @@ function M.render(parent, mapID, locations)
   if not parent or type(CreateFrame) ~= "function" then return false end
   local s = state(parent)
   for _, tile in ipairs(s.tiles) do tile:Hide() end
+  for _, tile in ipairs(s.context) do tile:Hide() end
   for _, tile in ipairs(s.explored) do tile:Hide() end
   for _, marker in ipairs(s.pins) do marker:Hide() end
   -- A cleared selection must not leave a stale preview eligible for diagnosis.
@@ -403,6 +408,24 @@ function M.render(parent, mapID, locations)
   -- Display the native map background under transparent client artwork.
   mapBackground(s, mapID)
   s.fallback:Show()
+  -- Parent/continent art supplies genuine adjacent geography where the
+  -- current client offers a trustworthy zone-to-parent rectangle.
+  local context = ns.mapContext and ns.mapContext.tiles(mapID, ox, oy, vw, vh) or {}
+  for index, part in ipairs(context) do
+    if index > 160 then break end
+    local texture = s.context[index]
+    if not texture then
+      texture = parent:CreateTexture(nil, "BACKGROUND")
+      s.context[index] = texture
+    end
+    if texture.SetDrawLayer then texture:SetDrawLayer("BACKGROUND", 1) end
+    texture:SetTexture(part.texture)
+    texture:SetTexCoord(part.u0, part.u1, part.v0, part.v1)
+    texture:ClearAllPoints()
+    texture:SetPoint("TOPLEFT", parent, "TOPLEFT", part.x, -part.y)
+    texture:SetSize(part.w, part.h)
+    texture:Show()
+  end
   -- Some map assets arrive after the first request. Retry once, without an
   -- OnUpdate loop that would hammer C_Map during ordinary gameplay.
   if s.requestedMap ~= mapID then
@@ -433,6 +456,7 @@ function M.render(parent, mapID, locations)
       s.tiles[index] = texture
     end
     s.tileIDs[index] = tile.texture
+    if texture.SetDrawLayer then texture:SetDrawLayer("BACKGROUND", 2) end
     texture:SetTexture(tile.texture)
     texture:SetTexCoord(0, tile.u, 0, tile.v)
     texture:ClearAllPoints()
@@ -471,7 +495,13 @@ function M.render(parent, mapID, locations)
       count = count + 1
       local marker = pin(parent, s, count)
       marker.location = loc
-      if loc.kind == "school_live_nearby" then
+      if loc.isSelected then
+        marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Map_01")
+        marker.icon:SetVertexColor(1, 0.95, 0.25, 1)
+      elseif loc.kind == "vendor" or loc.kind == "npc" then
+        marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Bag_10")
+        marker.icon:SetVertexColor(1, 0.83, 0.44, 1)
+      elseif loc.kind == "school_live_nearby" then
         marker.icon:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
         marker.icon:SetVertexColor(0.35, 1, 0.55, 1)
       elseif loc.kind == "school_guide" then
