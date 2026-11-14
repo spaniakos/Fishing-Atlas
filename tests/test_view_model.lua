@@ -113,8 +113,8 @@ assert(ribsOverview[3].detail == "25" and ribsOverview[7].detail:find(
 local refs = V.section(ribs, "Sources")
 assert(#refs == 3 and refs[1].detail:find("2889", 1, true)
   and refs[2].title == "Kendor Kabonka"
-  and refs[2].target.sourceMapFirst
+  and refs[2].sourceMapFirst
   and refs[3].title == "Beer Basted Boar Ribs"
-  and refs[3].target.sourceMapFirst,
+  and refs[3].sourceMapFirst,
   "Cooking sources must link scroll, vendor map and quest map independently")
 print("image3 view model / gear quest and Cooking acquisition tests passed")
