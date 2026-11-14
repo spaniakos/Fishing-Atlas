@@ -40,7 +40,10 @@ UIParent:SetSize(1400, 860)
 local ns = {
   storage = {db = {settings = {notifications = true, mapPins = true}}},
   catalog = {name = function(_, id) return "Fish " .. id end,
-    icon = function() return "Icon" end},
+    icon = function() return "Icon" end,
+    entity = function(_, id)
+      if id == 12 or id == 13 then return {category = "fish"} end
+    end},
   data = {zoneFishingSkill = {[1440] = {minimum = 55, reliable = 150}},
     referenceZoneFish = {[1440] = {{id = 12}}}},
   browser = {},
@@ -52,10 +55,11 @@ local ns = {
   mapPins = {refresh = function() end}
 }
 local zone = {id = 1440, kind = "zone", name = "Ashenvale", confidence = "verified_client"}
-local fish = {id = 12, kind = "fish", name = "Fish", confidence = "reference"}
+local fish = {id = 12, kind = "fish", name = "Darkclaw Lobster", confidence = "reference"}
+local otherFish = {id = 13, kind = "fish", name = "Raw Nightfin Snapper", confidence = "reference"}
 ns.browser.list = function(category)
   if category == "zones" then return {zone} end
-  if category == "fish" then return {fish} end
+  if category == "fish" then return {fish, otherFish} end
   return {}
 end
 ns.browser.icon = function() return "Icon" end
@@ -75,6 +79,13 @@ assert(ns.ui.toggle())
 assert(ns.ui.category == "zones")
 assert(ns.ui.selectCategory("fish") == nil)
 assert(ns.ui.category == "fish")
+ns.ui.selectCategory("fish", 13)
+assert(ns.ui.selected().id == 13, "Fish click-by-ID must not always select Darkclaw Lobster")
+ns.ui.openItem(12)
+assert(ns.ui.category == "fish" and ns.ui.selected().id == 12,
+  "Known fish item should open in the Fish inspector")
+ns.ui.selectCategory("fish", 99999)
+assert(ns.ui.selected().id == 99999, "Unindexed fish must not fall back to first list entry")
 WorldMapFrame = element()
 WorldMapFrame:Hide()
 WorldMapFrame.SetMapID = function(self, id) self.mapID = id end
