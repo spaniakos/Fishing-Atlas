@@ -8,6 +8,7 @@ local W, H = 1210, 755
 local rowHeight, visibleRows = 34, 12
 local categories = {
   {"fish", "Fish", "Interface\\Icons\\INV_Misc_Fish_02"},
+  {"items", "Items", "Interface\\Icons\\INV_Misc_Bag_10"},
   {"recipes", "Recipes", "Interface\\Icons\\INV_Misc_Food_15"},
   {"zones", "Zones", "Interface\\Icons\\INV_Misc_Map_01"},
   {"schools", "Schools", "Interface\\Icons\\INV_Misc_Fish_02"},
@@ -15,8 +16,10 @@ local categories = {
   {"gear", "Gear", "Interface\\Icons\\Trade_Fishing"},
   {"journal", "Journal", "Interface\\Icons\\INV_Misc_Book_09"}
 }
-local topTabs = {"Explorer", "Items", "Journal", "Recipes", "Zones", "Schools", "Vendors", "Gear"}
-local categoryFor = {Explorer = "zones", Items = "items", Journal = "journal", Recipes = "recipes",
+local topTabs = {"Explorer", "Fish", "Items", "Journal", "Recipes",
+  "Zones", "Schools", "Vendors", "Gear"}
+local categoryFor = {Explorer = "zones", Fish = "fish", Items = "items",
+  Journal = "journal", Recipes = "recipes",
   Zones = "zones", Schools = "schools", Vendors = "vendors", Gear = "gear"}
 UI.category, UI.query, UI.offset = "zones", "", 0
 UI.topPage = "Explorer"
@@ -506,7 +509,7 @@ end
 
 local function select(item)
   if item and item.atlasCategory and item.atlasCategory ~= UI.category then
-    UI.selectCategory(item.atlasCategory, item.id)
+    UI.selectCategory(item.atlasCategory, item.id, nil, item)
     return
   end
   active = item
@@ -547,7 +550,8 @@ function UI.draw()
   listSlider:SetValue(UI.offset)
   listSlider:SetShown(#results > visibleRows)
   for _, btn in ipairs(sidebar) do
-    if btn.category == "vendors" or btn.category == "recipes" or btn.category == "fish" then
+    if btn.category == "vendors" or btn.category == "recipes"
+        or btn.category == "fish" or btn.category == "items" then
       btn.count = #ns.browser.list(btn.category, "")
     end
     btn.text:SetText(btn.caption .. "  (" .. btn.count .. ")")
@@ -598,10 +602,11 @@ function UI.refresh(reset)
   hideContext()
 end
 
-function UI.selectCategory(category, id, topPage)
+function UI.selectCategory(category, id, topPage, searchRecord)
   UI.mapOverride, UI.selectedPoint = nil, nil
   UI.category, UI.offset, UI.query, UI.filterFish, UI.filterLocations = category, 0, "", false, false
-  UI.topPage = topPage or (category == "items" and "Items"
+  UI.topPage = topPage or (category == "fish" and "Fish"
+    or category == "items" and "Items"
     or category == "recipes" and "Recipes" or category == "vendors" and "Vendors"
     or category == "schools" and "Schools" or category == "gear" and "Gear"
     or category == "zones" and "Zones" or "Explorer")
@@ -616,25 +621,31 @@ function UI.selectCategory(category, id, topPage)
         return
       end
     end
-    -- Explicit record navigation must never silently choose the first result
-    -- (typically Darkclaw Lobster when navigating to Fish).
-    local kind = category == "fish" and "fish"
+    -- Search entries already carry the exact record identity. Never
+    -- replace one with the category's [1] item when switching tabs.
+    local fallbackKind = category == "fish" and "fish"
+      or category == "items" and "item"
       or category == "npcs" and "observed_npc"
-      or category == "items" and "item" or nil
-    if kind then
-      active = {id = wanted, kind = kind,
-        name = kind == "observed_npc" and
-          (ns.sources and ns.sources.npcName(wanted) or ("NPC " .. wanted))
-          or ns.catalog.name("item", wanted),
+      or category == "gear" and "fishing_pole"
+      or category == "zones" and "zone"
+      or category == "schools" and "school_type"
+      or category == "vendors" and "vendor_reference"
+      or category == "recipes" and "Cooking" or nil
+    if searchRecord and searchRecord.id == wanted then
+      active = searchRecord
+    elseif fallbackKind then
+      active = {id = wanted, kind = fallbackKind,
+        name = fallbackKind == "observed_npc"
+          and (ns.sources and ns.sources.npcName(wanted) or ("NPC " .. wanted))
+          or fallbackKind == "school_type" and tostring(wanted)
+          or (ns.catalog.name(fallbackKind == "Cooking" and "spell" or "item", wanted)),
         confidence = "source_unindexed"}
-      UI.detailsTab = "Overview"
-      renderDetails()
-      UI.draw()
     else
       active = nil
-      renderDetails()
-      UI.draw()
     end
+    UI.detailsTab = "Overview"
+    renderDetails()
+    UI.draw()
   end
 end
 
@@ -660,7 +671,8 @@ function UI.openItem(id)
   if not id or id <= 0 then return end
   local entity = ns.catalog.entity and ns.catalog.entity("item", id)
   -- Fish need the Fish inspector, never a defaulted Items selection.
-  if entity and entity.category == "fish" then
+  if (entity and entity.category == "fish")
+      or (ns.fishingScope and ns.fishingScope.caught(id)) then
     UI.selectCategory("fish", id)
     return
   end
@@ -731,7 +743,7 @@ local function build()
       if definition[1] == itemCategory then icon = definition[3]; break end
     end
     if title == "Items" then icon = "Interface\\Icons\\INV_Misc_Bag_10" end
-    local btn = button(frame, title, 15 + (i - 1) * 148, -101, 142, 51, function()
+    local btn = button(frame, title, 12 + (i - 1) * 132, -101, 126, 51, function()
       UI.selectCategory(itemCategory, nil, title)
     end, icon)
     btn.caption, btn.category = title, itemCategory
@@ -760,7 +772,7 @@ local function build()
   local counts = ns.viewModel.counts()
   for i, definition in ipairs(categories) do
     local key, text, icon = definition[1], definition[2], definition[3]
-    local btn = button(left, text, 9, -78 - (i - 1) * 44, 176, 40, function()
+    local btn = button(left, text, 9, -78 - (i - 1) * 39, 176, 36, function()
       UI.selectCategory(key)
     end, icon)
     btn.category, btn.caption, btn.count = key, text, counts[key] or 0
