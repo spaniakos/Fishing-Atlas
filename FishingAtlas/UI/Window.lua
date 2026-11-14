@@ -29,6 +29,7 @@ UI.searchAll = true
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
 local fullMap, fullMapSurface, fullMapLabel, schoolModeButton
+local recipeAddButton, recipeScanButton, recipePopup, recipeSpellField
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
@@ -653,6 +654,8 @@ function UI.draw()
       filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")
     end
   end
+  if recipeAddButton then recipeAddButton:SetShown(UI.category == "recipes") end
+  if recipeScanButton then recipeScanButton:SetShown(UI.category == "recipes") end
   updateFooter()
   uiBusy = false
 end
@@ -934,6 +937,22 @@ local function build()
 
   local listPanel = panel(frame, 216, -167, 265, 523)
   listCount = label(listPanel, "GameFontNormalLarge", 237, 25, 11, -9)
+  recipeAddButton = button(listPanel, "+ Add recipe", 9, -486, 116, 29, function()
+    if recipePopup then
+      recipeSpellField:SetText("")
+      recipePopup:Show()
+      recipeSpellField:SetFocus()
+    end
+  end)
+  recipeScanButton = button(listPanel, "Scan Cooking", 133, -486, 122, 29,
+    function()
+      local added, message = ns.recipeDiscovery and ns.recipeDiscovery.scan()
+      if ns.commands and ns.commands.say then
+        ns.commands.say(added and
+          (message .. ": " .. tostring(added) .. " new entries") or message)
+      end
+      if added then UI.refresh(true) end
+    end)
   listRegion = CreateFrame("Frame", nil, listPanel)
   listRegion:SetSize(232, 434)
   listRegion:SetPoint("TOPLEFT", listPanel, "TOPLEFT", 9, -45)
@@ -1070,6 +1089,30 @@ local function build()
   end)
   footerStatus = label(footer, "GameFontHighlightSmall", 180, 30, 999, -7)
   footerStatus:SetText("Client + references + yours")
+  recipePopup = panel(frame, 420, -280, 360, 164, {0.03, 0.10, 0.14, 0.99})
+  recipePopup:SetFrameStrata("TOOLTIP")
+  label(recipePopup, "GameFontNormal", 330, 25, 12, -9):SetText("ADD COOKING SPELL")
+  label(recipePopup, "GameFontHighlightSmall", 332, 33, 12, -34):SetText(
+    "Enter a spell ID. Manual entry does NOT mark it learned.")
+  recipeSpellField = CreateFrame("EditBox", nil, recipePopup, "InputBoxTemplate")
+  recipeSpellField:SetSize(313, 25)
+  recipeSpellField:SetPoint("TOPLEFT", recipePopup, "TOPLEFT", 18, -76)
+  recipeSpellField:SetAutoFocus(false)
+  local function addRecipeFromEntry()
+    local record, err = ns.recipeDiscovery.add(recipeSpellField:GetText())
+    if record then
+      recipePopup:Hide()
+      UI.selectCategory("recipes", record.id, "Recipes")
+    elseif ns.commands and ns.commands.say then
+      ns.commands.say(err)
+    end
+  end
+  recipeSpellField:SetScript("OnEnterPressed", addRecipeFromEntry)
+  recipeSpellField:SetScript("OnEscapePressed", function() recipePopup:Hide() end)
+  button(recipePopup, "Add", 18, -115, 154, 30, addRecipeFromEntry)
+  button(recipePopup, "Cancel", 185, -115, 154, 30,
+    function() recipePopup:Hide() end)
+  recipePopup:Hide()
   sourcePopup = panel(frame, 290, -272, 635, 175, {0.03, 0.10, 0.14, 0.99})
   sourcePopup:SetFrameStrata("TOOLTIP")
   label(sourcePopup, "GameFontNormal", 595, 25, 13, -10):SetText("SOURCE AND ATTRIBUTION")
@@ -1122,6 +1165,7 @@ function UI.show()
     ns.recipeKnowledge.scanModern()
     ns.recipeKnowledge.scanOpenProfession()
   end
+  if ns.recipeDiscovery then ns.recipeDiscovery.scan() end
   UI.refresh(false)
   return true
 end

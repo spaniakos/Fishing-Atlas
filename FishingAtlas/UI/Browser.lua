@@ -124,8 +124,18 @@ function B.list(category, term)
     end
     for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
       if not seenRecipes[id] then
+        seenRecipes[id] = true
         push(out, row(id, ns.catalog.name("spell", id),
           "gamefile_recipe", "game_files_unconfirmed", recipe), term)
+      end
+    end
+    for _, discovered in ipairs(ns.recipeDiscovery and
+        ns.recipeDiscovery.list() or {}) do
+      if not seenRecipes[discovered.id] then
+        seenRecipes[discovered.id] = true
+        push(out, row(discovered.id, discovered.name,
+          "Cooking", discovered.source or "personal_reference",
+          discovered), term)
       end
     end
   elseif category == "zones" then

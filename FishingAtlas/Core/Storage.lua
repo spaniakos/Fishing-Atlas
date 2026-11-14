@@ -34,6 +34,7 @@ function Store.init()
   end
   if type(db.vendorObservations) ~= "table" then db.vendorObservations = {} end
   if type(db.catches) ~= "table" then db.catches = {} end
+  if type(db.discoveredRecipes) ~= "table" then db.discoveredRecipes = {} end
   db.schemaVersion = SCHEMA_VERSION
   Store.db = db
   return db

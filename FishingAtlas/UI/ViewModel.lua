@@ -882,10 +882,18 @@ function V.section(item, section)
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     local learning = ns.recipeLearning and ns.recipeLearning.info(item.id)
     local spellRecipe = ns.catalog.recipe(item.id) or
-      ((ns.data.gameFiles or {}).recipes or {})[item.id]
+      ((ns.data.gameFiles or {}).recipes or {})[item.id] or
+      (ns.recipeDiscovery and ns.recipeDiscovery.get(item.id))
     local skill = learning and learning.requiredSkill
     local skillSource = learning and learning.requirementSource or "unverified"
     if section == "Overview" then
+      local discovery = ns.recipeDiscovery and ns.recipeDiscovery.get(item.id)
+      if discovery then
+        add("Added to your atlas", discovery.source == "client_profession"
+          and "Captured from your open Cooking profession window"
+          or "Manual reference; NOT proof the recipe is learned",
+          "Interface\\Icons\\INV_Misc_Book_09", discovery.source)
+      end
       local status, statusSource = "unknown", "not_yet_scanned"
       if ns.recipeKnowledge then status, statusSource = ns.recipeKnowledge.status(item.id) end
       local known = status == "known"

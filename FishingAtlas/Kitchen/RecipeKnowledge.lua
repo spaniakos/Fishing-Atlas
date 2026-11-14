@@ -225,8 +225,18 @@ function K.scanOpenProfession()
   return added
 end
 
+function K.observeLearned(spellId)
+  spellId = tonumber(spellId)
+  if not spellId or spellId <= 0 then return false end
+  local auto = characterStore("recipeAutoByCharacter")
+  if not auto then return false end
+  auto[spellId] = true
+  return true
+end
+
 function K.refresh()
   local added = K.scanCatalog() + K.scanModern() + K.scanOpenProfession()
+  if ns.recipeDiscovery then ns.recipeDiscovery.scan() end
   if ns.ui and ns.ui.refresh then ns.ui.refresh(false) end
   return added
 end

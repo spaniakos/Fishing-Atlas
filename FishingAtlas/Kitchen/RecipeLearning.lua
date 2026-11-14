@@ -96,6 +96,12 @@ end
 
 function L.info(spellId)
   local rec = recipe(spellId)
+  if not rec and ns.recipeDiscovery then
+    local discovery = ns.recipeDiscovery.get(spellId)
+    if discovery then
+      rec = {profession = "Cooking", outputItemId = discovery.outputItemId}
+    end
+  end
   if not rec then return nil end
   local min = tonumber(rec.cookingSkill or rec.minimumSkill)
   local yellow = tonumber(rec.yellowSkill or rec.yellow)

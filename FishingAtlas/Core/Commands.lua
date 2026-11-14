@@ -126,7 +126,10 @@ function commands.run(raw)
     local count, name = rest:match("^(%d+)%s+(.+)$")
     name = name or rest
     local item, err = ns.journal.record(nil, name, tonumber(count) or 1, "manual")
-    if item then say("Recorded " .. item.count .. " total: " .. item.name) else say(err) end
+    if item then
+      say("Recorded " .. item.count .. " total: " .. item.name)
+      if ns.ui then ns.ui.refresh(false) end
+    else say(err) end
   elseif command == "lootdebug" then
     say(ns.loot and ns.loot.debug and ns.loot.debug() or "Loot tracker unavailable")
   elseif command == "collection" then
@@ -165,6 +168,18 @@ function commands.run(raw)
     for _, item in ipairs(recipe.ingredients or {}) do
       say("  " .. item.amount .. " x " .. ns.catalog.name("item", item.itemId) .. " [" .. item.itemId .. "]")
     end
+  elseif command == "recipeadd" then
+    local spell, custom = rest:match("^(%S+)%s*(.-)%s*$")
+    local rec, err = ns.recipeDiscovery.add(spell, custom ~= "" and custom or nil)
+    if rec then
+      say("Added Cooking spell #" .. rec.id .. " (" .. rec.name ..
+        ") to personal atlas; this does NOT mark it learned")
+      if ns.ui then ns.ui.refresh(true) end
+    else say(err) end
+  elseif command == "recipescan" then
+    local count, message = ns.recipeDiscovery.scan()
+    say(count and (message .. ": " .. count .. " new entries") or message)
+    if count and ns.ui then ns.ui.refresh(true) end
   elseif command == "recipes" then
     local matches = ns.kitchen.search(rest)
     say(#matches .. " matching cooking recipes (reference data)")
@@ -218,7 +233,8 @@ function commands.run(raw)
     say("Explorer: /fa or /fa ui; Fish-to-Table: /fa plan <spellID> [crafts]; /fa diagnose")
     say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
     say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
-    say("Journal: caught [quantity] <item name>, collection, guide [fish], route [spot]")
+    say("Journal: caught [quantity] <item name>, collection, lootdebug, guide [fish], route [spot]")
+    say("Recipes: recipeadd <spellID> [name], recipescan (open Cooking first)")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>, mapdebug [mapID]")
     say("Feedback: /fa issue opens a copyable GitHub Issues URL")
   end

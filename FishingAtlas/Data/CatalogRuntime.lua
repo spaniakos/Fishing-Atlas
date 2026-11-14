@@ -35,6 +35,12 @@ function C.name(kind, id)
   local item = C.entity(kind, id)
   if item and type(item.name) == "string" and not item.name:match("^Item #")
     and not item.name:match("^Spell #") then return item.name, false end
+  if kind == "spell" and ns.recipeDiscovery then
+    local discovery = ns.recipeDiscovery.get(id)
+    if discovery and type(discovery.name) == "string" then
+      return discovery.name, false
+    end
+  end
   if kind == "item" then
     for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
       if ref.recipeItemId == id and type(ref.recipeItemName) == "string" then
