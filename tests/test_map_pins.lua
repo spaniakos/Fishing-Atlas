@@ -3,14 +3,16 @@ local ns = {}
 assert(loadfile("FishingAtlas/Core/Namespace.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Core/Storage.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Atlas/Schools.lua"))("FishingAtlas", ns)
+assert(loadfile("FishingAtlas/Atlas/MapMarkers.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Atlas/MapPins.lua"))("FishingAtlas", ns)
 FishingAtlasDB = nil
 assert(ns.storage.init())
 assert(ns.storage.add(1411, 0.1, 0.2, "River"))
 assert(ns.schools.record(1411, 0.3, 0.4, "School"))
--- New default suppresses non-live historical/player pins.
+-- Active mode suppresses historical schools, NOT user-saved places.
 assert(ns.storage.db.settings.schoolMapMode == "active")
-assert(#ns.mapPins.points(1411) == 0)
+local active = ns.mapPins.points(1411)
+assert(#active == 1 and active[1].kind == "player_position")
 ns.storage.db.settings.schoolMapMode = "probable"
 local points = ns.mapPins.points(1411)
 assert(#points == 2)

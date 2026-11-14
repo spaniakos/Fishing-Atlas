@@ -267,25 +267,8 @@ function V.mapPoints(item)
   local results = {}
   if not item then return results end
   local mapID = item.kind == "zone" and item.id or nil
-  -- ACTIVE is session evidence only. Historic spawn references are never
-  -- presented as current server spawns, even with multiple historical reports.
-  if V.schoolMapMode() == "active"
-      and (item.kind == "zone" or item.kind == "school_type") then
-    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID,
-        item.kind == "school_type" and item.name or nil) or {}) do
-      results[#results + 1] = rec
-    end
-    if item.kind == "school_type" and not mapID and ns.liveSchools then
-      -- Scan history is session-scoped; show only the user's current zone.
-      local current = type(C_Map) == "table"
-        and type(C_Map.GetBestMapForUnit) == "function"
-        and C_Map.GetBestMapForUnit("player") or nil
-      for _, rec in ipairs(ns.liveSchools.inZone(current, item.name)) do
-        results[#results + 1] = rec
-      end
-    end
-    return results
-  end
+  -- Do NOT discard vendors, NPCs or saved spots in Active school mode.
+  -- Filtering school evidence happens below, not at the record level.
   if item.kind == "item" then
     return V.itemMapPoints(item.id)
   elseif item.kind == "observed_npc" then
@@ -333,6 +316,17 @@ function V.mapPoints(item)
     end
     return out
   elseif item.kind == "school_type" then
+    if V.schoolMapMode() == "active" then
+      local current = type(C_Map) == "table"
+        and type(C_Map.GetBestMapForUnit) == "function"
+        and C_Map.GetBestMapForUnit("player") or nil
+      if ns.liveSchools then
+        for _, rec in ipairs(ns.liveSchools.inZone(current, item.name)) do
+          results[#results + 1] = rec
+        end
+      end
+      return results
+    end
     for _, school in ipairs(source() and source().schoolLocations(item.name) or {}) do
       results[#results + 1] = school
     end
@@ -359,9 +353,20 @@ function V.mapPoints(item)
     return results
   end
   if not mapID then return results end
-  for _, loc in ipairs(V.recordedLocations(mapID)) do results[#results + 1] = loc end
+  for _, loc in ipairs(V.recordedLocations(mapID)) do
+    if loc.kind ~= "school" or V.schoolMapMode() == "probable" then
+      results[#results + 1] = loc
+    end
+  end
+  -- A vendor is still a vendor when the player has seen zero live schools.
   for _, vendor in ipairs(V.zoneVendors(mapID)) do
     results[#results + 1] = vendor
+  end
+  if V.schoolMapMode() == "active" then
+    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID) or {}) do
+      results[#results + 1] = rec
+    end
+    return results
   end
   for name, spots in pairs(ns.data.classicSchoolLocations or {}) do
     for _, spot in ipairs(spots) do

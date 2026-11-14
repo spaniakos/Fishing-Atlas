@@ -268,22 +268,16 @@ local function renderMap()
   if not mapSurface then return end
   local mapID, sourced = selectedMap()
   local mode = ns.viewModel.schoolMapMode and ns.viewModel.schoolMapMode() or "active"
-  local locations = sourced and ns.viewModel.mapPoints(active) or {}
-  -- The selected preview can fall back to the player's zone. Active-mode
-  -- observations must be drawn for the displayed map regardless of record.
-  if mode == "active" and mapID and ns.liveSchools then
-    locations = ns.liveSchools.inZone(mapID)
-  end
+  local locations = ns.mapMarkers and ns.mapMarkers.collect(active, mapID,
+    UI.selectedPoint) or (sourced and ns.viewModel.mapPoints(active) or {})
   if schoolModeButton then
     schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
   end
   ns.zoneMap.render(mapSurface, mapID, locations)
   mapCaption:SetText(not mapID and "No map selected"
-    or mode == "active" and active
-        and (active.kind == "zone" or active.kind == "school_type")
-        and ("Active nearby | " .. #locations .. " recent sightings")
-    or ("Map " .. mapID .. (sourced and " | referenced positions"
-      or " | current zone, no evidence")))
+    or "Map " .. mapID .. " | " .. #locations .. " locations | Schools: " ..
+      (mode == "active" and "Active" or "Probable") ..
+      (#locations == 0 and " | no mapped coordinates for selection" or ""))
   if fullMap and fullMap:IsShown() then
     ns.zoneMap.render(fullMapSurface, mapID, locations)
     fullMapLabel:SetText(not mapID and "No map available"
@@ -301,7 +295,7 @@ function UI.setSchoolMapMode(mode)
   local settings = ns.storage.db and ns.storage.db.settings
   if not settings then return false end
   settings.schoolMapMode = mode
-  UI.mapOverride, UI.selectedPoint = nil, nil
+  -- School filters must not discard the selected vendor or clicked map point.
   if ns.mapPins then ns.mapPins.refresh() end
   if frame then UI.refresh(false) end
   return true
@@ -483,7 +477,9 @@ local function rowClick(record)
   elseif record.mapID then
     UI.mapOverride = record.mapID
     UI.selectedPoint = record.x and record.y and {mapID = record.mapID,
-      x = record.x, y = record.y, label = record.title or "Fishing Atlas"} or nil
+      x = record.x, y = record.y, label = record.title or "Fishing Atlas",
+      source = record.confidence or record.source or "selected_record",
+      kind = record.kind or "selected_position"} or nil
     renderMap()
     local opened = inGameMap(record.mapID)
     if not opened then ns.commands.say("World map could not be opened by this client") end

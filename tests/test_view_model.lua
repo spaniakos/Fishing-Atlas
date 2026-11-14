@@ -48,7 +48,10 @@ local summary = V.summary(zone)
 assert(summary.skill == 55 and summary.reliable == 150)
 assert(#V.zoneVendors(1440) == 1)
 assert(#V.recordedLocations(1440) == 2)
-assert(#V.mapPoints(zone) == 0, "Active-only default must not show historical positions")
+local activePoints = V.mapPoints(zone)
+assert(#activePoints == 2 and activePoints[1].kind == "position"
+    and activePoints[2].kind == "vendor",
+  "Active mode must retain saved places and vendors, never only schools")
 ns.storage.db.settings = {schoolMapMode = "probable"}
 assert(#V.mapPoints(zone) == 3)
 assert(V.mapID(zone) == 1440)
