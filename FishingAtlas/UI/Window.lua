@@ -305,14 +305,11 @@ end
 function UI.openFullMap()
   if not frame then return false end
   local mapID = selectedMap()
-  -- A larger custom canvas cannot repair missing client tiles. Prefer the
-  -- native World Map if the provided art layer is incomplete or unavailable.
-  if mapID and ns.zoneMap.artForMap then
-    local _, _, _, _, _, info = ns.zoneMap.artForMap(mapID, 275, 195)
-    if not info or not info.expected or info.tiles < info.expected then
-      if inGameMap(mapID) then return true end
-    end
-  end
+  -- The client owns the complete interactive world map. Never upscale a
+  -- partially loaded small preview as the default "full map".
+  -- Native map pins are supplied by FishingAtlas/Atlas/MapPins.lua.
+  if inGameMap(mapID) then return true end
+  -- Only use the custom large fallback when this client has no native map.
   if not fullMap then
     fullMap = CreateFrame("Frame", "FishingAtlasFullMap", UIParent)
     fullMap:SetSize(1008, 746)
