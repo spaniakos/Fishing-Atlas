@@ -22,6 +22,9 @@ assert(refs[1].verifiedSpawn == false)
 ns.storage.db.settings.schoolMapMode = "active"
 assert(L.recordVisible("Firefin Snapper School", 1413, 0.42, 0.53))
 assert(#P.points(1413) == 1 and P.points(1413)[1].kind == "school_live_nearby")
+local ok, added = L.recordVisible("Firefin Snapper School", 1413, 0.423, 0.535)
+assert(ok and added == false and #P.points(1413) == 1,
+  "Small player movements cannot multiply one school into fake sightings")
 assert(#P.points(1414) == 0)
 assert(not L.recordVisible("Unknown object", 1413, 0.42, 0.53))
 clock = clock + 121
@@ -55,4 +58,19 @@ end
 L.start()
 assert(type(update) == "function")
 assert(pcall(update, {}, 0.5), "A secret tooltip may never crash OnUpdate")
-print("active school modes, expiry and secret-tooltip protection tests passed")
+local mapUpdates, pinUpdates = 0, 0
+ns.ui = {refreshMap = function() mapUpdates = mapUpdates + 1 end}
+ns.mapPins.refresh = function() pinUpdates = pinUpdates + 1 end
+GameTooltipTextLeft1.GetText = function() return "Firefin Snapper School" end
+local beforeRevision = L.revision
+assert(pcall(update, {}, 0.5) and L.revision > beforeRevision,
+  "Passive observation must run without clicking Scan now")
+assert(mapUpdates == 1 and pinUpdates == 1,
+  "A new sighting must update custom and native map pins")
+assert(pcall(update, {}, 0.5) and mapUpdates == 1,
+  "Repeated sightings must not cause a redraw every scan")
+GameTooltip.IsShown = function() return false end
+clock = clock + 61
+assert(pcall(update, {}, 0.5) and mapUpdates == 2 and pinUpdates == 2,
+  "Expired sightings must remove stale map pins")
+print("active school modes, passive refresh, dedupe and secret tooltip tests passed")

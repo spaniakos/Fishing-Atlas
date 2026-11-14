@@ -267,8 +267,13 @@ end
 local function renderMap()
   if not mapSurface then return end
   local mapID, sourced = selectedMap()
-  local locations = sourced and ns.viewModel.mapPoints(active) or {}
   local mode = ns.viewModel.schoolMapMode and ns.viewModel.schoolMapMode() or "active"
+  local locations = sourced and ns.viewModel.mapPoints(active) or {}
+  -- The selected preview can fall back to the player's zone. Active-mode
+  -- observations must be drawn for the displayed map regardless of record.
+  if mode == "active" and mapID and ns.liveSchools then
+    locations = ns.liveSchools.inZone(mapID)
+  end
   if schoolModeButton then
     schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
   end
@@ -287,6 +292,10 @@ local function renderMap()
   end
 end
 
+function UI.refreshMap()
+  if frame and frame:IsShown() then renderMap() end
+end
+
 function UI.setSchoolMapMode(mode)
   if mode ~= "active" and mode ~= "probable" then return false end
   local settings = ns.storage.db and ns.storage.db.settings
@@ -299,13 +308,18 @@ function UI.setSchoolMapMode(mode)
 end
 
 function UI.scanSchools()
-  local count, message
-  if ns.liveSchools then count, message = ns.liveSchools.scan() end
+  local count, message, mapID
+  if ns.liveSchools then count, message, mapID = ns.liveSchools.scan() end
+  -- Explicit manual scans focus the actual scanned map. Passive scans never
+  -- hijack navigation when the user is browsing another zone.
+  if mapID and count and count > 0 then
+    UI.mapOverride, UI.selectedPoint = mapID, nil
+  end
   if ns.commands and ns.commands.say then
     ns.commands.say(message or "School detector unavailable on this client")
   end
   if ns.mapPins then ns.mapPins.refresh() end
-  if frame then UI.refresh(false) end
+  UI.refreshMap()
   return count or 0
 end
 

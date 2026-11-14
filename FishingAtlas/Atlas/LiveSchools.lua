@@ -8,6 +8,8 @@ ns.liveSchools = {}
 local L = ns.liveSchools
 local observations = {}
 local SECONDS = 60
+local PASSIVE_SCAN_INTERVAL = 0.5
+L.revision = 0
 local lastScan = "Not scanned yet"
 local monitor
 local elapsed = 0
@@ -71,6 +73,7 @@ local function prune()
   for key, point in pairs(observations) do
     if t < point.seenAt or t - point.seenAt > SECONDS then
       observations[key] = nil
+      L.revision = L.revision + 1
     end
   end
 end
@@ -95,6 +98,18 @@ function L.recordVisible(name, mapID, x, y)
     return false
   end
   prune()
+  -- A world tooltip sampled while walking near one pool describes one
+  -- approximate player location, not multiple verified school objects.
+  for _, point in pairs(observations) do
+    if point.mapID == mapID and point.name == name
+        and math.abs(point.x - x) <= 0.015
+        and math.abs(point.y - y) <= 0.015 then
+      point.seenAt = now()
+      lastScan = "Seen on world tooltip: " .. name ..
+        " (existing nearby sighting refreshed)"
+      return true, false
+    end
+  end
   local key = string.format("%s:%d:%d:%d", name, mapID,
     math.floor(x * 100), math.floor(y * 100))
   observations[key] = {
@@ -104,9 +119,10 @@ function L.recordVisible(name, mapID, x, y)
     source = "recent_world_tooltip", seenAt = now(),
     verifiedSpawn = false, near = true,
   }
+  L.revision = L.revision + 1
   lastScan = "Seen on world tooltip: " .. name ..
     " (player position; expires after 60 sec)"
-  return true
+  return true, true
 end
 
 function L.scan()
@@ -115,13 +131,13 @@ function L.scan()
     local mapID = playerPosition()
     local recent = mapID and L.inZone(mapID) or {}
     if #recent > 0 then
-      lastScan = #recent .. " recently observed nearby schools in this zone. " ..
-        "These are approximate player positions, not guaranteed current spawns."
-      return #recent, lastScan
+      lastScan = "No new tooltip sighting; " .. #recent ..
+        " recent nearby observations are cached (player positions only)."
+      return #recent, lastScan, mapID
     end
     lastScan = "No nearby school detected. Hover a visible school in the " ..
       "world to register it. This client cannot scan all active pools remotely."
-    return 0, lastScan
+    return 0, lastScan, mapID
   end
   local mapID, x, y = playerPosition()
   if not mapID then
@@ -129,7 +145,7 @@ function L.scan()
     return 0, lastScan
   end
   local captured = L.recordVisible(visible, mapID, x, y)
-  return captured and 1 or 0, lastScan
+  return captured and 1 or 0, lastScan, mapID
 end
 
 function L.status()
@@ -141,9 +157,12 @@ function L.start()
   monitor = CreateFrame("Frame")
   monitor:SetScript("OnUpdate", function(_, dt)
     elapsed = elapsed + (dt or 0)
-    if elapsed < 0.4 then return end
+    if elapsed < PASSIVE_SCAN_INTERVAL then return end
     elapsed = 0
+    local before = L.revision
+    -- Passive scanning is silent: it only accepts observable world tooltips.
     local ok = pcall(function()
+      prune()
       local visible = safeWorldTooltip()
       if visible then
         local id, x, y = playerPosition()
@@ -151,5 +170,14 @@ function L.start()
       end
     end)
     if not ok then L.blockedTooltipReads = (L.blockedTooltipReads or 0) + 1 end
+    if L.revision ~= before then
+      -- Redraw only on a new or expired observation, never every sample.
+      if ns.mapPins and type(ns.mapPins.refresh) == "function" then
+        pcall(ns.mapPins.refresh)
+      end
+      if ns.ui and type(ns.ui.refreshMap) == "function" then
+        pcall(ns.ui.refreshMap)
+      end
+    end
   end)
 end

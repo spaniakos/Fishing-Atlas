@@ -273,6 +273,10 @@ function M.describe(mapID)
     "Map %d: layer %s; %d/%d base file references; %d layout tiles; %d overlay tiles (%s, art %s)",
     mapID, tostring(meta.layer or "none"), meta.tiles or 0,
     meta.expected or 0, #tiles, #explored, tostring(source), tostring(artID))
+  if #explored == 0 then
+    summary = summary .. " | no exploration coverage available"
+      .. " (loaded base files may contain transparent/fogged cells)"
+  end
   local preview = previewLoadStatus(mapID)
   if not preview then
     return summary .. " | no matching visible preview for load test"
@@ -314,6 +318,26 @@ local function state(parent)
   s.caption:SetWidth(250)
   s.caption:SetJustifyH("LEFT")
   return s
+end
+
+-- The native World Map shows its own background atlas behind transparent
+-- base tiles. Reuse that client atlas, never invent undiscovered terrain.
+local function mapBackground(s, mapID)
+  local atlas
+  if type(C_Map) == "table"
+      and type(C_Map.GetMapArtBackgroundAtlas) == "function" then
+    local ok, value = pcall(C_Map.GetMapArtBackgroundAtlas, mapID)
+    if ok and type(value) == "string" and value ~= "" then atlas = value end
+  end
+  if atlas and type(s.fallback.SetAtlas) == "function" then
+    local ok = pcall(s.fallback.SetAtlas, s.fallback, atlas)
+    if ok then
+      s.fallback:SetVertexColor(1, 1, 1, 1)
+      return
+    end
+  end
+  s.fallback:SetTexture("Interface\\Buttons\\WHITE8X8")
+  s.fallback:SetVertexColor(0.03, 0.06, 0.08, 1)
 end
 
 local function pin(parent, s, index)
@@ -376,7 +400,8 @@ function M.render(parent, mapID, locations)
   local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
   s.renderedMap = mapID
-  -- Retain the safe local fallback when this client lacks world-map tiles.
+  -- Display the native map background under transparent client artwork.
+  mapBackground(s, mapID)
   s.fallback:Show()
   -- Some map assets arrive after the first request. Retry once, without an
   -- OnUpdate loop that would hammer C_Map during ordinary gameplay.

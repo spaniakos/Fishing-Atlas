@@ -1,6 +1,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 -- Mock enough FrameXML to catch nil callbacks/layout wiring before client tests.
 local created = {}
+local renderSnapshot = {}
 local function element()
   local f = {shown = true, width = 0, height = 0, scripts = {}, text = ""}
   local methods = {
@@ -58,7 +59,10 @@ local ns = {
     referenceZoneFish = {[1440] = {{id = 12}}}},
   browser = {},
   viewModel = {},
-  zoneMap = {render = function() return true end},
+  zoneMap = {render = function(_, mapID, points)
+    renderSnapshot.map, renderSnapshot.points = mapID, points
+    return true
+  end},
   issues = {open = function() return true end},
   options = {open = function() return true end},
   commands = {say = function() end},
@@ -98,8 +102,28 @@ ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
 ns.viewModel.mapPoints = function() return {} end
+ns.liveSchools = {
+  inZone = function(mapID)
+    if mapID == 1413 then
+      return {{mapID = 1413, x = 0.3, y = 0.4,
+        kind = "school_live_nearby", name = "Firefin Snapper School"}}
+    end
+    return {}
+  end,
+  scan = function() return 1, "One recent nearby observation", 1413 end
+}
+C_Map = {GetBestMapForUnit = function() return 1413 end}
 assert(loadfile("FishingAtlas/UI/Window.lua"))("FishingAtlas", ns)
 assert(ns.ui.toggle())
+assert(ns.ui.category == "zones")
+ns.ui.selectCategory("fish")
+assert(renderSnapshot.map == 1413 and #renderSnapshot.points == 1,
+  "Active mode must show schools when preview falls back to player zone")
+assert(ns.ui.scanSchools() == 1 and ns.ui.mapOverride == 1413,
+  "Manual Scan now should focus its actually scanned zone")
+assert(renderSnapshot.map == 1413 and #renderSnapshot.points == 1,
+  "Manual scan must refresh displayed pins, not just print a chat count")
+ns.ui.selectCategory("zones")
 assert(ns.ui.category == "zones")
 assert(ns.ui.selectCategory("fish") == nil)
 assert(ns.ui.category == "fish")

@@ -62,6 +62,7 @@ local function sprite(layer)
     "SetJustifyH", "SetText"}
   for _, name in ipairs(methods) do t[name] = function() end end
   t.SetTexture = function(self, value) self.texture = value end
+  t.SetAtlas = function(self, value) self.atlas = value end
   t.SetDrawLayer = function(self, drawLayer, sublevel)
     self.drawLayer, self.sublevel = drawLayer, sublevel
   end
@@ -86,7 +87,10 @@ local scheduled = {}
 C_Timer = {After = function(_, callback)
   scheduled[#scheduled + 1] = callback
 end}
+C_Map.GetMapArtBackgroundAtlas = function() return "TestMapBackground" end
 assert(ns.zoneMap.render(fake, 1439, {}))
+assert(textures[1].atlas == "TestMapBackground",
+  "Native background atlas must appear under transparent base art")
 assert(#scheduled == 1,
   "Even a complete 12/12 tile-ID map needs bounded async rendering retries")
 scheduled[1]()
