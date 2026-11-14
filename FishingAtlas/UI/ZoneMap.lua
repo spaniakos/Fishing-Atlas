@@ -73,7 +73,7 @@ function M.artForMap(mapID, w, h)
             or (score == bestInfo.coverage and aw * ah > bestInfo.area) then
           best = {layer = layer, textures = textures, width = aw, height = ah}
           bestInfo = {layer = index, tiles = present, expected = expected,
-            coverage = score, area = aw * ah}
+            coverage = score, area = aw * ah, width = aw, height = ah}
         end
       end
     end
@@ -88,23 +88,78 @@ function M.artForMap(mapID, w, h)
   return tiles, ox, oy, vw, vh, bestInfo
 end
 
+-- The map-art tiles are only the *base* map. Classic clients draw
+-- explored terrain in a second layer. Counting 12/12 base file IDs does NOT
+-- prove the visible terrain is complete. Use the client's own exploration
+-- overlays instead of treating all the dark rectangles as unloaded textures.
+-- Exploration is character-specific. Never invent uncovered terrain imagery.
+function M.explorationLayout(records, totalW, totalH, ox, oy, viewW, viewH)
+  local out = {}
+  if type(records) ~= "table" or not totalW or not totalH
+      or totalW <= 0 or totalH <= 0 then return out end
+  local scaleX, scaleY = viewW / totalW, viewH / totalH
+  for _, record in ipairs(records) do
+    if type(record) == "table" and not record.isShownByMouseOver then
+      local ow, oh = tonumber(record.textureWidth), tonumber(record.textureHeight)
+      local dx, dy = tonumber(record.offsetX), tonumber(record.offsetY)
+      if ow and oh and dx and dy and ow > 0 and oh > 0
+          and type(record.fileDataIDs) == "table" then
+        local pieces = M.layout({layerWidth = ow, layerHeight = oh,
+          tileWidth = 256, tileHeight = 256},
+          record.fileDataIDs, ow * scaleX, oh * scaleY)
+        for _, tile in ipairs(pieces) do
+          local x, y = dx * scaleX + tile.x, dy * scaleY + tile.y
+          local left, top = math.max(0, x), math.max(0, y)
+          local right = math.min(viewW, x + tile.w)
+          local bottom = math.min(viewH, y + tile.h)
+          if right > left and bottom > top and tile.w > 0 and tile.h > 0 then
+            local u0 = (left - x) / tile.w * tile.u
+            local v0 = (top - y) / tile.h * tile.v
+            local u1 = (right - x) / tile.w * tile.u
+            local v1 = (bottom - y) / tile.h * tile.v
+            out[#out + 1] = {texture = tile.texture,
+              x = ox + left, y = oy + top, w = right - left,
+              h = bottom - top, u0 = u0, v0 = v0, u1 = u1, v1 = v1}
+          end
+        end
+      end
+    end
+  end
+  return out
+end
+
+function M.exploredForMap(mapID, meta, ox, oy, viewW, viewH)
+  if type(C_MapExplorationInfo) ~= "table"
+      or type(C_MapExplorationInfo.GetExploredMapTextures) ~= "function"
+      or not meta or not meta.width or not meta.height then
+    return {}
+  end
+  local ok, records = pcall(C_MapExplorationInfo.GetExploredMapTextures, mapID)
+  if not ok then return {} end
+  return M.explorationLayout(records, meta.width, meta.height,
+    ox, oy, viewW, viewH)
+end
+
 function M.describe(mapID)
   if type(mapID) ~= "number" then return "No map selected" end
-  local tiles, _, _, _, _, meta = M.artForMap(mapID, 275, 195)
-  return string.format("Map %d art: layer %s; %d/%d valid tiles; %d drawn",
+  local tiles, ox, oy, w, h, meta = M.artForMap(mapID, 275, 195)
+  local explored = M.exploredForMap(mapID, meta, ox, oy, w, h)
+  return string.format("Map %d: layer %s; %d/%d base texture IDs; %d drawn; %d explored-overlay tiles",
     mapID, tostring(meta.layer or "none"), meta.tiles or 0,
-    meta.expected or 0, #tiles)
+    meta.expected or 0, #tiles, #explored)
 end
 
 local function state(parent)
   local s = pool[parent]
   if s then return s end
-  s = {tiles = {}, pins = {}}
+  s = {tiles = {}, explored = {}, pins = {}}
   pool[parent] = s
   s.fallback = parent:CreateTexture(nil, "BACKGROUND")
   s.fallback:SetAllPoints()
-  s.fallback:SetTexture("Interface\\AddOns\\FishingAtlas\\Art\\lakeshore-banner")
-  s.fallback:SetVertexColor(0.65, 0.8, 0.85, 0.55)
+  -- A neutral backing identifies unexplored regions without showing an
+  -- unrelated panorama through an apparent map-art "hole".
+  s.fallback:SetTexture("Interface\\Buttons\\WHITE8X8")
+  s.fallback:SetVertexColor(0.03, 0.06, 0.08, 1)
   s.caption = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   s.caption:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", 8, 8)
   s.caption:SetWidth(250)
@@ -158,6 +213,7 @@ function M.render(parent, mapID, locations)
   if not parent or type(CreateFrame) ~= "function" then return false end
   local s = state(parent)
   for _, tile in ipairs(s.tiles) do tile:Hide() end
+  for _, tile in ipairs(s.explored) do tile:Hide() end
   for _, marker in ipairs(s.pins) do marker:Hide() end
   if type(mapID) ~= "number" then
     s.fallback:Show()
@@ -202,6 +258,24 @@ function M.render(parent, mapID, locations)
     texture:SetSize(tile.w, tile.h)
     texture:Show()
   end
+  -- Add exploration art above the base, exactly as the WoW World Map does.
+  -- A 12/12 base count can still show large fogged/blank rectangles without
+  -- these additional client-owned textures.
+  local explored = M.exploredForMap(mapID, info, ox, oy, vw, vh)
+  for index, part in ipairs(explored) do
+    if index > 600 then break end
+    local texture = s.explored[index]
+    if not texture then
+      texture = parent:CreateTexture(nil, "ARTWORK")
+      s.explored[index] = texture
+    end
+    texture:SetTexture(part.texture)
+    texture:SetTexCoord(part.u0, part.u1, part.v0, part.v1)
+    texture:ClearAllPoints()
+    texture:SetPoint("TOPLEFT", parent, "TOPLEFT", part.x, -part.y)
+    texture:SetSize(part.w, part.h)
+    texture:Show()
+  end
   local count = 0
   local pinLimit = width >= 500 and 300 or 80
   for _, loc in ipairs(locations or {}) do
@@ -237,7 +311,8 @@ function M.render(parent, mapID, locations)
     s.caption:SetText("Map " .. mapID .. " | partial client art (" ..
       info.tiles .. "/" .. info.expected .. " tiles)")
   else
-    s.caption:SetText("Map " .. mapID .. " | " .. count .. " sourced positions")
+    s.caption:SetText("Map " .. mapID .. " | " .. #explored ..
+      " explored tiles | " .. count .. " sourced pins")
   end
   return #tiles > 0
 end
