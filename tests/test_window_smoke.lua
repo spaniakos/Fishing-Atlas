@@ -71,6 +71,7 @@ ns.viewModel.section = function() return {{title = "Fishing skill", detail = "55
 ns.viewModel.summary = function() return {subtitle = "ZONE", source = "client_reference",
   note = "Reference only", skill = 55, reliable = 150} end
 ns.viewModel.zoneVendors = function() return {} end
+ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
 ns.viewModel.mapPoints = function() return {} end
