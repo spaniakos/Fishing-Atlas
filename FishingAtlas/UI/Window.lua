@@ -608,11 +608,38 @@ function UI.selectCategory(category, id, topPage)
   search:SetText("")
   active = nil
   UI.refresh(true)
-  if id then
+  if id ~= nil then
+    local wanted = tonumber(id) or id
     for _, item in ipairs(results) do
-      if item.id == id then select(item); break end
+      if item.id == wanted then
+        select(item)
+        return
+      end
+    end
+    -- Explicit record navigation must never silently choose the first result
+    -- (typically Darkclaw Lobster when navigating to Fish).
+    local kind = category == "fish" and "fish"
+      or category == "npcs" and "observed_npc"
+      or category == "items" and "item" or nil
+    if kind then
+      active = {id = wanted, kind = kind,
+        name = kind == "observed_npc" and
+          (ns.sources and ns.sources.npcName(wanted) or ("NPC " .. wanted))
+          or ns.catalog.name("item", wanted),
+        confidence = "source_unindexed"}
+      UI.detailsTab = "Overview"
+      renderDetails()
+      UI.draw()
+    else
+      active = nil
+      renderDetails()
+      UI.draw()
     end
   end
+end
+
+function UI.selected()
+  return active
 end
 
 function UI.openNpc(id)
@@ -629,7 +656,14 @@ function UI.openNpc(id)
 end
 
 function UI.openItem(id)
-  if type(id) ~= "number" or id <= 0 then return end
+  id = tonumber(id)
+  if not id or id <= 0 then return end
+  local entity = ns.catalog.entity and ns.catalog.entity("item", id)
+  -- Fish need the Fish inspector, never a defaulted Items selection.
+  if entity and entity.category == "fish" then
+    UI.selectCategory("fish", id)
+    return
+  end
   UI.selectCategory("items", id)
   if not active or active.id ~= id then
     active = {id = id, kind = "item", name = ns.catalog.name("item", id),
