@@ -62,8 +62,8 @@ local function sprite(layer)
     "SetJustifyH", "SetText"}
   for _, name in ipairs(methods) do t[name] = function() end end
   t.SetTexture = function(self, value) self.texture = value end
-  t.SetDrawLayer = function(self, layer, sublevel)
-    self.drawLayer, self.sublevel = layer, sublevel
+  t.SetDrawLayer = function(self, drawLayer, sublevel)
+    self.drawLayer, self.sublevel = drawLayer, sublevel
   end
   t.IsObjectLoaded = function(self) return self.texture ~= 102 end
   return t
