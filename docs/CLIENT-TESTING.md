@@ -4,13 +4,18 @@ This document describes checks we cannot execute in CI.
 
 1. Log into Forever client with Fishing Atlas enabled. Verify no Lua errors on startup or reload.
 2. Check `/fa`, `/fa add Test`, `/fa nearby`, `/fa stats` and relog. Observations should persist.
-3. Out of combat, use `/fa fishing on`: Space should cast Fishing only while mode is enabled.
-4. A bobber must be interacted with manually using the game-supported binding; **no automated hooking** is implemented.
+3. Out of combat, use `/fa fishing on`: Space should cast Fishing. Turn on the client's **Enable Interact Key** and **Auto Loot** preferences. When the bobber splashes, press Space *again*: it should invoke Blizzard's native interaction and loot the bobber, without cursor movement or automatic presses. Confirm it fails gracefully when the bobber is out of range.
+4. While not in a Fishing channel Space must cast (not interact); while another spell is channeling Space must not be incorrectly remapped to bobber interaction. **No unattended hooking** is implemented.
 5. Use `/fa fishing off`: original Space binding must work again.
 6. Check cast mode while in combat: no secure-action errors or rebindings.
 7. Reload while mode enabled, confirm no stale override bindings remain.
 8. Check TomTom optional integration with `/fa waypoint`.
 9. Check localized clients: the spell name `Fishing` must resolve; this is an outstanding compatibility issue.
+
+10. Put at least two recognized fishing poles and a lure in bags (or equip a pole); open Fishing Atlas Options. **Next pole / Next lure** should cycle only those available. Remove a chosen lure, reopen Options and check **not carried**; the missing lure must not be selectable. Try `/fa lure <absent itemID>` and verify rejection. A real lure not yet indexed should be reported as a coverage gap, not silently guessed.
+11. Enable **Alert on seen/nearby schools** or `/fa schoolalert on`. Hover a recognized fishing school; expect one alert only and a recent approximate player-position marker. Walking near a manually saved school candidate should produce a clearly **historical** alert when within the configured map-relative radius. Turn the alert off and confirm silence.
+12. On client build **70938**, verify protected/secret tooltip text causes no Lua error and no invented school sighting. Lack of a readable tooltip is an unsupported detection case, not proof a nearby pool does not exist.
+13. Test with another fishing keybind addon disabled, reload, switch zones, enter/leave combat, and verify native bindings are restored when Fishing mode is disabled.
 
 Record client build, locale, steps and screenshots when any check fails. Do not claim in-game compatibility from Lua unit tests.
 
