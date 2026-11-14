@@ -613,21 +613,45 @@ function V.section(item, section)
       end
     end
   elseif item.kind == "fishing_pole" or item.kind == "lure" then
+    local vendors, drops, crafts = V.itemVendors(item.id), V.itemDrops(item.id),
+      V.itemCrafts(item.id)
     if section == "Overview" then
       add("Equipment", item.kind == "lure" and "Fishing lure" or "Fishing pole",
-        ns.catalog.icon("item", item.id), item.confidence)
-      add("Acquisition", "Source-indexed vendor candidates only; confirm stock",
-        nil, "mixed_source_reference")
-    else
-      for _, vendor in ipairs(ns.data.referenceVendors or {}) do
-        for _, id in ipairs(vendor.items or {}) do
-          if id == item.id then
-            add(vendor.name, (vendor.side or "Unknown") .. " | NPC " .. vendor.id,
-              "Interface\\Icons\\INV_Misc_Bag_10",
-              "mixed_source_reference", {vendorId = vendor.id})
-            break
-          end
-        end
+        ns.catalog.icon("item", item.id), item.confidence, {itemId = item.id})
+      add("Vendor candidates", #vendors .. " potential sellers",
+        "Interface\\Icons\\INV_Misc_Bag_10", "mixed_sources")
+      add("Loot / objects", #drops .. " observed/reference sources",
+        "Interface\\Icons\\INV_Misc_Map_01", "mixed_sources")
+      add("Created by", #crafts .. " client/observed relations",
+        "Interface\\Icons\\Trade_Engineering", "mixed_sources")
+    elseif section == "Vendors" then
+      for _, vendor in ipairs(vendors) do
+        add(vendor.name, vendor.confidence or "unknown",
+          "Interface\\Icons\\INV_Misc_Bag_10", vendor.confidence, {vendorId = vendor.id})
+      end
+    elseif section == "Drops" then
+      for _, drop in ipairs(drops) do
+        add(drop.title, drop.note or (tostring(drop.installs or 0) .. " installs"),
+          "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
+          {vendorId = drop.npcId, mapID = drop.mapID, x = drop.x, y = drop.y})
+      end
+    elseif section == "Crafted" then
+      for _, craft in ipairs(crafts) do
+        add(craft.title, craft.confidence, ns.catalog.icon("spell", craft.spellId),
+          craft.confidence, {recipeId = craft.spellId, spellId = craft.spellId})
+      end
+    elseif section == "Map" then
+      for _, loc in ipairs(V.itemMapPoints(item.id)) do
+        local zone = findZone(loc.mapID)
+        add(loc.label, (zone and zone.name or "Map " .. loc.mapID) ..
+          string.format(" (%.1f, %.1f)", loc.x * 100, loc.y * 100),
+          "Interface\\Icons\\INV_Misc_Map_01", loc.source, loc)
+      end
+      for _, ref in ipairs((ns.data.referenceAcquisition or {})[item.id] or {}) do
+        local zone = findZone(ref.mapID)
+        add(ref.title, "Zone: " .. tostring(zone and zone.name or ref.mapID)
+          .. " | no exact trap spawn", "Interface\\Icons\\INV_Misc_Map_01",
+          "classic_reference", {mapID = ref.mapID})
       end
     end
   elseif item.kind == "Cooking" or item.kind == "Fishing"
