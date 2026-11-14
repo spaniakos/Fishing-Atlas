@@ -32,7 +32,10 @@ ns.catalog = {
     return {{spellId = 18243, profession = "Cooking", confidence = "verified_client"}}
   end,
   zones = function() return {{mapId = 1411, name = "Durotar", confidence = "verified_client"}} end,
-  name = function(_, id) return "Spell " .. id end,
+  name = function(kind, id)
+    if kind == "item" and id == 13759 then return "Nightfin" end
+    return "Spell " .. id
+  end,
   icon = function(_, id) return "icon:" .. id end,
   recipe = function() return {outputItemId = 13931} end
 }
