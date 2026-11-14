@@ -11,6 +11,7 @@ Core/Namespace.lua
 Core/Storage.lua
 Data/Fish.lua
 Data/Recipes.lua
+Data/RecipeLearningReferences.lua
 Data/Catalog.lua
 Data/CatalogRuntime.lua
 Data/EverlootObserved.lua

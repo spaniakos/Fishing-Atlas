@@ -468,9 +468,9 @@ local function rowClick(record)
       ns.recipeKnowledge.cycle(record.recipeId)
       UI.refresh(false)
     end
-  elseif record.vendorId then
+  elseif record.vendorId and not record.sourceMapFirst then
     UI.selectCategory("vendors", record.vendorId)
-  elseif record.npcId then
+  elseif record.npcId and not record.sourceMapFirst then
     UI.openNpc(record.npcId)
   elseif record.recipeId then
     UI.selectCategory("recipes", record.recipeId)

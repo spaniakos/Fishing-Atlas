@@ -30,7 +30,8 @@ function L.info(spellId)
   local min = tonumber(rec.cookingSkill or rec.minimumSkill)
   local yellow = tonumber(rec.yellowSkill or rec.yellow)
   local grey = tonumber(rec.greySkill or rec.grey)
-  local ref = historical[tonumber(spellId)]
+  local ref = (ns.data.recipeLearningReferences or {})[tonumber(spellId)]
+    or historical[tonumber(spellId)]
   local learnedSkill, source
   if min and min > 1 then
     learnedSkill, source = min, "client_learn_requirement"
@@ -41,10 +42,11 @@ function L.info(spellId)
     -- learnable at 1 from this partial export.
     learnedSkill, source = 1, "client_skill_floor"
   end
-  local scroll = tonumber(rec.recipeItemId)
+  local scroll = tonumber(rec.recipeItemId or (ref and ref.recipeItemId))
   return {spellId = tonumber(spellId), profession = rec.profession or "Cooking",
     requiredSkill = learnedSkill, requirementSource = source or "unverified",
     yellow = yellow, grey = grey, recipeItemId = scroll,
+    recipeItemName = ref and ref.recipeItemName or nil,
     outputItemId = rec.outputItemId, reference = ref,
     evidence = rec.confidence or "game_files_unconfirmed"}
 end
@@ -106,6 +108,16 @@ function L.sources(spellId)
         source = "classic_reference",
         itemId = info.recipeItemId}
     end
+  end
+  -- Source rows are independent of the teaching-item link, so a quest or
+  -- direct-trainer reference never fabricates an item-spell relationship.
+  for _, lead in ipairs(info.reference and info.reference.sources or {}) do
+    local entry = {}
+    for key, value in pairs(lead) do entry[key] = value end
+    if info.recipeItemId and not entry.itemId then
+      entry.itemId = info.recipeItemId
+    end
+    results[#results + 1] = entry
   end
   return results
 end

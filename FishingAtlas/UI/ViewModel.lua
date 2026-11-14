@@ -878,7 +878,8 @@ function V.section(item, section)
           elseif rec.kind == "recipe_item" then scrolls = scrolls + 1 end
         end
         local acquisition = scrolls > 0 and
-          ("Recipe item " .. tostring(learning.recipeItemId) .. " teaches the spell")
+          ((learning.recipeItemName or ("Recipe item " ..
+            tostring(learning.recipeItemId))) .. " teaches this Cooking spell")
           or teachers > 0 and "Observed trainer teaches this spell"
           or "Learning method not verified"
         add("How to learn", acquisition .. " | Sources tab",
@@ -897,7 +898,8 @@ function V.section(item, section)
       for _, entry in ipairs(methods) do
         if entry.kind == "recipe_item" then
           add("Recipe item (teaches Cooking spell)",
-            ns.catalog.name("item", entry.itemId) ..
+            (learning and learning.recipeItemName
+              or ns.catalog.name("item", entry.itemId)) ..
               " [item " .. tostring(entry.itemId) .. "]",
             ns.catalog.icon("item", entry.itemId), entry.source,
             {itemId = entry.itemId})
@@ -913,10 +915,23 @@ function V.section(item, section)
           local place = entry.x and entry.y and string.format(
             " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
             entry.y * 100) or " | location not mapped"
-          add(entry.label, "Sells teaching item " .. entry.itemId .. place,
+          add(entry.label, "Sells teaching item " .. entry.itemId .. place ..
+            " | stock unverified when reference-only",
             "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
             {vendorId = entry.npcId, mapID = entry.mapID,
-              x = entry.x, y = entry.y})
+              x = entry.x, y = entry.y, source = entry.source,
+              sourceMapFirst = entry.x ~= nil and entry.y ~= nil})
+        elseif entry.kind == "quest" then
+          local place = entry.x and entry.y and string.format(
+            " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
+            entry.y * 100) or " | location not mapped"
+          add(entry.label, "Quest reward from " ..
+            (entry.giver or "unknown quest giver") .. place ..
+            " | current availability unverified",
+            "Interface\\Icons\\INV_Misc_Book_09",
+            entry.source, {questId = entry.questId,
+              mapID = entry.mapID, x = entry.x, y = entry.y,
+              sourceMapFirst = true, source = entry.source})
         elseif entry.kind == "drop" then
           add(entry.label, "Observed recipe-item source | not a Cooking trainer",
             "Interface\\Icons\\INV_Misc_Map_01", entry.source,

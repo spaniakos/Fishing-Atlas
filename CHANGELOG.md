@@ -7,6 +7,10 @@
 - Add guarded parent-map artwork underlays using client map geometry and UV clipping,
   with a preference toggle and safe fallback when coordinate mapping is unavailable.
 - Extend frame-click and native-pin regression tests. No fake school spawns or map art.
+- Include attributed offline Cooking teaching-scroll, vendor and quest references
+  for tested spells (Beer Basted Boar Ribs, Baked Salmon, Brilliant Smallfish,
+  Longjaw Mud Snapper); source-coordinate clicks now focus maps rather than
+  redirecting to an unrelated vendor-list entry.
 - Correct Cooking SPELL learn-skill display: do not treat imported `minimumSkill=1`
   as authoritative for high-tier spells. Show actual sourced learn ranks where
   documented, skill-up thresholds separately, and trainer versus teaching-scroll
