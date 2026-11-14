@@ -160,6 +160,17 @@ function V.itemCrafts(itemID)
       seen[spellId] = true
     end
   end
+  -- The client relation graph also records profession spells outside Cooking.
+  for _, edge in ipairs((ns.data.gameFiles or {}).relations or {}) do
+    if edge.fromKind == "item" and edge.fromId == itemID
+        and edge.rel == "created_by" and edge.toKind == "spell"
+        and not seen[edge.toId] then
+      seen[edge.toId] = true
+      out[#out + 1] = {kind = "craft", spellId = edge.toId,
+        title = ns.catalog.name("spell", edge.toId),
+        confidence = "game_files_unconfirmed"}
+    end
+  end
   return out
 end
 
@@ -579,14 +590,18 @@ function V.section(item, section)
     local places = B.schoolSightings(item.name)
     local observations = source() and source().schoolLocations(item.name) or {}
     if section == "Overview" then
-      add("School type", item.name, "Interface\\Icons\\Trade_Fishing", "classic_reference")
+      add("School type", item.name, B.icon(item), item.confidence)
       add("Your sightings", #places .. " nearby player positions",
         "Interface\\Icons\\INV_Misc_Spyglass_03", "user_observation")
-      add("Observed object locations", #observations .. " exact object sightings",
+      add("Observed object locations", #observations .. " sourced object sightings",
         "Interface\\Icons\\INV_Misc_Map_01", "observed")
+      local guides = (ns.data.referenceSchoolLocations or {})[item.name] or {}
+      add("Guide reference places", #guides .. " historical map leads",
+        "Interface\\Icons\\INV_Misc_Map_01", "guide_reference")
       local seen = {}
       for _, place in ipairs(places) do seen[place.mapID] = true end
       for _, place in ipairs(observations) do seen[place.mapID] = true end
+      for _, place in ipairs(guides) do seen[place.mapID] = true end
       local zoneNames = {}
       for mapID in pairs(seen) do
         local zone = findZone(mapID)
@@ -603,6 +618,13 @@ function V.section(item, section)
           string.format("School object: %.1f, %.1f", place.x * 100, place.y * 100),
           "Interface\\Icons\\Trade_Fishing", place.source,
           {mapID = place.mapID, x = place.x, y = place.y})
+      end
+      for _, place in ipairs((ns.data.referenceSchoolLocations or {})[item.name] or {}) do
+        local zone = findZone(place.mapID)
+        add(zone and zone.name or ("Map " .. place.mapID),
+          string.format("Guide lead: %.1f, %.1f | not active pool",
+            place.x * 100, place.y * 100), B.icon(item),
+          "guide_reference", place)
       end
       for _, place in ipairs(places) do
         local zone = findZone(place.mapID)
@@ -688,7 +710,7 @@ function V.section(item, section)
       end
     elseif plan then
       add("Cooking skill", plan.minimumSkill or "Unknown",
-        "Interface\\Icons\\INV_Misc_Note_01", "verified_client")
+        "Interface\\Icons\\Trade_Cooking", "verified_client")
       local recipe = ns.catalog.recipe(item.id)
       add("Produces", plan.output,
         recipe and recipe.outputItemId and ns.catalog.icon("item", recipe.outputItemId),
