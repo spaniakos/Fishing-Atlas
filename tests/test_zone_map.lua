@@ -52,4 +52,39 @@ local clipped = ns.zoneMap.explorationLayout({
 assert(#clipped == 1 and clipped[1].x == 0 and clipped[1].y == 0)
 assert(clipped[1].u0 == 0.25 and clipped[1].v0 == 0.25,
   "Clipped overlays must not spill into adjacent UI panels")
-print("WoW map art tests: base coverage, explored overlays and clipping passed")
+-- Integration: ensure actual preview render creates base textures and puts
+-- exploration art ABOVE them (layout-only checks miss this wiring).
+local textures = {}
+local function sprite(layer)
+  local t = {layer = layer}
+  local methods = {"Hide", "Show", "SetAllPoints", "SetVertexColor",
+    "SetPoint", "SetSize", "SetTexCoord", "ClearAllPoints", "SetWidth",
+    "SetJustifyH", "SetText"}
+  for _, name in ipairs(methods) do t[name] = function() end end
+  t.SetTexture = function(self, value) self.texture = value end
+  return t
+end
+local fake = {
+  GetWidth = function() return 256 end,
+  GetHeight = function() return 256 end,
+  IsShown = function() return true end,
+  CreateTexture = function(_, _, layer)
+    local t = sprite(layer)
+    textures[#textures + 1] = t
+    return t
+  end,
+  CreateFontString = function() return sprite("OVERLAY") end
+}
+CreateFrame = function() return sprite("FRAME") end
+assert(ns.zoneMap.render(fake, 1439, {}))
+local baseCount, explorationCount = 0, 0
+for _, t in ipairs(textures) do
+  if t.layer == "BACKGROUND" and type(t.texture) == "number" then
+    baseCount = baseCount + 1
+  elseif t.layer == "ARTWORK" and type(t.texture) == "number" then
+    explorationCount = explorationCount + 1
+  end
+end
+assert(baseCount == 4 and explorationCount == 2,
+  "Preview must render both complete base layer AND two exploration textures")
+print("WoW map art tests: base IDs, explored overlays, clipping and render passed")
