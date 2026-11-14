@@ -31,10 +31,10 @@ local function action(parent, x, y, text, callback)
   return btn
 end
 
-local function note(parent, x, y, text)
+local function note(parent, x, y, text, width)
   local display = parent:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
   display:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
-  display:SetWidth(540)
+  display:SetWidth(width or 540)
   display:SetJustifyH("LEFT")
   display:SetText(text)
   return display
@@ -52,7 +52,7 @@ function O.start()
   description:SetPoint("TOPLEFT", heading, "BOTTOMLEFT", 0, -12)
   description:SetText("Saved fishing positions are historical observations, not active school spawns.")
   note(panel, 300, -72, "School map visibility:")
-  local modeNote = note(panel, 300, -191, "")
+  local modeNote = note(panel, 300, -167, "", 275)
   local function updateMode()
     local value = ns.storage.db and ns.storage.db.settings
       and ns.storage.db.settings.schoolMapMode or "active"
@@ -80,7 +80,8 @@ function O.start()
     updateMode()
   end)
   action(panel, 300, -138, "Scan nearby", function()
-    local found, message = ns.liveSchools and ns.liveSchools.scan()
+    local found, message
+    if ns.liveSchools then found, message = ns.liveSchools.scan() end
     if ns.commands and ns.commands.say then
       ns.commands.say(message or "No live-school detection API available")
     end
