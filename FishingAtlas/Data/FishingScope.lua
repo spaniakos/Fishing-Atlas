@@ -39,19 +39,36 @@ end
 local cookingRelated = {[8959] = true}
 
 function S.build()
-  local roots, items, vendors, mobs = {}, {}, {}, {}
+  local roots, items, vendors, mobs, caught = {}, {}, {}, {}, {}
   local observed = ns.data.everloot or {}
   for _, ent in ipairs(ns.catalog.itemList()) do
-    if ent.category == "fish" or ent.category == "fishing_pole"
-        or ent.category == "lure" then add(roots, ent.id) end
+    if ent.category == "fish" then
+      add(roots, ent.id)
+      add(caught, ent.id)
+    elseif ent.category == "fishing_pole" or ent.category == "lure" then
+      add(roots, ent.id)
+    end
   end
   for _, fish in pairs(ns.data.referenceZoneFish or {}) do
     for _, record in ipairs(fish) do
-      add(roots, type(record) == "table" and record.id or record)
+      local id = type(record) == "table" and record.id or record
+      add(roots, id)
+      add(caught, id)
     end
   end
-  for id in pairs(observed.fishing or {}) do add(roots, id) end
-  for id in pairs(observed.poolItems or {}) do add(roots, id) end
+  for id in pairs(observed.fishing or {}) do
+    add(roots, id)
+    add(caught, id)
+  end
+  for id in pairs(observed.poolItems or {}) do
+    add(roots, id)
+    add(caught, id)
+  end
+  for id, record in pairs((ns.storage.db and ns.storage.db.catches) or {}) do
+    local catchID = type(record) == "table" and record.id or id
+    add(roots, catchID)
+    add(caught, catchID)
+  end
   -- Explicit fishing supplies from the indexed reference sources.
   for _, vendor in ipairs(ns.data.referenceVendors or {}) do
     for _, id in ipairs(vendor.items or {}) do
@@ -101,12 +118,14 @@ function S.build()
       if items[good] then add(vendors, id); break end
     end
   end
-  cached = {items = items, roots = roots, vendors = vendors, mobs = mobs}
+  cached = {items = items, roots = roots, caught = caught,
+    vendors = vendors, mobs = mobs}
   return cached
 end
 
 function S.data() return cached or S.build() end
 function S.item(id) return S.data().items[tonumber(id)] == true end
+function S.caught(id) return S.data().caught[tonumber(id)] == true end
 function S.vendor(id) return S.data().vendors[tonumber(id)] == true end
 function S.mob(id) return S.data().mobs[tonumber(id)] == true end
 function S.isFishingRoot(id) return S.data().roots[tonumber(id)] == true end
