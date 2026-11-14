@@ -76,7 +76,17 @@ local fake = {
   CreateFontString = function() return sprite("OVERLAY") end
 }
 CreateFrame = function() return sprite("FRAME") end
+local scheduled = {}
+C_Timer = {After = function(_, callback)
+  scheduled[#scheduled + 1] = callback
+end}
 assert(ns.zoneMap.render(fake, 1439, {}))
+assert(#scheduled == 1,
+  "Even a complete 12/12 tile-ID map needs bounded async rendering retries")
+scheduled[1]()
+assert(#scheduled == 2, "A complete-ID art map gets two streaming retries")
+scheduled[2]()
+assert(#scheduled == 2, "Streaming retries must stop and never loop forever")
 local baseCount, explorationCount = 0, 0
 for _, t in ipairs(textures) do
   if t.layer == "BACKGROUND" and type(t.texture) == "number" then
