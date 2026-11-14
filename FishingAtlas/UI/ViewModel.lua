@@ -373,7 +373,7 @@ function V.summary(item)
     summary.note = "Finddon/ForeverDB reference; check current in-game stock."
   elseif item.kind == "school_type" then
     summary.subtitle = "SCHOOL TYPE"
-    summary.note = "Locations are player observations only, not exact pool spawns."
+    summary.note = "Guide leads and player positions; neither guarantees active pools."
   elseif item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe" then
     summary.subtitle = "RECIPE  |  Spell " .. item.id
