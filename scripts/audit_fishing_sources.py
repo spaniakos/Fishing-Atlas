@@ -57,7 +57,8 @@ def expand():
     # references. Parse the generated Lua table rather than assuming all
     # fishing loot is a biological fish.
     reftext = (ROOT / "FishingAtlas/Data/ReferenceFishZones.lua").read_text()
-    reference_fish = {int(x) for x in re.findall(r"\bid=(\d+)", reftext)}
+    reference_counts = Counter(int(x) for x in re.findall(r"\bid=(\d+)", reftext))
+    reference_fish = set(reference_counts)
     catchable = fish | fishing | pools | reference_fish
     equipment = {e["id"] for e in cat["entities"]
                  if e["type"] == "item"
@@ -108,6 +109,7 @@ def expand():
             "evidence": {
                 "observedFishingZones": len(obs.get("fishing", {}).get(str(item), [])),
                 "observedPoolSources": len(obs.get("poolItems", {}).get(str(item), [])),
+                "historicalFishingZoneReferences": reference_counts[item],
                 "observedCreatureDrops": len(drops),
                 "observedVendorSellers": len(vendors),
                 "historicalVendorSellers": len(refs.get(item, set())),
@@ -151,7 +153,7 @@ def markdown(audit):
         f"Items with no known acquisition/craft/ingredient edge:"
         f" **{audit['meta']['unknownSources']}**. These are **UNKNOWN**, not unobtainable.",
         "",
-        "| ID | Name | Group | Fishing/pool | Vendors obs/ref | Creature drops | Craft | Quest/object |",
+        "| ID | Name | Group | Fishing/pool/ref | Vendors obs/ref | Creature drops | Craft | Quest/object |",
         "|---:|---|---|---:|---:|---:|---:|---:|",
     ]
     for item in audit["items"]:
@@ -159,7 +161,8 @@ def markdown(audit):
         name = item["name"].replace("|", r"\|")
         lines.append(
             f"| {item['id']} | {name} | {item['group']} | "
-            f"{e['observedFishingZones']}/{e['observedPoolSources']} | "
+            f"{e['observedFishingZones']}/{e['observedPoolSources']}/"
+            f"{e['historicalFishingZoneReferences']} | "
             f"{e['observedVendorSellers']}/{e['historicalVendorSellers']} | "
             f"{e['observedCreatureDrops']} | {e['clientCraftSpells']} | "
             f"{e['historicalQuestRewards']}/{e['historicalObjectLoot']} |")
