@@ -33,6 +33,11 @@ local function ingredients(recipe)
   return out
 end
 
+-- Raw Spinefin Halibut (8959) is a verified client Cooking ingredient for
+-- Spinefin Halibut (8957). It is also vendor/creature loot on Forever.
+-- Fishing relevance does NOT imply it can actually be caught with a fishing cast.
+local cookingRelated = {[8959] = true}
+
 function S.build()
   local roots, items, vendors, mobs = {}, {}, {}, {}
   local observed = ns.data.everloot or {}
@@ -59,11 +64,14 @@ function S.build()
     end
   end
   for id in pairs(roots) do items[id] = true end
+  for id in pairs(cookingRelated) do items[id] = true end
   -- Only fish-dependent Cooking recipes expand our inventory universe.
   for _, recipe in ipairs(recipes()) do
     local ing = ingredients(recipe)
     local linked = false
-    for _, id in ipairs(ing) do if roots[id] then linked = true; break end end
+    for _, id in ipairs(ing) do
+      if roots[id] or cookingRelated[id] then linked = true; break end
+    end
     if linked then
       add(items, recipe.outputItemId)
       for _, id in ipairs(ing) do add(items, id) end
