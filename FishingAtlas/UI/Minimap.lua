@@ -53,17 +53,15 @@ end
 function M.start()
   if button or type(CreateFrame) ~= "function" or not Minimap then return end
   button = CreateFrame("Button", "FishingAtlasMinimapButton", Minimap)
-  button:SetSize(39, 39)
+  button:SetSize(34, 34)
   button:SetFrameStrata("MEDIUM")
   button:SetFrameLevel(8)
   local icon = button:CreateTexture(nil, "ARTWORK")
-  icon:SetSize(36, 36)
+  icon:SetSize(32, 32)
   icon:SetTexture("Interface\\AddOns\\FishingAtlas\\Art\\atlas-emblem")
   icon:SetPoint("CENTER", button, "CENTER", 0, 0)
-  local border = button:CreateTexture(nil, "OVERLAY")
-  border:SetSize(52, 52)
-  border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-  border:SetPoint("CENTER", button, "CENTER", 0, 0)
+  -- The custom emblem already has a brass ring. Do not overlay Blizzard's
+  -- tracking border, which creates the doubled, offset rings seen in v0.99.6.
   button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
   button:SetScript("OnClick", function(_, which)
     if which == "RightButton" then
