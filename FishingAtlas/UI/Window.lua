@@ -945,7 +945,8 @@ local function build()
   end)
   UI.recipeScanButton = button(listPanel, "Scan Cooking", 133, -486, 122, 29,
     function()
-      local added, message = ns.recipeDiscovery and ns.recipeDiscovery.scan()
+      local added, message
+      if ns.recipeDiscovery then added, message = ns.recipeDiscovery.scan() end
       if ns.commands and ns.commands.say then
         ns.commands.say(added and
           (message .. ": " .. tostring(added) .. " new entries") or message)

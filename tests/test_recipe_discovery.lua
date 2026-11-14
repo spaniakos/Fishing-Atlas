@@ -1,6 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
-local now = "Cooker"
-local ns = {
+ local ns = {
   storage = {db = {}},
   util = {safeText = function(s) return s end},
   catalog = {recipe = function() return nil end,
