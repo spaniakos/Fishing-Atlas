@@ -66,7 +66,7 @@ function V.zoneVendors(mapID)
           local npc = source().vendor(npcId) or {}
           results[#results + 1] = {id = npcId, name = npc.name or ("NPC " .. npcId),
             x = spot.x, y = spot.y, mapID = mapID,
-            source = spot.installs >= 3 and "observed_confirmed"
+            source = (spot.installs or 0) >= 3 and "observed_confirmed"
               or "observed_provisional", kind = "vendor"}
         end
       end
@@ -135,6 +135,18 @@ function V.itemVendors(itemID)
       end
     end
   end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "vendor" and (not lead.npcId or not seen[lead.npcId]) then
+          out[#out + 1] = {id = lead.npcId, name = lead.label,
+            kind = "vendor", confidence = lead.source or "classic_reference",
+            mapID = lead.mapID, x = lead.x, y = lead.y}
+          if lead.npcId then seen[lead.npcId] = true end
+        end
+      end
+    end
+  end
   table.sort(out, function(a, b) return a.name < b.name end)
   return out
 end
@@ -197,6 +209,20 @@ function V.itemQuests(itemID)
   for _, record in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
     if record.kind == "quest_reward" then out[#out + 1] = record end
   end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "quest" then
+          out[#out + 1] = {kind = "quest_reward", title = lead.label,
+            note = "Quest giver: " .. tostring(lead.giver or "Unknown") ..
+              " | availability not verified",
+            questId = lead.questId, mapID = lead.mapID,
+            x = lead.x, y = lead.y,
+            confidence = lead.source or "classic_quest_reference"}
+        end
+      end
+    end
+  end
   return out
 end
 
@@ -223,6 +249,16 @@ function V.itemMapPoints(itemID)
       if ref.id == vendor.id then
         for _, loc in ipairs(ref.spots or {}) do
           add(loc, ref.name .. " (reference)", "vendor", "mixed_source_reference")
+        end
+      end
+    end
+  end
+  for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+    if ref.recipeItemId == itemID then
+      for _, lead in ipairs(ref.sources or {}) do
+        if lead.kind == "vendor" or lead.kind == "quest" then
+          add(lead, lead.label, lead.kind == "quest" and "npc" or "vendor",
+            lead.source or "classic_reference")
         end
       end
     end
@@ -267,25 +303,8 @@ function V.mapPoints(item)
   local results = {}
   if not item then return results end
   local mapID = item.kind == "zone" and item.id or nil
-  -- ACTIVE is session evidence only. Historic spawn references are never
-  -- presented as current server spawns, even with multiple historical reports.
-  if V.schoolMapMode() == "active"
-      and (item.kind == "zone" or item.kind == "school_type") then
-    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID,
-        item.kind == "school_type" and item.name or nil) or {}) do
-      results[#results + 1] = rec
-    end
-    if item.kind == "school_type" and not mapID and ns.liveSchools then
-      -- Scan history is session-scoped; show only the user's current zone.
-      local current = type(C_Map) == "table"
-        and type(C_Map.GetBestMapForUnit) == "function"
-        and C_Map.GetBestMapForUnit("player") or nil
-      for _, rec in ipairs(ns.liveSchools.inZone(current, item.name)) do
-        results[#results + 1] = rec
-      end
-    end
-    return results
-  end
+  -- Do NOT discard vendors, NPCs or saved spots in Active school mode.
+  -- Filtering school evidence happens below, not at the record level.
   if item.kind == "item" then
     return V.itemMapPoints(item.id)
   elseif item.kind == "observed_npc" then
@@ -316,23 +335,21 @@ function V.mapPoints(item)
     return results
   elseif item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe" then
-    local recipe = ns.catalog.recipe(item.id) or
-      ((ns.data.gameFiles or {}).recipes or {})[item.id]
-    if recipe and recipe.recipeItemId then
-      return V.itemMapPoints(recipe.recipeItemId)
-    end
-    local out = {}
-    for _, trainer in ipairs(source() and source().trainersForRecipe(item.id) or {}) do
-      for _, loc in ipairs(source().vendorLocations(trainer.npcId)) do
-        if validPlace(loc) then
-          out[#out + 1] = {mapID = loc.mapID, x = loc.x, y = loc.y,
-            kind = "vendor", label = trainer.title,
-            source = trainer.confidence}
+    -- The Cooking spell may be taught by a trainer OR by a recipe-item scroll.
+    -- Keep both evidence paths without equating the spell to the scroll.
+    return ns.recipeLearning and ns.recipeLearning.locations(item.id) or {}
+  elseif item.kind == "school_type" then
+    if V.schoolMapMode() == "active" then
+      local current = type(C_Map) == "table"
+        and type(C_Map.GetBestMapForUnit) == "function"
+        and C_Map.GetBestMapForUnit("player") or nil
+      if ns.liveSchools then
+        for _, rec in ipairs(ns.liveSchools.inZone(current, item.name)) do
+          results[#results + 1] = rec
         end
       end
+      return results
     end
-    return out
-  elseif item.kind == "school_type" then
     for _, school in ipairs(source() and source().schoolLocations(item.name) or {}) do
       results[#results + 1] = school
     end
@@ -359,9 +376,20 @@ function V.mapPoints(item)
     return results
   end
   if not mapID then return results end
-  for _, loc in ipairs(V.recordedLocations(mapID)) do results[#results + 1] = loc end
+  for _, loc in ipairs(V.recordedLocations(mapID)) do
+    if loc.kind ~= "school" or V.schoolMapMode() == "probable" then
+      results[#results + 1] = loc
+    end
+  end
+  -- A vendor is still a vendor when the player has seen zero live schools.
   for _, vendor in ipairs(V.zoneVendors(mapID)) do
     results[#results + 1] = vendor
+  end
+  if V.schoolMapMode() == "active" then
+    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID) or {}) do
+      results[#results + 1] = rec
+    end
+    return results
   end
   for name, spots in pairs(ns.data.classicSchoolLocations or {}) do
     for _, spot in ipairs(spots) do
@@ -442,6 +470,9 @@ end
 function V.tabs(item)
   if item and item.kind == "zone" then return {"Overview", "Fish", "Schools", "Vendors", "Map"} end
   if item and item.kind == "item" then
+    if #V.itemQuests(item.id) > 0 then
+      return {"Overview", "Vendors", "Drops", "Crafted", "Quest", "Map"}
+    end
     return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
   if item and item.kind == "observed_npc" then
@@ -484,12 +515,22 @@ function V.section(item, section)
         "Interface\\Icons\\INV_Misc_Map_01", "observed")
       add("Created by", #crafts .. " observed/client recipes",
         "Interface\\Icons\\INV_Misc_Food_15", "mixed_sources")
+      for spellId, ref in pairs(ns.data.recipeLearningReferences or {}) do
+        if ref.recipeItemId == item.id then
+          add("Teaches Cooking", ns.catalog.name("spell", spellId) ..
+            " | Required Cooking " .. tostring(ref.minimumSkill or "Unknown"),
+            "Interface\\Icons\\INV_Misc_Book_09", ref.source,
+            {recipeId = spellId})
+        end
+      end
     elseif section == "Vendors" then
       for _, vendor in ipairs(vendors) do
         add(vendor.name, vendor.confidence .. (vendor.installs and
           (" | " .. vendor.installs .. " installs") or ""),
           "Interface\\Icons\\INV_Misc_Bag_10", vendor.confidence,
-          {vendorId = vendor.id})
+          {vendorId = vendor.id, mapID = vendor.mapID,
+            x = vendor.x, y = vendor.y,
+            sourceMapFirst = vendor.x ~= nil and vendor.y ~= nil})
       end
     elseif section == "Drops" then
       for _, drop in ipairs(drops) do
@@ -506,6 +547,15 @@ function V.section(item, section)
         add(craft.title, "Spell " .. craft.spellId .. " | " .. craft.confidence,
           ns.catalog.icon("spell", craft.spellId), craft.confidence,
           {spellId = craft.spellId, recipeId = craft.spellId})
+      end
+    elseif section == "Quest" then
+      for _, quest in ipairs(V.itemQuests(item.id)) do
+        add(quest.title, quest.note or "Reference quest reward",
+          "Interface\\Icons\\INV_Misc_Book_09",
+          quest.confidence or "classic_reference",
+          {questId = quest.questId, mapID = quest.mapID,
+            x = quest.x, y = quest.y, sourceMapFirst = quest.x ~= nil
+              and quest.y ~= nil})
       end
     elseif section == "Map" then
       for _, loc in ipairs(V.itemMapPoints(item.id)) do
@@ -815,6 +865,11 @@ function V.section(item, section)
   elseif item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
+    local learning = ns.recipeLearning and ns.recipeLearning.info(item.id)
+    local spellRecipe = ns.catalog.recipe(item.id) or
+      ((ns.data.gameFiles or {}).recipes or {})[item.id]
+    local skill = learning and learning.requiredSkill
+    local skillSource = learning and learning.requirementSource or "unverified"
     if section == "Overview" then
       local status, statusSource = "unknown", "not_yet_scanned"
       if ns.recipeKnowledge then status, statusSource = ns.recipeKnowledge.status(item.id) end
@@ -834,71 +889,131 @@ function V.section(item, section)
         "Interface\\Icons\\INV_Misc_Book_09", statusSource,
         {recipeId = item.id, toggleRecipe = true, recipeReadOnly = clientVerified})
     end
-    if section == "Sources" then
-      local recipe = ns.catalog.recipe(item.id) or
-        ((ns.data.gameFiles or {}).recipes or {})[item.id]
-      local found = 0
-      for _, trainer in ipairs(source() and source().trainersForRecipe(item.id) or {}) do
-        found = found + 1
-        add(trainer.title, "Trainer | " .. trainer.installs .. " independent installs",
-          "Interface\\Icons\\INV_Misc_Bag_10", trainer.confidence,
-          {vendorId = trainer.npcId})
-      end
-      if recipe and recipe.recipeItemId then
-        local scroll = recipe.recipeItemId
-        for _, seller in ipairs(V.itemVendors(scroll)) do
-          found = found + 1
-          add(seller.name, "Sells recipe item " .. scroll,
-            "Interface\\Icons\\INV_Misc_Bag_10", seller.confidence,
-            {vendorId = seller.id})
-        end
-        for _, drop in ipairs(V.itemDrops(scroll)) do
-          found = found + 1
-          add(drop.title, "Recipe item " .. scroll .. " | " .. drop.confidence,
-            "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
-            {npcId = drop.npcId, objectId = drop.objectId,
-            mapID = drop.mapID, x = drop.x, y = drop.y})
-        end
-      end
-      if found == 0 then
-        add("Acquisition unknown", "No Forever-observed trainer, vendor or drop evidence",
-          "Interface\\Icons\\INV_Misc_Book_09", "unknown")
-      end
-    elseif plan then
-      add("Cooking skill", plan.minimumSkill or "Unknown",
-        "Interface\\Icons\\INV_Misc_Food_15", "verified_client")
-      local recipe = ns.catalog.recipe(item.id)
-      add("Produces", plan.output,
-        recipe and recipe.outputItemId and ns.catalog.icon("item", recipe.outputItemId),
-        "verified_client", recipe and recipe.outputItemId
-          and {itemId = recipe.outputItemId} or nil)
-      if section == "Overview" then
-        add("Acquisition", "Select Sources for trainer, vendor and drop records",
-          "Interface\\Icons\\INV_Misc_Book_09", "mixed_sources")
-      end
-      for _, ing in ipairs(plan.reagents or {}) do
-        add(ing.name, (ing.need or 0) .. " needed | " .. (ing.missing or 0) .. " missing",
-          ns.catalog.icon("item", ing.itemId), "verified_client", {itemId = ing.itemId})
-      end
-    elseif item.kind == "gamefile_recipe" then
-      local rec = ((ns.data.gameFiles or {}).recipes or {})[item.id]
-      if rec then
-        add("Profession", rec.profession or "Unknown",
-          "Interface\\Icons\\INV_Misc_Book_09", "game_files_unconfirmed")
-        add("Minimum skill", rec.minimumSkill or "Unknown",
+    if section == "Overview" or section == "Ingredients" then
+      add("Cooking spell", "Spell " .. tostring(item.id) ..
+        " | not the recipe scroll", "Interface\\Icons\\INV_Misc_Food_15",
+        "client_spell_id")
+      add("Required " .. tostring(learning and learning.profession or "Cooking") .. " skill",
+        skill and tostring(skill) or "Not verified (not skill 1)",
+        "Interface\\Icons\\INV_Misc_Book_09", skillSource)
+      if learning and learning.yellow then
+        add("Turns yellow", tostring(learning.yellow) ..
+          " | skill-up threshold, not learn requirement",
           "Interface\\Icons\\INV_Misc_Food_15", "game_files_unconfirmed")
-        if rec.outputItemId then
-          add("Produces", ns.catalog.name("item", rec.outputItemId),
-            ns.catalog.icon("item", rec.outputItemId), "game_files_unconfirmed",
-            {itemId = rec.outputItemId})
-        end
-        for _, ing in ipairs(rec.reagents or {}) do
-          if ing.itemId then
-            add(ns.catalog.name("item", ing.itemId), ing.count .. " needed",
+      end
+      if learning and learning.grey then
+        add("Turns grey", tostring(learning.grey) ..
+          " | no skill-ups beyond this rank",
+          "Interface\\Icons\\INV_Misc_Food_15", "game_files_unconfirmed")
+      end
+      if spellRecipe and spellRecipe.outputItemId then
+        add("Produces", ns.catalog.name("item", spellRecipe.outputItemId),
+          ns.catalog.icon("item", spellRecipe.outputItemId), "game_files_unconfirmed",
+          {itemId = spellRecipe.outputItemId})
+      end
+      if section == "Ingredients" then
+        if plan then
+          for _, ing in ipairs(plan.reagents or {}) do
+            add(ing.name, tostring(ing.need or 0) .. " required | " ..
+              tostring(ing.missing or 0) .. " missing",
               ns.catalog.icon("item", ing.itemId), "game_files_unconfirmed",
               {itemId = ing.itemId})
           end
+        else
+          for _, ing in ipairs(spellRecipe and spellRecipe.reagents or {}) do
+            if ing.itemId then
+              add(ns.catalog.name("item", ing.itemId), tostring(ing.count) .. " needed",
+                ns.catalog.icon("item", ing.itemId), "game_files_unconfirmed",
+                {itemId = ing.itemId})
+            end
+          end
         end
+      else
+        local methods = ns.recipeLearning and ns.recipeLearning.sources(item.id) or {}
+        local teachers, scrolls = 0, 0
+        for _, rec in ipairs(methods) do
+          if rec.kind == "trainer" then teachers = teachers + 1
+          elseif rec.kind == "recipe_item" then scrolls = scrolls + 1 end
+        end
+        local acquisition = scrolls > 0 and
+          ((learning.recipeItemName or ("Recipe item " ..
+            tostring(learning.recipeItemId))) .. " teaches this Cooking spell")
+          or teachers > 0 and "Observed trainer teaches this spell"
+          or "Learning method not verified"
+        add("How to learn", acquisition .. " | Sources tab",
+          "Interface\\Icons\\INV_Misc_Book_09",
+          scrolls > 0 and "game_files_unconfirmed"
+            or teachers > 0 and "observed_source" or "unknown",
+          scrolls > 0 and {itemId = learning.recipeItemId} or nil)
+      end
+    elseif section == "Sources" then
+      local methods = ns.recipeLearning and ns.recipeLearning.sources(item.id) or {}
+      if #methods == 0 then
+        add("Learning source unknown",
+          "No verified trainer or teaching item. Do not assume trainer-taught.",
+          "Interface\\Icons\\INV_Misc_QuestionMark", "unknown")
+      end
+      for _, entry in ipairs(methods) do
+        if entry.kind == "recipe_item" then
+          add("Recipe item (teaches Cooking spell)",
+            (learning and learning.recipeItemName
+              or ns.catalog.name("item", entry.itemId)) ..
+              " [item " .. tostring(entry.itemId) .. "]",
+            ns.catalog.icon("item", entry.itemId), entry.source,
+            {itemId = entry.itemId})
+        elseif entry.kind == "trainer" then
+          local place = entry.x and entry.y and string.format(
+            " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
+            entry.y * 100) or " | NPC location not mapped"
+          add(entry.label, "Observed teaching trainer" .. place,
+            "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
+            {vendorId = entry.npcId, mapID = entry.mapID,
+              x = entry.x, y = entry.y})
+        elseif entry.kind == "vendor" then
+          local place = entry.x and entry.y and string.format(
+            " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
+            entry.y * 100) or " | location not mapped"
+          add(entry.label, "Sells teaching item " .. entry.itemId .. place ..
+            " | stock unverified when reference-only",
+            "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
+            {vendorId = entry.npcId, mapID = entry.mapID,
+              x = entry.x, y = entry.y, source = entry.source,
+              sourceMapFirst = entry.x ~= nil and entry.y ~= nil})
+        elseif entry.kind == "quest" then
+          local place = entry.x and entry.y and string.format(
+            " | Map %d (%.1f, %.1f)", entry.mapID, entry.x * 100,
+            entry.y * 100) or " | location not mapped"
+          add(entry.label, "Quest reward from " ..
+            (entry.giver or "unknown quest giver") .. place ..
+            " | current availability unverified",
+            "Interface\\Icons\\INV_Misc_Book_09",
+            entry.source, {questId = entry.questId,
+              mapID = entry.mapID, x = entry.x, y = entry.y,
+              sourceMapFirst = true, source = entry.source})
+        elseif entry.kind == "drop" then
+          add(entry.label, "Observed recipe-item source | not a Cooking trainer",
+            "Interface\\Icons\\INV_Misc_Map_01", entry.source,
+            {npcId = entry.npcId, objectId = entry.objectId,
+              mapID = entry.mapID, x = entry.x, y = entry.y})
+        elseif entry.kind == "historical_vendor" then
+          add(entry.label, (entry.zone or "Unknown zone") ..
+            " | Classic reference for recipe item; stock unverified",
+            "Interface\\Icons\\INV_Misc_Bag_10", entry.source,
+            {mapID = entry.mapID})
+        end
+      end
+    elseif section == "Map" then
+      local coords = ns.recipeLearning and ns.recipeLearning.locations(item.id) or {}
+      for _, loc in ipairs(coords) do
+        local zone = findZone(loc.mapID)
+        add(loc.label, (zone and zone.name or "Map " .. loc.mapID) ..
+          string.format(" (%.1f, %.1f)", loc.x * 100, loc.y * 100),
+          "Interface\\Icons\\INV_Misc_Map_01", loc.source, loc)
+      end
+      if #coords == 0 then
+        add("No precise teaching location",
+          "Sources may list a trainer or recipe-item vendor by name/zone only",
+          "Interface\\Icons\\INV_Misc_Map_01", "unverified")
       end
     end
   elseif item.kind == "catch" then

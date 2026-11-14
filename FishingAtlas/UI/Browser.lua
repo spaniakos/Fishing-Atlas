@@ -52,6 +52,15 @@ function B.list(category, term)
         end
       end
     end
+    -- Cooking teaching items are actual items, even if not fishable.
+    for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+      local id = ref.recipeItemId
+      if type(id) == "number" and id > 0 and not seen[id] then
+        seen[id] = true
+        push(out, row(id, ref.recipeItemName or ns.catalog.name("item", id),
+          "item", ref.source or "forever_public_reference"), term)
+      end
+    end
   elseif category == "fish" then
     -- Fish is every item actually associated with fishing casts/pools or
     -- documented fishing-water references, including non-fish catches.
@@ -222,13 +231,19 @@ function B.details(item)
   if item.kind == "Cooking" or item.kind == "Fishing" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     if plan then
-      lines[#lines + 1] = "Requires skill " .. tostring(plan.minimumSkill)
+      lines[#lines + 1] = "Requires skill " ..
+        tostring(plan.minimumSkill or "Not verified")
       lines[#lines + 1] = "Produces: " .. plan.output
       for _, i in ipairs(plan.reagents) do
         lines[#lines + 1] = string.format("%d x %s | owned %d | missing %d",
           i.need or 0, i.name or "Unknown", i.owned or 0, i.missing or 0)
       end
-      lines[#lines + 1] = "Recipe acquisition/vendor: not yet verified."
+      local info = ns.recipeLearning and ns.recipeLearning.info(item.id)
+      if info and info.recipeItemId then
+        lines[#lines + 1] = "Learned from recipe item #" .. info.recipeItemId
+      else
+        lines[#lines + 1] = "Learning source: check observed trainer records."
+      end
     end
   elseif item.kind == "school_type" then
     local matchesByName = B.schoolSightings(item.name)

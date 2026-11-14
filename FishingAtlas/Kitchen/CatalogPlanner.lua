@@ -10,12 +10,13 @@ function K.catalogPlan(spellId, crafts, itemCounts)
   if crafts < 1 or crafts > 100 or crafts ~= math.floor(crafts) then
     return nil, "Invalid craft count"
   end
+  local learn = ns.recipeLearning and ns.recipeLearning.info(spellId)
   local result = {
     spellId = recipe.spellId,
     profession = recipe.profession,
     name = ns.catalog.name("spell", recipe.spellId),
     output = recipe.outputItemId and ns.catalog.name("item", recipe.outputItemId) or "No item output",
-    minimumSkill = recipe.cookingSkill,
+    minimumSkill = learn and learn.requiredSkill or nil,
     crafts = crafts,
     reagents = {},
     verifiedInGame = false,

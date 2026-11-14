@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Fishing Atlas 0.99.6: image-3-inspired three-column explorer.
+-- Fishing Atlas 0.99.7: evidence-aware three-column explorer.
 -- All controls are functional FrameXML; visuals never invent game-world data.
 local _, ns = ...
 ns.ui = {}
@@ -268,22 +268,16 @@ local function renderMap()
   if not mapSurface then return end
   local mapID, sourced = selectedMap()
   local mode = ns.viewModel.schoolMapMode and ns.viewModel.schoolMapMode() or "active"
-  local locations = sourced and ns.viewModel.mapPoints(active) or {}
-  -- The selected preview can fall back to the player's zone. Active-mode
-  -- observations must be drawn for the displayed map regardless of record.
-  if mode == "active" and mapID and ns.liveSchools then
-    locations = ns.liveSchools.inZone(mapID)
-  end
+  local locations = ns.mapMarkers and ns.mapMarkers.collect(active, mapID,
+    UI.selectedPoint) or (sourced and ns.viewModel.mapPoints(active) or {})
   if schoolModeButton then
-    schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
+    schoolModeButton.text:SetText(mode == "active" and "Schools: Live" or "Schools: All")
   end
   ns.zoneMap.render(mapSurface, mapID, locations)
   mapCaption:SetText(not mapID and "No map selected"
-    or mode == "active" and active
-        and (active.kind == "zone" or active.kind == "school_type")
-        and ("Active nearby | " .. #locations .. " recent sightings")
-    or ("Map " .. mapID .. (sourced and " | referenced positions"
-      or " | current zone, no evidence")))
+    or "Map " .. mapID .. " | " .. #locations .. " locations | Schools: " ..
+      (mode == "active" and "Active" or "Probable") ..
+      (#locations == 0 and " | no mapped coordinates for selection" or ""))
   if fullMap and fullMap:IsShown() then
     ns.zoneMap.render(fullMapSurface, mapID, locations)
     fullMapLabel:SetText(not mapID and "No map available"
@@ -301,7 +295,7 @@ function UI.setSchoolMapMode(mode)
   local settings = ns.storage.db and ns.storage.db.settings
   if not settings then return false end
   settings.schoolMapMode = mode
-  UI.mapOverride, UI.selectedPoint = nil, nil
+  -- School filters must not discard the selected vendor or clicked map point.
   if ns.mapPins then ns.mapPins.refresh() end
   if frame then UI.refresh(false) end
   return true
@@ -474,18 +468,21 @@ local function rowClick(record)
       ns.recipeKnowledge.cycle(record.recipeId)
       UI.refresh(false)
     end
-  elseif record.vendorId then
+  elseif record.vendorId and not record.sourceMapFirst then
     UI.selectCategory("vendors", record.vendorId)
-  elseif record.npcId then
+  elseif record.npcId and not record.sourceMapFirst then
     UI.openNpc(record.npcId)
   elseif record.recipeId then
     UI.selectCategory("recipes", record.recipeId)
   elseif record.mapID then
     UI.mapOverride = record.mapID
     UI.selectedPoint = record.x and record.y and {mapID = record.mapID,
-      x = record.x, y = record.y, label = record.title or "Fishing Atlas"} or nil
+      x = record.x, y = record.y, label = record.title or "Fishing Atlas",
+      source = record.confidence or record.source or "selected_record",
+      kind = record.kind or "selected_position"} or nil
     renderMap()
     local opened = inGameMap(record.mapID)
+    if ns.mapPins then ns.mapPins.refresh() end
     if not opened then ns.commands.say("World map could not be opened by this client") end
     if record.x and record.y and type(TomTom) == "table"
         and type(TomTom.AddWaypoint) == "function" then
@@ -574,6 +571,7 @@ local function select(item)
     UI.detailsTab = "Overview"
     UI.draw()
     renderDetails()
+    if ns.mapPins then ns.mapPins.refresh() end
     return
   end
   if item.atlasCategory and item.atlasCategory ~= UI.category then
@@ -585,6 +583,7 @@ local function select(item)
   UI.detailsTab = "Overview"
   UI.draw()
   renderDetails()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 function UI.scroll(amount)
@@ -691,6 +690,7 @@ function UI.refresh(reset)
   UI.draw()
   renderDetails()
   hideContext()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 -- Category navigation is atomic: programmatically clearing search causes the
@@ -765,6 +765,7 @@ function UI.selectCategory(category, id, topPage, searchRecord)
   UI.draw()
   renderDetails()
   hideContext()
+  if ns.mapPins then ns.mapPins.refresh() end
 end
 
 function UI.selected()
@@ -849,7 +850,7 @@ local function build()
   label(frame, "GameFontNormalHuge", 665, 42, 105, -7):SetText("Fishing Atlas")
   label(frame, "GameFontHighlight", 670, 25, 108, -51):SetText("The Azeroth Fishing Compendium")
   versionLabel = label(frame, "GameFontHighlightSmall", 267, 30, 851, -21)
-  versionLabel:SetText("v0.99.6  |  Data: sourced + reference")
+  versionLabel:SetText("v0.99.7  |  Data: sourced + reference")
   button(frame, "X", 1167, -10, 30, 31, function() frame:Hide() end)
   button(frame, "?", 1132, -10, 30, 31, function()
     if ns.issues then ns.issues.open() end

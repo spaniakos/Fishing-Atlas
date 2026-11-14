@@ -57,11 +57,10 @@ function O.start()
     local value = ns.storage.db and ns.storage.db.settings
       and ns.storage.db.settings.schoolMapMode or "active"
     modeNote:SetText(value == "active"
-      and "Active only (default): recently visible nearby schools. " ..
-        "Nothing shown if no live sighting was detected."
-      or "All probable: historical locations, not guaranteed active.")
+      and "Live school sightings. Vendors and saved places stay visible."
+      or "Historical school references; vendors and saved places stay visible.")
   end
-  action(panel, 300, -100, "Active only", function()
+  action(panel, 300, -100, "Live schools", function()
     if ns.ui and ns.ui.setSchoolMapMode then
       ns.ui.setSchoolMapMode("active")
     elseif ns.storage.db then
@@ -70,7 +69,7 @@ function O.start()
     end
     updateMode()
   end)
-  action(panel, 415, -100, "All probable", function()
+  action(panel, 415, -100, "School refs", function()
     if ns.ui and ns.ui.setSchoolMapMode then
       ns.ui.setSchoolMapMode("probable")
     elseif ns.storage.db then
@@ -92,10 +91,16 @@ function O.start()
   checkbox(panel, -88, "Show minimap launcher", "showMinimap", function()
     if ns.minimap then ns.minimap.update() end
   end)
-  checkbox(panel, -125, "Show saved positions on the world map", "mapPins", function()
+  checkbox(panel, -125, "Show Fishing Atlas pins on the world map", "mapPins", function()
     if ns.mapPins then ns.mapPins.refresh() end
   end)
   checkbox(panel, -162, "Alert near saved fishing positions", "notifications")
+  local contextToggle = checkbox(panel, -214,
+    "Show real parent-map context (where supported)", "mapContext", function()
+      if ns.ui and ns.ui.refreshMap then ns.ui.refreshMap() end
+    end)
+  contextToggle:ClearAllPoints()
+  contextToggle:SetPoint("TOPLEFT", panel, "TOPLEFT", 302, -240)
   local radiusText = note(panel, 20, -206, "")
   local function updateRadius()
     local settings = ns.storage.db and ns.storage.db.settings or {}

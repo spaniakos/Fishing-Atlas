@@ -114,7 +114,19 @@ ns.viewModel.zoneVendors = function() return {} end
 ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
-ns.viewModel.mapPoints = function() return {} end
+ns.viewModel.mapPoints = function(item)
+  if item and item.kind == "vendor_reference" then
+    return {{mapID = 1413, x = 0.41, y = 0.52, kind = "vendor",
+      label = item.name, source = "mixed_source_reference"}}
+  end
+  return {}
+end
+ns.util = {validCoordinate = function(n)
+  return type(n) == "number" and n >= 0 and n <= 1
+end}
+ns.data.classicSchoolLocations = {}
+ns.data.referenceSchoolLocations = {}
+assert(loadfile("FishingAtlas/Atlas/MapMarkers.lua"))("FishingAtlas", ns)
 ns.recipeKnowledge = {
   status = function(id) return id == 777 and "unknown" or "known" end,
   scanCatalog = function() return 0 end,
@@ -142,6 +154,21 @@ assert(ns.ui.scanSchools() == 1 and ns.ui.mapOverride == 1413,
   "Manual Scan now should focus its actually scanned zone")
 assert(renderSnapshot.map == 1413 and #renderSnapshot.points == 1,
   "Manual scan must refresh displayed pins, not just print a chat count")
+local vendor = {id = 4242, kind = "vendor_reference", name = "Fishing Merchant",
+  atlasCategory = "vendors"}
+ns.ui.selectCategory("vendors", vendor.id, nil, vendor)
+assert(renderSnapshot.map == 1413 and #renderSnapshot.points >= 2,
+  "Active schools may not erase the selected vendor's map pin")
+local foundVendor = false
+for _, point in ipairs(renderSnapshot.points) do
+  if point.kind == "vendor" and point.x == 0.41 then foundVendor = true end
+end
+assert(foundVendor, "Vendor marker must be rendered in Active school mode")
+local selectedVendor = ns.ui.selected()
+ns.ui.setSchoolMapMode("probable")
+assert(ns.ui.selected() == selectedVendor and renderSnapshot.map == 1413,
+  "Changing school mode must preserve selected vendor and map")
+assert(#renderSnapshot.points >= 1, "Probable school mode must retain vendor")
 ns.ui.selectCategory("zones")
 assert(ns.ui.category == "zones")
 assert(ns.ui.selectCategory("fish") == nil)

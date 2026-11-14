@@ -2,6 +2,18 @@
 -- Exercise image-3 presentation model without a WoW runtime.
 local ns = {
   data = {
+    recipeLearningReferences = {[2795] = {
+      minimumSkill = 25, recipeItemId = 2889,
+      source = "forever_client_public_reference",
+      sources = {
+        {kind = "vendor", label = "Kendor Kabonka", npcId = 340,
+          mapID = 1453, x = 0.775, y = 0.527,
+          source = "classic_vendor_reference"},
+        {kind = "quest", label = "Beer Basted Boar Ribs", questId = 384,
+          giver = "Ragnar Thunderbrew", mapID = 1426, x = 0.468,
+          y = 0.524, source = "classic_quest_reference"}
+      }
+    }},
     referenceZoneFish = {[1440] = {{id = 13759, evidence = "cmangos_classic_reference"}},
       [1438] = {{id = 13759, evidence = "player_observed"}}},
     zoneFishingSkill = {[1440] = {minimum = 55, reliable = 150}},
@@ -18,6 +30,28 @@ local ns = {
     schoolCandidates = {{mapID = 1440, x = 0.6, y = 0.4,
       label = "Fishing School", sightings = 2}},
     catches = {}, vendorObservations = {}}},
+  recipeLearning = {
+    info = function(id) return {
+      requiredSkill = id == 18243 and 250 or id == 2795 and 25 or nil,
+      requirementSource = "forever_client_public_reference",
+      profession = "Cooking",
+      recipeItemId = id == 18243 and 13945 or id == 2795 and 2889 or nil,
+      recipeItemName = id == 2795 and "Recipe: Beer Basted Boar Ribs" or nil
+    } end,
+    sources = function(id)
+      if id == 2795 then return {
+        {kind = "recipe_item", itemId = 2889, source = "forever_public_reference"},
+        {kind = "vendor", label = "Kendor Kabonka", npcId = 340,
+          itemId = 2889, mapID = 1453, x = 0.775, y = 0.527,
+          source = "classic_vendor_reference"},
+        {kind = "quest", label = "Beer Basted Boar Ribs", questId = 384,
+          giver = "Ragnar Thunderbrew", mapID = 1426, x = 0.468, y = 0.524,
+          source = "classic_quest_reference"}
+      } end
+      return {}
+    end,
+    locations = function() return {} end
+  },
   kitchen = {catalogPlan = function()
     return {minimumSkill = 150, output = "Cooked fish",
       reagents = {{itemId = 13759, name = "Fish", need = 2, missing = 1}}}
@@ -48,7 +82,10 @@ local summary = V.summary(zone)
 assert(summary.skill == 55 and summary.reliable == 150)
 assert(#V.zoneVendors(1440) == 1)
 assert(#V.recordedLocations(1440) == 2)
-assert(#V.mapPoints(zone) == 0, "Active-only default must not show historical positions")
+local activePoints = V.mapPoints(zone)
+assert(#activePoints == 2 and activePoints[1].kind == "position"
+    and activePoints[2].kind == "vendor",
+  "Active mode must retain saved places and vendors, never only schools")
 ns.storage.db.settings = {schoolMapMode = "probable"}
 assert(#V.mapPoints(zone) == 3)
 assert(V.mapID(zone) == 1440)
@@ -73,4 +110,38 @@ assert(#V.itemQuests(pole.id) == 1)
 assert(V.section(pole, "Quest")[1].title == "The Family and the Fishing Pole")
 assert(V.section(pole, "Overview")[1].title == "Item Name")
 assert(V.section(fish, "Overview")[1].title == "Item Name")
-print("image3 view model / gear quest acquisition tests passed")
+local cooked = {id = 18243, kind = "Cooking", name = "Nightfin Soup"}
+local cookingRows = V.section(cooked, "Overview")
+assert(cookingRows[1].title == "Recipe knowledge")
+assert(cookingRows[3].title == "Required Cooking skill"
+  and cookingRows[3].detail == "250",
+  "Cooking spell inspector must show the learn requirement, not a scroll or skill=1")
+assert(V.section(cooked, "Sources")[1].title == "Learning source unknown")
+local ribs = {id = 2795, kind = "Cooking", name = "Beer Basted Boar Ribs"}
+local ribsOverview = V.section(ribs, "Overview")
+local learnRow
+for _, row in ipairs(ribsOverview) do
+  if row.title == "How to learn" then learnRow = row end
+end
+assert(ribsOverview[3].detail == "25" and learnRow and learnRow.detail:find(
+  "Recipe: Beer Basted Boar Ribs", 1, true),
+  "Cooking ability overview must show verified skill and teaching recipe")
+local refs = V.section(ribs, "Sources")
+assert(#refs == 3 and refs[1].detail:find("2889", 1, true)
+  and refs[2].title == "Kendor Kabonka"
+  and refs[2].sourceMapFirst
+  and refs[3].title == "Beer Basted Boar Ribs"
+  and refs[3].sourceMapFirst,
+  "Cooking sources must link scroll, vendor map and quest map independently")
+print("image3 view model / gear quest and Cooking acquisition tests passed")
+
+local teachingItem = {kind = "item", id = 2889,
+  name = "Recipe: Beer Basted Boar Ribs"}
+assert(#V.itemVendors(2889) == 1)
+assert(V.itemVendors(2889)[1].name == "Kendor Kabonka")
+assert(#V.itemQuests(2889) == 1 and V.itemQuests(2889)[1].questId == 384)
+assert(#V.itemMapPoints(2889) == 2)
+assert(#V.tabs(teachingItem) == 6, "Teaching item quest should have a tab")
+assert(V.section(teachingItem, "Overview")[6].title == "Teaches Cooking")
+assert(V.section(teachingItem, "Vendors")[1].sourceMapFirst)
+assert(V.section(teachingItem, "Quest")[1].sourceMapFirst)

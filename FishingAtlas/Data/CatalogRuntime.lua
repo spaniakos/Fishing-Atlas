@@ -35,6 +35,13 @@ function C.name(kind, id)
   local item = C.entity(kind, id)
   if item and type(item.name) == "string" and not item.name:match("^Item #")
     and not item.name:match("^Spell #") then return item.name, false end
+  if kind == "item" then
+    for _, ref in pairs(ns.data.recipeLearningReferences or {}) do
+      if ref.recipeItemId == id and type(ref.recipeItemName) == "string" then
+        return ref.recipeItemName, false
+      end
+    end
+  end
   return (kind == "spell" and "Unresolved spell #" or "Unresolved item #") .. id, false
 end
 function C.stats()
