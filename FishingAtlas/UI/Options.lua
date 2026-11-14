@@ -195,7 +195,7 @@ function O.start()
   updateRecipeFilter()
   note(panel, 20, -549,
     "Recipe overrides are character-specific. Open a recipe to mark it known, " ..
-    "not learned, or unchecked. Other settings are account-wide.")
+    "or unknown. Unknown without profession evidence is unverified. Other settings are account-wide.")
   if type(Settings) == "table" and type(Settings.RegisterCanvasLayoutCategory) == "function"
       and type(Settings.RegisterAddOnCategory) == "function" then
     category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)

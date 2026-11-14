@@ -132,7 +132,7 @@ end
 
 function K.status(spellId)
   spellId = tonumber(spellId)
-  if not spellId then return "unchecked", "unverified" end
+  if not spellId then return "unknown", "unverified" end
   if clientSpellKnown(spellId) then return "known", "client_spellbook" end
   -- Forever's profession API accepts recipe spell IDs directly. Querying one
   -- ID also handles Cooking before the visible recipe list has been refreshed.
@@ -151,7 +151,8 @@ function K.status(spellId)
   if manual and manual[spellId] ~= nil then
     return manual[spellId] and "known" or "unknown", "manual_override"
   end
-  return "unchecked", "not_yet_scanned"
+  -- Unknown here is unverified, not proof that the character lacks the recipe.
+  return "unknown", "not_yet_scanned"
 end
 
 function K.set(spellId, value)
@@ -167,10 +168,13 @@ function K.set(spellId, value)
 end
 
 function K.cycle(spellId)
-  local current = K.status(spellId)
-  local new = current == "known" and "unknown"
-    or current == "unknown" and "unchecked" or "known"
-  return K.set(spellId, new) and new or nil
+  local current, source = K.status(spellId)
+  if current == "known" and (source == "client_spellbook"
+      or source == "client_recipe_info" or source == "profession_scan") then
+    return "known" -- Never contradict authoritative client learning evidence.
+  end
+  local nextStatus = current == "known" and "unknown" or "known"
+  return K.set(spellId, nextStatus) and nextStatus or nil
 end
 
 -- The legacy TradeSkill window supplies a *positive* list of learned skills,

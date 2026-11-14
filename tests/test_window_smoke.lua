@@ -10,7 +10,7 @@ local function element()
     "StopMovingOrSizing", "SetJustifyH", "SetJustifyV", "SetSize", "SetWordWrap",
     "RegisterForClicks", "SetMinMaxValues", "SetValueStep", "SetOrientation",
     "SetThumbTexture", "SetVerticalScroll", "SetText", "SetAutoFocus",
-    "SetMaxLetters", "SetFocus", "ClearFocus", "SetEnabled", "SetScale"
+    "SetMaxLetters", "SetFocus", "ClearFocus", "SetEnabled", "SetScale", "SetTextColor"
   }
   for _, method in ipairs(methods) do
     f[method] = function(self, ...) if method == "SetText" then self.text = (...) end end
@@ -24,6 +24,9 @@ local function element()
   f.SetValue = function(self, n)
     self.value = n
     if self.scripts.OnValueChanged then self.scripts.OnValueChanged(self, n) end
+  end
+  f.SetTextColor = function(self, r, g, b)
+    self.textColor = {r, g, b}
   end
   f.SetText = function(self, value)
     self.text = value
@@ -77,7 +80,17 @@ ns.browser.list = function(category)
   return {}
 end
 ns.browser.searchAll = function(query)
-  if query == "night" then
+  if query == "multi" then
+    return {
+      {id = 1440, kind = "zone", name = "Ashenvale", atlasCategory = "zones"},
+      {id = 13, kind = "fish", name = "Raw Nightfin Snapper",
+        atlasCategory = "fish", confidence = "reference"},
+      {id = 515, kind = "item", name = "Fishing Widget",
+        atlasCategory = "items", confidence = "reference"},
+      {id = 777, kind = "Cooking", name = "Fish Soup",
+        atlasCategory = "recipes", confidence = "reference"},
+    }
+  elseif query == "night" then
     return {{id = 13, kind = "fish", name = "Raw Nightfin Snapper",
       atlasCategory = "fish", confidence = "reference"}}
   elseif query == "pole" then
@@ -102,6 +115,9 @@ ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
 ns.viewModel.mapPoints = function() return {} end
+ns.recipeKnowledge = {status = function(id)
+  return id == 777 and "unknown" or "known"
+end}
 ns.liveSchools = {
   inZone = function(mapID)
     if mapID == 1413 then
@@ -160,6 +176,33 @@ for _, frame in ipairs(created) do
 end
 assert(searchBox, "Search EditBox must be wired")
 ns.ui.selectCategory("zones")
+searchBox:SetText("multi")
+local function clickResult(wanted)
+  for _, entry in ipairs(created) do
+    if entry.item and entry.item.id == wanted and entry.scripts.OnClick then
+      entry.scripts.OnClick(entry, "LeftButton")
+      return entry
+    end
+  end
+  error("Result not clickable " .. tostring(wanted))
+end
+clickResult(13)
+assert(ns.ui.selected().id == 13 and ns.ui.query == "multi"
+  and searchBox:GetText() == "multi",
+  "Clicking second global hit must not select first entry")
+local recipeRow = clickResult(777)
+assert(ns.ui.selected().id == 777 and ns.ui.selected().name == "Fish Soup"
+  and ns.ui.query == "multi",
+  "Clicking fourth global hit must preserve exact recipe")
+assert(recipeRow.text.textColor[1] == 1 and recipeRow.text.textColor[2] == 0.63,
+  "Unknown recipe must be orange, not the known-green text")
+clickResult(515)
+assert(ns.ui.selected().id == 515 and ns.ui.query == "multi",
+  "Clicking third global hit must open exact item")
+ns.ui.refresh(false)
+assert(ns.ui.selected().id == 515 and ns.ui.query == "multi",
+  "Refresh must not reset selected global hit to index zero")
+ns.ui.selectCategory("zones")
 searchBox:SetText("night")
 assert(ns.ui.query == "night")
 local searchRow
@@ -169,10 +212,10 @@ for _, frame in ipairs(created) do
 end
 assert(searchRow, "Global search result must be a clickable row")
 searchRow.scripts.OnClick(searchRow, "LeftButton")
-assert(ns.ui.category == "fish" and ns.ui.selected().id == 13,
+assert(ns.ui.selected().id == 13,
   "Search click must land on selected fish, not Darkclaw Lobster index zero")
-assert(ns.ui.query == "" and searchBox:GetText() == "",
-  "Programmatic search clear must be handled atomically")
+assert(ns.ui.query == "night" and searchBox:GetText() == "night",
+  "Search click must preserve the typed query")
 searchBox:SetText("pole")
 local poleRow
 for _, frame in ipairs(created) do
@@ -182,12 +225,12 @@ for _, frame in ipairs(created) do
 end
 assert(poleRow, "Gear search hit should be clickable")
 poleRow.scripts.OnClick(poleRow, "LeftButton")
-assert(ns.ui.category == "gear" and ns.ui.selected().id == 6256,
+assert(ns.ui.selected().id == 6256,
   "Search click must preserve gear result missing from destination listing")
-assert(ns.ui.selected().name == "Fishing Pole")
+assert(ns.ui.selected().name == "Fishing Pole" and ns.ui.query == "pole")
 ns.ui.refresh(false)
 assert(ns.ui.selected().id == 6256,
-  "Refresh must not replace a pinned search result with category index zero")
+  "Refresh must not replace selected global result with index zero")
 WorldMapFrame = element()
 WorldMapFrame:Hide()
 WorldMapFrame.SetMapID = function(self, id) self.mapID = id end

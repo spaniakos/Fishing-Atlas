@@ -468,8 +468,12 @@ end
 local function rowClick(record)
   if not record then return end
   if record.toggleRecipe and ns.recipeKnowledge then
-    ns.recipeKnowledge.cycle(record.recipeId)
-    UI.refresh(false)
+    if record.recipeReadOnly then
+      ns.commands.say("Recipe confirmed learned by the client; cannot mark unknown")
+    else
+      ns.recipeKnowledge.cycle(record.recipeId)
+      UI.refresh(false)
+    end
   elseif record.vendorId then
     UI.selectCategory("vendors", record.vendorId)
   elseif record.npcId then
@@ -538,6 +542,19 @@ renderDetails = function()
     card.record = item
     card.title:SetText(item.title)
     card.detail:SetText(item.detail)
+    if item.toggleRecipe and ns.recipeKnowledge then
+      local knowledge = ns.recipeKnowledge.status(item.recipeId)
+      if knowledge == "known" then
+        card.title:SetTextColor(0.42, 0.92, 0.60)
+        card.detail:SetTextColor(0.42, 0.92, 0.60)
+      else
+        card.title:SetTextColor(1, 0.63, 0.40)
+        card.detail:SetTextColor(1, 0.63, 0.40)
+      end
+    else
+      card.title:SetTextColor(1, 0.82, 0)
+      card.detail:SetTextColor(1, 1, 1)
+    end
     card.icon:SetTexture(item.icon or "Interface\\Icons\\INV_Misc_Note_01")
     card:Show()
   end
@@ -547,15 +564,27 @@ renderDetails = function()
 end
 
 local function select(item)
-  if item and item.atlasCategory and item.atlasCategory ~= UI.category then
+  if not item then return end
+  -- Clicking a global result must not rebuild a different category's list
+  -- and accidentally select that category's default (index zero).
+  -- Preserve the query and exact clicked record until explicit navigation.
+  if item.atlasCategory and UI.searchAll and #UI.query >= 2 then
+    active = item
+    UI.mapOverride, UI.selectedPoint = nil, nil
+    UI.detailsTab = "Overview"
+    UI.draw()
+    renderDetails()
+    return
+  end
+  if item.atlasCategory and item.atlasCategory ~= UI.category then
     UI.selectCategory(item.atlasCategory, item.id, nil, item)
     return
   end
   active = item
   UI.mapOverride, UI.selectedPoint = nil, nil
   UI.detailsTab = "Overview"
-  renderDetails()
   UI.draw()
+  renderDetails()
 end
 
 function UI.scroll(amount)
@@ -575,6 +604,19 @@ function UI.draw()
       local display = item.atlasCategory and ("[" .. item.atlasCategory .. "] " .. item.name)
         or item.name
       btn.text:SetText(display:sub(1, 29))
+      if item.atlasCategory == "recipes" or (UI.category == "recipes"
+          and (item.kind == "Cooking" or item.kind == "Fishing"
+            or item.kind == "gamefile_recipe")) then
+        local knowledge = ns.recipeKnowledge and ns.recipeKnowledge.status(item.id)
+          or "unknown"
+        if knowledge == "known" then
+          btn.text:SetTextColor(0.42, 0.92, 0.60)
+        else
+          btn.text:SetTextColor(1, 0.63, 0.40)
+        end
+      else
+        btn.text:SetTextColor(1, 0.82, 0)
+      end
       btn.icon:SetTexture(zoneIcon(item))
       btn.level:SetText("")
       if item.kind == "zone" then
@@ -606,7 +648,7 @@ function UI.draw()
     if UI.category == "recipes" then
       filterOne.text:SetText((UI.recipeFilter == "known" and "[x]" or "[ ]") .. " Known recipes")
       filterTwo.text:SetText((UI.recipeFilter == "not_known" and "[x]" or "[ ]") ..
-        " Not known / unchecked")
+        " Unknown recipes")
     else
       filterOne.text:SetText((UI.filterFish and "[x]" or "[ ]") .. " Zones with fish")
       filterTwo.text:SetText((UI.filterLocations and "[x]" or "[ ]") .. " Mapped locations")

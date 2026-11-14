@@ -4,18 +4,24 @@ UnitFullName = function() return name, "Forever" end
 local ns = {storage = {db = {}}}
 assert(loadfile("FishingAtlas/Kitchen/RecipeKnowledge.lua"))("FishingAtlas", ns)
 local K = ns.recipeKnowledge
-assert(K.status(18243) == "unchecked")
+assert(K.status(18243) == "unknown")
+assert(select(2, K.status(18243)) == "not_yet_scanned",
+  "Unknown with no profession scan must be identified as unverified")
 assert(K.cycle(18243) == "known")
 assert(K.status(18243) == "known")
 assert(K.cycle(18243) == "unknown")
 assert(K.status(18243) == "unknown")
 name = "Chef"
-assert(K.status(18243) == "unchecked", "Knowledge leaked between characters")
+assert(K.status(18243) == "unknown", "Knowledge leaked between characters")
 assert(K.set(18243, "known"))
 name = "Fisher"
 assert(K.status(18243) == "unknown")
-assert(K.cycle(18243) == "unchecked")
-assert(K.status(18243) == "unchecked")
+assert(K.cycle(18243) == "known")
+assert(K.status(18243) == "known")
+assert(K.cycle(18243) == "unknown")
+assert(K.status(18243) == "unknown")
+assert(K.set(18243, "unchecked"), "Legacy reset remains for compatibility")
+assert(K.status(18243) == "unknown")
 -- The real Forever client rejects some retail profession events. This must
 -- never interrupt the ADDON_LOADED handler or break slash/minimap startup.
 local registered = {}
@@ -53,6 +59,8 @@ C_TradeSkillUI = {
 }
 name = "Fisher"
 assert(K.status(4094) == "known", "Direct client Cooking status should be known")
+assert(K.cycle(4094) == "known" and K.status(4094) == "known",
+  "Client-verified knowledge must not toggle to unknown")
 assert(K.scanCatalog() == 1, "Catalog scan must import known Cooking spell")
 assert(K.scanCatalog() == 0, "Repeated scan must be idempotent")
 name = "Chef"

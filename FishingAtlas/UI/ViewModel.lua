@@ -816,12 +816,23 @@ function V.section(item, section)
       or item.kind == "gamefile_recipe" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
     if section == "Overview" then
-      local status, statusSource = ns.recipeKnowledge and ns.recipeKnowledge.status(item.id)
-        or "unchecked", "unverified"
+      local status, statusSource = "unknown", "not_yet_scanned"
       if ns.recipeKnowledge then status, statusSource = ns.recipeKnowledge.status(item.id) end
-      add("Recipe knowledge", status .. " | click: known / not learned / unchecked",
+      local known = status == "known"
+      local clientVerified = known and (statusSource == "client_spellbook"
+        or statusSource == "client_recipe_info"
+        or statusSource == "profession_scan")
+      local detail = known and "Known" or "Unknown"
+      if clientVerified then
+        detail = detail .. " | confirmed by client"
+      elseif statusSource == "not_yet_scanned" then
+        detail = detail .. " (unverified) | click: Known"
+      else
+        detail = detail .. (known and " | click: Unknown" or " | click: Known")
+      end
+      add("Recipe knowledge", detail,
         "Interface\\Icons\\INV_Misc_Book_09", statusSource,
-        {recipeId = item.id, toggleRecipe = true})
+        {recipeId = item.id, toggleRecipe = true, recipeReadOnly = clientVerified})
     end
     if section == "Sources" then
       local recipe = ns.catalog.recipe(item.id) or
