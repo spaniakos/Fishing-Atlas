@@ -387,7 +387,9 @@ function V.tabs(item)
   if item and item.kind == "item" then
     return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
-  if item and item.kind == "observed_npc" then return {"Overview", "Goods", "Map"} end
+  if item and item.kind == "observed_npc" then
+    return {"Overview", "Drops", "Goods", "Map"}
+  end
   if item and (item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe") then
     return {"Overview", "Ingredients", "Sources", "Map"}
@@ -431,11 +433,13 @@ function V.section(item, section)
       end
     elseif section == "Drops" then
       for _, drop in ipairs(drops) do
-        add(drop.title, drop.confidence .. " | " .. tostring(drop.installs) ..
-          " installs; " .. tostring(drop.reports) .. " windows",
-          drop.kind == "pool" and "Interface\\Icons\\Trade_Fishing" or
-            "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
-          {vendorId = drop.npcId, mapID = drop.mapID, x = drop.x, y = drop.y})
+        local label = drop.note or (tostring(drop.installs or 0) ..
+          " installs | " .. tostring(drop.reports or 0) .. " loot windows")
+        add(drop.title, label,
+          drop.kind == "pool" and "Interface\\Icons\\INV_Misc_Fish_02" or
+            "Interface\\Icons\\Ability_Hunter_BeastCall", drop.confidence,
+          {npcId = drop.npcId, objectId = drop.objectId,
+            mapID = drop.mapID, x = drop.x, y = drop.y})
       end
     elseif section == "Crafted" then
       for _, craft in ipairs(crafts) do
@@ -454,9 +458,20 @@ function V.section(item, section)
   elseif item.kind == "observed_npc" then
     local npc = source() and source().vendor(item.id) or {}
     if section == "Overview" then
-      add("NPC ID", item.id, "Interface\\Icons\\INV_Misc_Bag_10", item.confidence)
+      add("Creature ID", item.id, "Interface\\Icons\\Ability_Hunter_BeastCall",
+        item.confidence)
+      add("Loot relationships", #(source() and source().dropsByNpc(item.id) or {}) ..
+        " fishing-related item sources", "Interface\\Icons\\INV_Misc_Map_01",
+        "observed")
       add("Observed positions", #(npc.spots or {}) .. " evidence points",
         "Interface\\Icons\\INV_Misc_Map_01", item.confidence)
+    elseif section == "Drops" then
+      for _, drop in ipairs(source() and source().dropsByNpc(item.id) or {}) do
+        add(ns.catalog.name("item", drop.itemId),
+          drop.installs .. " installs | " .. drop.windows .. " loot windows",
+          ns.catalog.icon("item", drop.itemId), drop.confidence,
+          {itemId = drop.itemId})
+      end
     elseif section == "Goods" then
       for id, goods in pairs((ns.data.everloot or {}).vendorItems or {}) do
         for _, offer in ipairs(goods) do
@@ -673,7 +688,8 @@ function V.section(item, section)
       for _, drop in ipairs(drops) do
         add(drop.title, drop.note or (tostring(drop.installs or 0) .. " installs"),
           "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
-          {vendorId = drop.npcId, mapID = drop.mapID, x = drop.x, y = drop.y})
+          {npcId = drop.npcId, objectId = drop.objectId,
+            mapID = drop.mapID, x = drop.x, y = drop.y})
       end
     elseif section == "Crafted" then
       for _, craft in ipairs(crafts) do
@@ -727,7 +743,8 @@ function V.section(item, section)
           found = found + 1
           add(drop.title, "Recipe item " .. scroll .. " | " .. drop.confidence,
             "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
-            {vendorId = drop.npcId, mapID = drop.mapID, x = drop.x, y = drop.y})
+            {npcId = drop.npcId, objectId = drop.objectId,
+            mapID = drop.mapID, x = drop.x, y = drop.y})
         end
       end
       if found == 0 then
