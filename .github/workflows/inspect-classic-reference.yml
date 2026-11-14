@@ -1,0 +1,34 @@
+name: Inspect external historical school spawn format
+on:
+  push:
+    branches: [feature/explorer-linked-records]
+    paths: [.github/workflows/inspect-classic-reference.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect licensed historical source without changing data
+        run: |
+          python3 - <<'PY'
+          import gzip,io,urllib.request
+          u='https://raw.githubusercontent.com/cmangos/classic-db/master/Full_DB/ClassicDB_1_12_1_z2815.sql.gz'
+          print("Source",u,flush=True)
+          raw=urllib.request.urlopen(u,timeout=55).read()
+          print("Gzip bytes:",len(raw),flush=True)
+          with gzip.GzipFile(fileobj=io.BytesIO(raw)) as f:
+            targets=['CREATE TABLE `gameobject`','CREATE TABLE `gameobject_template`',
+                     'INSERT INTO `gameobject`','INSERT INTO `gameobject_template`',
+                     'INSERT INTO `creature_template`']
+            seen=set()
+            for bs in f:
+              line=bs.decode('utf-8','replace').strip()
+              for target in targets:
+                if target.lower() in line.lower() and target not in seen:
+                  seen.add(target)
+                  print("FOUND",target,"length",len(line), "sample:",line[:700],flush=True)
+              if len(seen)==len(targets): break
+          PY
