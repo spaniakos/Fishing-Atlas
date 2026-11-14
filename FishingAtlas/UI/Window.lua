@@ -908,7 +908,10 @@ function UI.show()
   hideContext()
   fitFrame()
   frame:Show()
-  if ns.recipeKnowledge then ns.recipeKnowledge.scanOpenProfession() end
+  if ns.recipeKnowledge then
+    ns.recipeKnowledge.scanModern()
+    ns.recipeKnowledge.scanOpenProfession()
+  end
   UI.refresh(false)
   return true
 end
