@@ -24,9 +24,11 @@ function B.list(category, term)
   local out, db = {}, ns.storage.db or {}
   if category == "items" then
     local seen = {}
-    local relevant = ns.fishingScope and ns.fishingScope.data().items or nil
+    local scope = ns.fishingScope and ns.fishingScope.data() or nil
+    local relevant = scope and scope.items or nil
+    local caught = scope and scope.caught or {}
     for _, entity in ipairs(ns.catalog.itemList and ns.catalog.itemList() or {}) do
-      if not relevant or relevant[entity.id] then
+      if (not relevant or relevant[entity.id]) and not caught[entity.id] then
         seen[entity.id] = true
         push(out, row(entity.id, ns.catalog.name("item", entity.id), "item",
           entity.confidence), term)
@@ -34,7 +36,7 @@ function B.list(category, term)
     end
     local observed = ns.data.everloot or {}
     for id in pairs(observed.itemNames or {}) do
-      if not seen[id] and (not relevant or relevant[id]) then
+      if not seen[id] and ((not relevant or relevant[id]) and not caught[id]) then
         seen[id] = true
         push(out, row(id, ns.catalog.name("item", id), "item",
           "observed_confirmed"), term)
@@ -43,16 +45,29 @@ function B.list(category, term)
     for _, group in ipairs({observed.vendorItems or {}, observed.drops or {},
         observed.fishing or {}, observed.poolItems or {}}) do
       for id in pairs(group) do
-        if not seen[id] and (not relevant or relevant[id]) then
+        if not seen[id] and ((not relevant or relevant[id]) and not caught[id]) then
           seen[id] = true
           push(out, row(id, ns.catalog.name("item", id), "item",
             "observed_provisional"), term)
         end
       end
     end
-  elseif category == "fish" or category == "gear" then
-    local kinds = category == "fish" and {"fish"} or {"fishing_pole", "lure"}
-    for _, kind in ipairs(kinds) do
+  elseif category == "fish" then
+    -- Fish is every item actually associated with fishing casts/pools or
+    -- documented fishing-water references, including non-fish catches.
+    -- An ordinary merchant/creature drop never makes an item fishable.
+    local caught = ns.fishingScope and ns.fishingScope.data().caught or {}
+    for id in pairs(caught) do
+      local entity = ns.catalog.entity("item", id)
+      local evidence = (ns.data.everloot and
+        ((ns.data.everloot.fishing or {})[id] or
+         (ns.data.everloot.poolItems or {})[id]))
+        and "observed_fishing" or entity and entity.confidence
+        or "classic_fishing_reference"
+      push(out, row(id, ns.catalog.name("item", id), "fish", evidence), term)
+    end
+  elseif category == "gear" then
+    for _, kind in ipairs({"fishing_pole", "lure"}) do
       for _, e in ipairs(ns.catalog.byCategory(kind, 200)) do
         push(out, row(e.id, e.name, kind, e.confidence), term)
       end
