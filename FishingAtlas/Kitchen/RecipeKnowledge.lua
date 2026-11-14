@@ -193,10 +193,20 @@ end
 function K.start()
   if scanner or type(CreateFrame) ~= "function" then return end
   scanner = CreateFrame("Frame")
+  K.supportedEvents, K.unsupportedEvents = {}, {}
+  -- WoW Forever does not necessarily expose retail/Classic profession events.
+  -- RegisterEvent throws for unknown events. Never abort ADDON_LOADED because
+  -- an optional profession event is unavailable on this client build.
   for _, event in ipairs({"TRADE_SKILL_SHOW", "TRADE_SKILL_UPDATE",
       "TRADE_SKILL_LIST_UPDATE", "NEW_RECIPE_LEARNED",
       "SPELLS_CHANGED", "LEARNED_SPELL_IN_TAB"}) do
-    scanner:RegisterEvent(event)
+    local ok = pcall(scanner.RegisterEvent, scanner, event)
+    if ok then
+      K.supportedEvents[#K.supportedEvents + 1] = event
+    else
+      K.unsupportedEvents[#K.unsupportedEvents + 1] = event
+    end
   end
   scanner:SetScript("OnEvent", function() K.refresh() end)
+  return true
 end
