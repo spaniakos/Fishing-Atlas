@@ -122,6 +122,11 @@ end
 
 function S.linkFor(item)
   if not item then return nil end
+  if item.kind == "school_type" then
+    local refs = (ns.data.referenceSchoolLocations or {})[item.name] or {}
+    if refs[1] and refs[1].url then return refs[1].url end
+    return nil
+  end
   if item.kind == "item" or item.kind == "fish" or item.kind == "fishing_pole"
       or item.kind == "lure" then
     local id = tonumber(item.id)
@@ -170,6 +175,10 @@ function S.creditFor(item)
   end
   if kind == "school_type" then
     if #S.schoolLocations(item.name) > 0 then return S.credit() end
+    if #(ns.data.referenceSchoolLocations and
+        ns.data.referenceSchoolLocations[item.name] or {}) > 0 then
+      return "Map leads from wowforever.gg fishing guide; not guaranteed active schools."
+    end
     return "Classic school taxonomy; existence on Forever unverified."
   end
   if kind == "gamefile_recipe" then
