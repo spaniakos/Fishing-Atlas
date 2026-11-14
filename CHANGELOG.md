@@ -1,6 +1,15 @@
 # Fishing Atlas changelog
 
 ## v0.99.7 — Map integrity and geographic context (client acceptance pending)
+- Repair fishing Journal capture when `IsFishingLoot` is absent or auto-loot
+  skips `LOOT_SLOT_CLEARED`: correlate recent Fishing casts and confirmed
+  self loot-chat evidence, avoid double-counting, refresh the explorer and
+  expose `/fa lootdebug` counters.
+- Add personal Cooking recipe import from the currently open profession UI
+  and user-added spell IDs. Persist missing spells in SavedVariables without
+  treating manual entry as learned, inventing trainer evidence or modifying
+  the shared static catalog. UI controls and slash commands included.
+
 - Import CC BY 4.0 EG Link Cooking trainer menus and recipe-item vendor records
   from pinned Forever 1.60.1 client builds (up to 70938). Include 72 observed
   trainer services and 94 vendor observations, keeping source builds and
