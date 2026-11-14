@@ -296,8 +296,23 @@ function UI.scanSchools()
   return count or 0
 end
 
+function UI.mapDiagnostics()
+  local mapID = selectedMap()
+  return ns.zoneMap.describe and ns.zoneMap.describe(mapID)
+    or "Client map-art diagnostics unavailable"
+end
+
 function UI.openFullMap()
   if not frame then return false end
+  local mapID = selectedMap()
+  -- A larger custom canvas cannot repair missing client tiles. Prefer the
+  -- native World Map if the provided art layer is incomplete or unavailable.
+  if mapID and ns.zoneMap.artForMap then
+    local _, _, _, _, _, info = ns.zoneMap.artForMap(mapID, 275, 195)
+    if not info or not info.expected or info.tiles < info.expected then
+      if inGameMap(mapID) then return true end
+    end
+  end
   if not fullMap then
     fullMap = CreateFrame("Frame", "FishingAtlasFullMap", UIParent)
     fullMap:SetSize(1008, 746)
