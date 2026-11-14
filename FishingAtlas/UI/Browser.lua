@@ -318,6 +318,13 @@ function B.waypoint(item)
   local candidate
   if item.kind == "school_type" then
     candidate = B.schoolSightings(item.name)[1]
+    if not candidate then
+      local guide = (ns.data.referenceSchoolLocations or {})[item.name] or {}
+      if guide[1] then
+        candidate = {mapID = guide[1].mapID, x = guide[1].x, y = guide[1].y,
+          label = item.name .. " (guide reference; check in game)", reference = true}
+      end
+    end
   elseif item.kind == "zone" then
     local all = B.zoneSightings(item.id)
     candidate = all.schools[1] or all.positions[1]
