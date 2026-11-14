@@ -83,7 +83,7 @@ local function catalogNames()
       and ns.catalog.recipeList() or {}) do
     if row.profession == "Cooking" then put(row.spellId) end
   end
-  for id, row in pairs((ns.data.gameFiles or {}).recipes or {}) do
+  for id, row in pairs((ns.data and ns.data.gameFiles or {}).recipes or {}) do
     if row.profession == "Cooking" then put(id) end
   end
   for key in pairs(ambiguous) do indexed[key] = nil end
