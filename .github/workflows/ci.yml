@@ -46,6 +46,7 @@ jobs:
           lua5.1 tests/test_fishing_scope.lua
           lua5.1 tests/test_recipe_knowledge.lua
           lua5.1 tests/test_school_reference_locations.lua
+          lua5.1 tests/test_live_school_modes.lua
           lua5.1 tests/test_diagnostics.lua
           lua5.1 tests/test_migration.lua
           lua5.1 tests/test_ui_features.lua
