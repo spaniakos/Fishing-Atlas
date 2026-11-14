@@ -14,6 +14,7 @@ frame:SetScript("OnEvent", function(_, event, arg)
     SLASH_FISHINGATLAS2 = "/fishingatlas"
     SlashCmdList["FISHINGATLAS"] = ns.commands.run
     if ns.recipeKnowledge then ns.recipeKnowledge.start() end
+    if ns.liveSchools then ns.liveSchools.start() end
     ns.nearby.start()
     ns.loot.start()
     ns.vendors.start()
