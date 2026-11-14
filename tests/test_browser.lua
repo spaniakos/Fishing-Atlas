@@ -14,7 +14,7 @@ end}}
 ns.fishingScope = {
   data = function()
     return {caught = {[13759] = true},
-      items = {[6256] = true, [13759] = true}}
+      items = {[6256] = true, [13759] = true, [9000] = true}}
   end,
   vendor = function() return true end,
   item = function() return true end,
@@ -23,6 +23,11 @@ ns.catalog = {
   entity = function(_, id)
     if id == 13759 then return {id = 13759, category = "fish",
       confidence = "reference"} end
+  end,
+  itemList = function()
+    return {{id = 13759, category = "fish"},
+      {id = 6256, category = "fishing_pole"},
+      {id = 9000, category = "crafted_output"}}
   end,
   byCategory = function(cat)
     if cat == "fish" then return {{id = 13759, name = "Nightfin", confidence = "reference"}} end
@@ -41,6 +46,9 @@ ns.catalog = {
 }
 assert(loadfile("FishingAtlas/UI/Browser.lua"))("FishingAtlas", ns)
 assert(#ns.browser.list("fish", "night") == 1)
+assert(#ns.browser.list("fish", "") == 1, "Fish means fishing catches, not every item")
+assert(#ns.browser.list("items", "") == 2,
+  "Items should contain supplies/cooked items, not duplicate fish catches")
 assert(#ns.browser.list("fish", "other") == 0)
 assert(#ns.browser.list("recipes", "18243") == 1)
 assert(#ns.browser.list("zones", "") == 1)
