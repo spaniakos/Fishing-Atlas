@@ -4,6 +4,7 @@ on:
     branches: [feature/explorer-linked-records]
     paths:
       - .github/workflows/bootstrap-classic-schools.yml
+      - scripts/import_classic_schools.py
 permissions:
   contents: write
 jobs:
