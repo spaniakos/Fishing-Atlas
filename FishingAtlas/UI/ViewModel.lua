@@ -160,6 +160,13 @@ function V.itemCrafts(itemID)
       seen[spellId] = true
     end
   end
+  for _, rec in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
+    if rec.kind == "crafted" then
+      out[#out + 1] = {kind = "craft_reference", title = rec.title,
+        note = rec.note, spellId = rec.spellId, confidence = rec.confidence,
+        sourceUrl = rec.url}
+    end
+  end
   -- The client relation graph also records profession spells outside Cooking.
   for _, edge in ipairs((ns.data.gameFiles or {}).relations or {}) do
     if edge.fromKind == "item" and edge.fromId == itemID
@@ -177,8 +184,18 @@ end
 function V.itemDrops(itemID)
   local out = source() and source().dropsForItem(itemID) or {}
   for _, ref in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
-    out[#out + 1] = {kind = "reference_object", title = ref.title, note = ref.note,
-      mapID = ref.mapID, confidence = ref.confidence, sourceUrl = ref.url}
+    if ref.kind == "object_loot" or ref.kind == "creature_drop" then
+      out[#out + 1] = {kind = ref.kind, title = ref.title, note = ref.note,
+        mapID = ref.mapID, confidence = ref.confidence, sourceUrl = ref.url}
+    end
+  end
+  return out
+end
+
+function V.itemQuests(itemID)
+  local out = {}
+  for _, record in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
+    if record.kind == "quest_reward" then out[#out + 1] = record end
   end
   return out
 end
@@ -438,7 +455,7 @@ function V.tabs(item)
     return {"Overview", "Zones", "Sources", "Recipes", "Map"}
   end
   if item and (item.kind == "fishing_pole" or item.kind == "lure") then
-    return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
+    return {"Overview", "Vendors", "Drops", "Crafted", "Quest", "Map"}
   end
   if item and item.kind == "vendor_reference" then return {"Overview", "Goods", "Map"} end
   if item and item.kind == "school_type" then return {"Overview", "Sightings", "Map"} end
@@ -736,35 +753,48 @@ function V.section(item, section)
       end
     end
   elseif item.kind == "fishing_pole" or item.kind == "lure" then
-    local vendors, drops, crafts = V.itemVendors(item.id), V.itemDrops(item.id),
-      V.itemCrafts(item.id)
+    local vendors, drops, crafts, quests = V.itemVendors(item.id),
+      V.itemDrops(item.id), V.itemCrafts(item.id), V.itemQuests(item.id)
     if section == "Overview" then
       add("Item Name", item.name, ns.catalog.icon("item", item.id), item.confidence)
       add("Item ID", item.id, ns.catalog.icon("item", item.id), item.confidence)
       add("Equipment", item.kind == "lure" and "Fishing lure" or "Fishing pole",
-        ns.catalog.icon("item", item.id), item.confidence, {itemId = item.id})
-      add("Vendor candidates", #vendors .. " potential sellers",
+        ns.catalog.icon("item", item.id), item.confidence)
+      add("Potential vendors", #vendors .. " observed/reference sellers",
         "Interface\\Icons\\INV_Misc_Bag_10", "mixed_sources")
-      add("Loot / objects", #drops .. " observed/reference sources",
+      add("Loot/objects", #drops .. " observed/historical sources",
         "Interface\\Icons\\INV_Misc_Map_01", "mixed_sources")
-      add("Created by", #crafts .. " client/observed relations",
+      add("Created by", #crafts .. " observed/client/guide recipes",
         "Interface\\Icons\\Trade_Engineering", "mixed_sources")
+      add("Quest rewards", #quests .. " historical quest sources",
+        "Interface\\Icons\\INV_Misc_Book_09", "classic_reference")
     elseif section == "Vendors" then
       for _, vendor in ipairs(vendors) do
-        add(vendor.name, vendor.confidence or "unknown",
-          "Interface\\Icons\\INV_Misc_Bag_10", vendor.confidence, {vendorId = vendor.id})
+        add(vendor.name, tostring(vendor.confidence or "unknown"),
+          "Interface\\Icons\\INV_Misc_Bag_10", vendor.confidence,
+          {vendorId = vendor.id})
       end
     elseif section == "Drops" then
       for _, drop in ipairs(drops) do
         add(drop.title, drop.note or (tostring(drop.installs or 0) .. " installs"),
-          "Interface\\Icons\\INV_Misc_Map_01", drop.confidence,
-          {npcId = drop.npcId, objectId = drop.objectId,
+          drop.npcId and "Interface\\Icons\\Ability_Hunter_BeastCall"
+            or "Interface\\Icons\\INV_Misc_Map_01",
+          drop.confidence, {npcId = drop.npcId, objectId = drop.objectId,
             mapID = drop.mapID, x = drop.x, y = drop.y})
       end
     elseif section == "Crafted" then
       for _, craft in ipairs(crafts) do
-        add(craft.title, craft.confidence, ns.catalog.icon("spell", craft.spellId),
-          craft.confidence, {recipeId = craft.spellId, spellId = craft.spellId})
+        add(craft.title, craft.note or tostring(craft.confidence),
+          craft.spellId and ns.catalog.icon("spell", craft.spellId)
+            or "Interface\\Icons\\Trade_Engineering", craft.confidence,
+          craft.spellId and {recipeId = craft.spellId, spellId = craft.spellId}
+            or nil)
+      end
+    elseif section == "Quest" then
+      for _, quest in ipairs(quests) do
+        add(quest.title, quest.note or "Historical quest reward",
+          "Interface\\Icons\\INV_Misc_Book_09", quest.confidence,
+          {mapID = quest.mapID})
       end
     elseif section == "Map" then
       for _, loc in ipairs(V.itemMapPoints(item.id)) do
@@ -774,10 +804,12 @@ function V.section(item, section)
           "Interface\\Icons\\INV_Misc_Map_01", loc.source, loc)
       end
       for _, ref in ipairs((ns.data.referenceAcquisition or {})[item.id] or {}) do
-        local zone = findZone(ref.mapID)
-        add(ref.title, "Zone: " .. tostring(zone and zone.name or ref.mapID)
-          .. " | no exact trap spawn", "Interface\\Icons\\INV_Misc_Map_01",
-          "classic_reference", {mapID = ref.mapID})
+        if ref.mapID then
+          local zone = findZone(ref.mapID)
+          add(ref.title, "Zone: " .. tostring(zone and zone.name or ref.mapID)
+            .. " | region only, no exact pin", "Interface\\Icons\\INV_Misc_Map_01",
+            ref.confidence, {mapID = ref.mapID})
+        end
       end
     end
   elseif item.kind == "Cooking" or item.kind == "Fishing"
