@@ -34,7 +34,7 @@ Copy the `FishingAtlas` folder into `World of Warcraft/_forever_/Interface/AddOn
 The TOC targets interface `16001`. Verify the interface number on your Forever installation; this client is evolving.
 
 ## Safety and limitations
-A location is an observation of a **player standing near water**, not proof a fish school is at exactly that coordinate. The addon never claims that a saved school is currently spawned. The optional Space override casts Fishing through a secure button when supported; hook and loot interactions remain manual and **not yet tested in-game**. Protected game actions, if added later, will be initiated by player input and tested against Forever's restrictions.
+A location is an observation of a **player standing near water**, not proof a fish school is at exactly that coordinate. The addon never claims that a saved school is currently spawned. The optional Space override casts Fishing on one press and maps Space to the client's native interaction action during the Fishing channel. **Each cast and reel-in requires its own physical key press**. Enable the game's Interact Key and Auto Loot settings; distant or invisible bobbers may still need a manual click. The new binding is **not yet tested in-game**. Protected game actions, if added later, will be initiated by player input and tested against Forever's restrictions.
 
 ## Database baseline
 
@@ -44,6 +44,15 @@ The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.
 For v0.99.7 map markers, neighboring context and Cooking spell requirements,
 see [the v0.99.7 in-game checklist](docs/V0.99.7-IN-GAME-ACCEPTANCE.md).
 See [the 12-case manual test plan](docs/ACCEPTANCE-v0.99.md), [test results](docs/TEST-RESULTS-v0.99.md), and [candidate notes](docs/RELEASE-v0.99.md). Do not treat automated CI as a substitute for in-game verification.
+
+## Fishing controls and school notifications (feature branch)
+
+- Settings > Fishing Atlas > **Use Space**: press Space to cast; after the bobber splashes, press Space again to interact with it. The normal Space action is restored on disabling the mode. Other fishing addons that remap Space must be disabled to avoid competing overrides. No unattended casting or hooking.
+- **Next pole / Next lure** now cycles only through eligible fishing gear currently in your bags or equipped weapon slot. `/fa pole <itemID>` and `/fa lure <itemID>` reject absent items. This records preferences; it does **not** swap weapons or consume a lure. Client-recognized fishing-pole subclasses are accepted even when absent from our partial catalog; unknown lure types still need a verified catalog ID. A remembered item removed from bags is labelled not carried.
+- School tooltips are already sampled automatically at 0.5-second intervals. Enable **Alert on seen/nearby schools** or use `/fa schoolalert on` to get rate-limited alerts for *new readable visible school tooltips* and for *previously saved school observations near your position*. The former gives an approximate **player** location; the latter is **historical** and does not establish an active spawn. `/fa schoolscan` diagnoses what can currently be read.
+- Protected world tooltips (reported on Forever build 70938) cannot be bypassed. Fishing Atlas does **not** enumerate arbitrary active pools or perform synthetic minimap mouse scanning.
+
+All controls above require live Forever acceptance; static tests cannot certify protected keybinding behavior.
 
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests

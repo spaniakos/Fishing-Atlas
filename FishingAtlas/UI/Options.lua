@@ -95,6 +95,7 @@ function O.start()
     if ns.mapPins then ns.mapPins.refresh() end
   end)
   checkbox(panel, -162, "Alert near saved fishing positions", "notifications")
+  checkbox(panel, -186, "Alert on seen/nearby schools", "schoolAlerts")
   local contextToggle = checkbox(panel, -214,
     "Show real parent-map context (where supported)", "mapContext", function()
       if ns.ui and ns.ui.refreshMap then ns.ui.refreshMap() end
@@ -125,7 +126,7 @@ function O.start()
 
   local fishingMode = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
   fishingMode:SetPoint("TOPLEFT", panel, "TOPLEFT", 20, -274)
-  note(panel, 54, -276, "Use Space to manually cast Fishing (out of combat only)")
+  note(panel, 54, -276, "Space: cast, then press again to reel in (out of combat)")
   fishingMode:SetScript("OnShow", function(self)
     self:SetChecked(ns.fishing and ns.fishing.isEnabled() or false)
   end)
@@ -141,11 +142,22 @@ function O.start()
     local pole = profile.fishing_pole and ns.catalog.name("item", profile.fishing_pole)
       or "None"
     local lure = profile.lure and ns.catalog.name("item", profile.lure) or "None"
+    if profile.fishing_pole and not ns.gear.isCarried(profile.fishing_pole) then
+      pole = pole .. " (not carried)"
+    end
+    if profile.lure and not ns.gear.isCarried(profile.lure) then
+      lure = lure .. " (not carried)"
+    end
     gearText:SetText("Preferred pole: " .. pole .. "\nPreferred lure: " .. lure)
   end
   local function cycle(kind)
-    local entries = ns.catalog.byCategory(kind, 100)
-    if #entries == 0 then return end
+    local entries = ns.gear.available(kind)
+    if #entries == 0 then
+      if ns.commands then ns.commands.say("No recognized " .. kind ..
+        " in bags or equipped slot. Fishing gear catalog coverage is incomplete.") end
+      updateGear()
+      return
+    end
     local selected = ns.gear.profile()[kind]
     local nextIndex = 1
     for i, item in ipairs(entries) do
@@ -158,6 +170,7 @@ function O.start()
   action(panel, 20, -370, "Next pole", function() cycle("fishing_pole") end)
   action(panel, 137, -370, "Next lure", function() cycle("lure") end)
   updateGear()
+  panel:SetScript("OnShow", updateGear)
 
   local angleText = note(panel, 20, -408, "")
   local function updateAngle()

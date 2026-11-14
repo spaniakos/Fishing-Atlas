@@ -21,11 +21,17 @@ local refs = P.points(1413)
 assert(#refs == 1 and refs[1].kind == "school_classic_reference")
 assert(refs[1].verifiedSpawn == false)
 ns.storage.db.settings.schoolMapMode = "active"
+local alerts = {}
+ns.commands = {say = function(message) alerts[#alerts + 1] = message end}
+ns.storage.db.settings.schoolAlerts = true
 assert(L.recordVisible("Firefin Snapper School", 1413, 0.42, 0.53))
+assert(#alerts == 1 and alerts[1]:find("Visible fishing school", 1, true),
+  "Visible school should produce one opt-in alert")
 assert(#P.points(1413) == 1 and P.points(1413)[1].kind == "school_live_nearby")
 local ok, added = L.recordVisible("Firefin Snapper School", 1413, 0.423, 0.535)
 assert(ok and added == false and #P.points(1413) == 1,
   "Small player movements cannot multiply one school into fake sightings")
+assert(#alerts == 1, "Refreshing a visible sighting must never spam another alert")
 assert(#P.points(1414) == 0)
 assert(not L.recordVisible("Unknown object", 1413, 0.42, 0.53))
 clock = clock + 121
@@ -40,6 +46,7 @@ C_Map = {GetBestMapForUnit = function() return 1413 end,
 local found, message = L.scan()
 assert(found == 1 and type(message) == "string")
 assert(#P.points(1413) == 1)
+assert(#alerts == 1, "Same school inside cooldown cannot repeat after cache expiry")
 -- Forever build 70938 can hand an addon a protected/secret tooltip string.
 -- The test runtime cannot model secret values, so simulate the exact rejected
 -- string-method access with a getter that throws the client's error text.
@@ -70,6 +77,7 @@ assert(mapUpdates == 1 and pinUpdates == 1,
   "A new sighting must update custom and native map pins")
 assert(pcall(update, {}, 0.5) and mapUpdates == 1,
   "Repeated sightings must not cause a redraw every scan")
+ns.storage.db.settings.schoolAlerts = false
 GameTooltip.IsShown = function() return false end
 clock = clock + 61
 assert(pcall(update, {}, 0.5) and mapUpdates == 2 and pinUpdates == 2,

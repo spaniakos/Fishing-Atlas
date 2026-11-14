@@ -87,11 +87,16 @@ function commands.run(raw)
   elseif command == "pole" or command == "lure" then
     local kind = command == "pole" and "fishing_pole" or "lure"
     local ok, name = ns.gear.set(kind, rest)
-    say(ok and ("Saved preferred " .. command .. ": " .. name .. " (manual equip only)") or name)
+    say(ok and ("Saved preferred " .. command .. " from inventory: " ..
+      name .. " (manual equip/apply only)") or name)
   elseif command == "profile" then
     local profile = ns.gear.profile()
-    say("Pole: " .. (profile.fishing_pole and ns.catalog.name("item", profile.fishing_pole) or "not selected"))
-    say("Lure: " .. (profile.lure and ns.catalog.name("item", profile.lure) or "not selected"))
+    for _, pair in ipairs({{"Pole", "fishing_pole"}, {"Lure", "lure"}}) do
+      local id = profile[pair[2]]
+      local name = id and ns.catalog.name("item", id) or "not selected"
+      if id and not ns.gear.isCarried(id) then name = name .. " (not carried)" end
+      say(pair[1] .. ": " .. name)
+    end
   elseif command == "nearby" then
     local mapID, err = location()
     if not mapID then say(err); return end
@@ -206,6 +211,15 @@ function commands.run(raw)
   elseif command == "fishing" then
     local _, message = ns.fishing.setEnabled(rest == "on")
     say(message)
+  elseif command == "schoolalert" then
+    if rest == "on" or rest == "off" then
+      ns.storage.db.settings.schoolAlerts = rest == "on"
+      say("Nearby school alerts " .. rest ..
+        " (newly visible tooltips and historical school observations)")
+    else say("Use: /fa schoolalert on|off") end
+  elseif command == "schoolscan" then
+    local count, message = ns.liveSchools.scan()
+    say(message or ("Recent visible school sightings: " .. tostring(count or 0)))
   elseif command == "notify" then
     if rest == "on" or rest == "off" then
       ns.storage.db.settings.notifications = rest == "on"
@@ -232,7 +246,8 @@ function commands.run(raw)
   else
     say("Explorer: /fa or /fa ui; Fish-to-Table: /fa plan <spellID> [crafts]; /fa diagnose")
     say("Commands: add [label], school [name], schools, nearby, stats, waypoint, waypointschool")
-    say("Also: radius <percent>, fishing on|off, notify on|off, pole <id>, lure <id>, profile")
+    say("Also: radius <percent>, fishing on|off, notify on|off, schoolalert on|off, schoolscan")
+    say("Gear: pole <owned itemID>, lure <owned itemID>, profile")
     say("Journal: caught [quantity] <item name>, collection, lootdebug, guide [fish], route [spot]")
     say("Recipes: recipeadd <spellID> [name], recipescan (open Cooking first)")
     say("Database: catalog, find <term>, fish, gear, zones, recipeid <spell ID>, mapdebug [mapID]")
