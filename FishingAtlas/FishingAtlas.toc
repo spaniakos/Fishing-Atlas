@@ -2,7 +2,7 @@
 ## Title: Fishing Atlas
 ## IconTexture: Interface\AddOns\FishingAtlas\Art\atlas-emblem
 ## Notes: Fishing discovery journal and guide for WoW Forever
-## Version: 0.99.7
+## Version: 0.99.8
 ## Author: Georgios Spanos and contributors
 ## SavedVariables: FishingAtlasDB
 ## OptionalDeps: TomTom

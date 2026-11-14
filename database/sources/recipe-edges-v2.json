@@ -1,0 +1,116 @@
+{
+  "schema": "fishing-atlas.recipe-edges-v2/1",
+  "notes": "Explicit, source-linked spell -> teaching item edges; historical vendors remain references, not claimed current Forever stock.",
+  "edges": [
+    {
+      "spellId": 15935,
+      "teachingItemId": 12226,
+      "requiredSkill": 1,
+      "source": "forever_client_public_reference",
+      "sourceBuild": "1.60.1.70862",
+      "url": "https://www.wowhead.com/forever/spell=15935/crispy-bat-wing",
+      "sources": []
+    },
+    {
+      "spellId": 2795,
+      "teachingItemId": 2889,
+      "requiredSkill": 25,
+      "source": "forever_client_public_reference",
+      "sourceBuild": "1.60.1.70862",
+      "url": "https://zephras.com/forever/enUS/spell/2795/",
+      "sources": [
+        {
+          "kind": "vendor",
+          "npcId": 340,
+          "name": "Kendor Kabonka",
+          "mapID": 1453,
+          "x": 0.775,
+          "y": 0.527,
+          "source": "classic_vendor_reference"
+        },
+        {
+          "kind": "quest",
+          "questId": 384,
+          "name": "Beer Basted Boar Ribs",
+          "mapID": 1426,
+          "x": 0.468,
+          "y": 0.524,
+          "source": "classic_quest_reference"
+        }
+      ]
+    },
+    {
+      "spellId": 18247,
+      "teachingItemId": 13949,
+      "requiredSkill": 275,
+      "source": "forever_client_public_reference",
+      "sourceBuild": "1.60.1.70862",
+      "url": "https://www.foreverdb.app/en/forever/items/13949/recipe-baked-salmon",
+      "sources": [
+        {
+          "kind": "vendor",
+          "name": "Vivianna",
+          "mapID": 1444,
+          "x": 0.313,
+          "y": 0.435,
+          "source": "cmangos_classic_reference"
+        },
+        {
+          "kind": "vendor",
+          "name": "Sheendra Tallgrass",
+          "mapID": 1444,
+          "x": 0.745,
+          "y": 0.427,
+          "source": "cmangos_classic_reference"
+        }
+      ]
+    },
+    {
+      "spellId": 7751,
+      "teachingItemId": 6325,
+      "requiredSkill": 1,
+      "source": "forever_client_public_reference",
+      "sourceBuild": "1.60.1.70862",
+      "url": "https://www.foreverdb.app/en/forever/items/6325/recipe-brilliant-smallfish",
+      "sources": [
+        {
+          "kind": "vendor",
+          "npcId": 8508,
+          "name": "Gretta Ganter",
+          "mapID": 1426,
+          "x": 0.315,
+          "y": 0.447,
+          "source": "foreverdb_vendor_reference"
+        }
+      ]
+    },
+    {
+      "spellId": 7753,
+      "teachingItemId": 6328,
+      "requiredSkill": 50,
+      "source": "forever_client_public_reference",
+      "sourceBuild": "1.60.1.70938",
+      "url": "https://forever-tavern.com/items/6328-recipe-longjaw-mud-snapper/",
+      "sources": [
+        {
+          "kind": "vendor",
+          "npcId": 5940,
+          "name": "Harn Longcast",
+          "mapID": 1412,
+          "x": 0.467,
+          "y": 0.592,
+          "source": "classic_vendor_reference"
+        }
+      ]
+    },
+    {
+      "spellId": 18243,
+      "teachingItemId": 13945,
+      "requiredSkill": 250,
+      "source": "forever_public_reference",
+      "sourceBuild": "1.60.1.70938",
+      "url": "https://www.foreverdb.app/en/forever/spells/18243/nightfin-soup",
+      "sources": []
+    }
+  ]
+}

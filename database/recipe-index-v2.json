@@ -1,0 +1,6405 @@
+{
+  "conflicts": [],
+  "coverage": {
+    "learnRankKnown": 14,
+    "teachingItemKnown": 6,
+    "total": 136,
+    "unresolvedLearn": 122,
+    "withAcquisition": 13
+  },
+  "meta": {
+    "catalogSource": "database/catalog.json",
+    "licenseCredit": "EG Link Cooking observations: Efficient Games CC BY 4.0; Blizzard game spell/item data. See DATA-LICENSES.txt",
+    "notes": "No dish-name inference; client cookingSkill=1 excluded as learn requirement.",
+    "observations": "database/observed/eg-cooking.json",
+    "references": "database/sources/recipe-edges-v2.json",
+    "sourceCommit": "ea970da071079b32e56f349e09648ff0e314b351"
+  },
+  "records": [
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #818",
+      "output": null,
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 4470,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 75,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 25,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 818,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2538",
+      "output": {
+        "itemId": 2679,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2672,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2538,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2539,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2539,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2539,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 2539,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2539,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2539,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2539,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2539,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2539,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2539",
+      "output": {
+        "itemId": 2680,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2672,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 10,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 50,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2539,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2540",
+      "output": {
+        "itemId": 2681,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 769,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2540,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2541,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2541,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2541,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 2541,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2541,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2541,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2541,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2541,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2541,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2541",
+      "output": {
+        "itemId": 2684,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2673,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 50,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2541,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2542",
+      "output": {
+        "itemId": 724,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 723,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2542,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2543",
+      "output": {
+        "itemId": 733,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 729,
+          "quantity": 1
+        },
+        {
+          "itemId": 730,
+          "quantity": 1
+        },
+        {
+          "itemId": 731,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 155,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 115,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2543,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2544,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2544,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2544,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 2544,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2544,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2544,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2544,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2544,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2544,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2544",
+      "output": {
+        "itemId": 2683,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2674,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 155,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 75,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 115,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2544,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2545",
+      "output": {
+        "itemId": 2682,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2675,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 165,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 125,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2545,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2546,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2546,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2546,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 2546,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2546,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2546,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2546,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 2546,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 2546,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2546",
+      "output": {
+        "itemId": 2687,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2677,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 160,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 80,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 120,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2546,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2547",
+      "output": {
+        "itemId": 1082,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1081,
+          "quantity": 1
+        },
+        {
+          "itemId": 1080,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 175,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 135,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2547,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2548",
+      "output": {
+        "itemId": 2685,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2677,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 170,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2548,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2549",
+      "output": {
+        "itemId": 1017,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1015,
+          "quantity": 2
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 180,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2549,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "itemId": 2889,
+          "mapID": 1426,
+          "name": "Beer Basted Boar Ribs",
+          "questId": 384,
+          "relation": "quest_rewards_item",
+          "source": "classic_quest_reference",
+          "x": 0.468,
+          "y": 0.524
+        },
+        {
+          "itemId": 2889,
+          "mapID": 1453,
+          "name": "Kendor Kabonka",
+          "npcId": 340,
+          "relation": "vendor_sells_item",
+          "source": "classic_vendor_reference",
+          "x": 0.775,
+          "y": 0.527
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #2795",
+      "output": {
+        "itemId": 2888,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2886,
+          "quantity": 1
+        },
+        {
+          "itemId": 2894,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 100,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 25,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://zephras.com/forever/enUS/spell/2795/"
+        },
+        "yellow": {
+          "rank": 60,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 2795,
+      "teachingItems": [
+        {
+          "itemId": 2889,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://zephras.com/forever/enUS/spell/2795/"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3370",
+      "output": {
+        "itemId": 3662,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2924,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 160,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 120,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3370,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3371",
+      "output": {
+        "itemId": 3220,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3173,
+          "quantity": 1
+        },
+        {
+          "itemId": 3172,
+          "quantity": 1
+        },
+        {
+          "itemId": 3174,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 100,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3371,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3372",
+      "output": {
+        "itemId": 3663,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1468,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 170,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3372,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3373",
+      "output": {
+        "itemId": 3664,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3667,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 200,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 160,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3373,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3376",
+      "output": {
+        "itemId": 3665,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3685,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 210,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 170,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3376,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3377",
+      "output": {
+        "itemId": 3666,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2251,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 190,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 150,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3377,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3397",
+      "output": {
+        "itemId": 3726,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3730,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 190,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 150,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3397,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3398",
+      "output": {
+        "itemId": 3727,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3731,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 175,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3398,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3399",
+      "output": {
+        "itemId": 3728,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3731,
+          "quantity": 2
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 230,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 190,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3399,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #3400",
+      "output": {
+        "itemId": 3729,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3712,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 3400,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #4094",
+      "output": {
+        "itemId": 4457,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3404,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 4094,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6412",
+      "output": {
+        "itemId": 5472,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5465,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 50,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6412,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6413",
+      "output": {
+        "itemId": 5473,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5466,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 100,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 60,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6413,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6414",
+      "output": {
+        "itemId": 5474,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5467,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 115,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 75,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6414,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6415",
+      "output": {
+        "itemId": 5476,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5468,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6415,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6416",
+      "output": {
+        "itemId": 5477,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5469,
+          "quantity": 1
+        },
+        {
+          "itemId": 4536,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6416,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6417",
+      "output": {
+        "itemId": 5478,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5051,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 170,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6417,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6418",
+      "output": {
+        "itemId": 5479,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5470,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 180,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6418,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6419",
+      "output": {
+        "itemId": 5480,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5471,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 190,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 150,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6419,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6499,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6499,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6499,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 6499,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6499,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6499,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6499,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6499,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6499,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6499",
+      "output": {
+        "itemId": 5525,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5503,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 50,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6499,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6500,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6500,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6500,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 6500,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6500,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6500,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6500,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 6500,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 6500,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6500",
+      "output": {
+        "itemId": 5527,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5504,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 205,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 125,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 165,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6500,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #6501",
+      "output": {
+        "itemId": 5526,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5503,
+          "quantity": 1
+        },
+        {
+          "itemId": 1179,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 170,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 6501,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7213",
+      "output": {
+        "itemId": 6038,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 4655,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7213,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "itemId": 6325,
+          "mapID": 1429,
+          "name": "Tharynn Bouden",
+          "npcId": 66,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70938",
+          "x": 0.4194,
+          "y": 0.6711
+        },
+        {
+          "installs": 1,
+          "itemId": 6325,
+          "mapID": 1456,
+          "name": "Sewa Mistrunner",
+          "npcId": 3029,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-10",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70888",
+          "x": 0.558,
+          "y": 0.4715
+        },
+        {
+          "installs": 1,
+          "itemId": 6325,
+          "mapID": 1420,
+          "name": "Martine Tramblay",
+          "npcId": 3550,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70938",
+          "x": 0.6578,
+          "y": 0.5972
+        },
+        {
+          "itemId": 6325,
+          "mapID": 1426,
+          "name": "Gretta Ganter",
+          "npcId": 8508,
+          "relation": "vendor_sells_item",
+          "source": "foreverdb_vendor_reference",
+          "x": 0.315,
+          "y": 0.447
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7751",
+      "output": {
+        "itemId": 6290,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6291,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 1,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.foreverdb.app/en/forever/items/6325/recipe-brilliant-smallfish"
+        },
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7751,
+      "teachingItems": [
+        {
+          "itemId": 6325,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.foreverdb.app/en/forever/items/6325/recipe-brilliant-smallfish"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7752",
+      "output": {
+        "itemId": 787,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6303,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7752,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "itemId": 6328,
+          "mapID": 1429,
+          "name": "Tharynn Bouden",
+          "npcId": 66,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70938",
+          "x": 0.4194,
+          "y": 0.6711
+        },
+        {
+          "installs": 1,
+          "itemId": 6328,
+          "mapID": 1456,
+          "name": "Naal Mistrunner",
+          "npcId": 3027,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70888",
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "itemId": 6328,
+          "mapID": 1421,
+          "name": "Killian Sanatha",
+          "npcId": 5748,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70862",
+          "x": 0.3293,
+          "y": 0.179
+        },
+        {
+          "itemId": 6328,
+          "mapID": 1412,
+          "name": "Harn Longcast",
+          "npcId": 5940,
+          "relation": "vendor_sells_item",
+          "source": "classic_vendor_reference",
+          "x": 0.467,
+          "y": 0.592
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7753",
+      "output": {
+        "itemId": 4592,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6289,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 50,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70938",
+          "url": "https://forever-tavern.com/items/6328-recipe-longjaw-mud-snapper/"
+        },
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7753,
+      "teachingItems": [
+        {
+          "itemId": 6328,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70938",
+          "url": "https://forever-tavern.com/items/6328-recipe-longjaw-mud-snapper/"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7754",
+      "output": {
+        "itemId": 6316,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6317,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7754,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7755",
+      "output": {
+        "itemId": 4593,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6308,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 180,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7755,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7827",
+      "output": {
+        "itemId": 5095,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6361,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 130,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 90,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7827,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #7828",
+      "output": {
+        "itemId": 4594,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6362,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 230,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 190,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 7828,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #8238",
+      "output": {
+        "itemId": 6657,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6522,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 165,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 125,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 8238,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #8604",
+      "output": {
+        "itemId": 6888,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6889,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 8604,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #8607",
+      "output": {
+        "itemId": 6890,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3173,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 120,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 80,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 8607,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #9513",
+      "output": {
+        "itemId": 7676,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2452,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 100,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 9513,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #13028",
+      "output": {
+        "itemId": 10841,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3821,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 13028,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15853",
+      "output": {
+        "itemId": 12209,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1015,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 205,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 165,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15853,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15855",
+      "output": {
+        "itemId": 12210,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12184,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15855,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15856",
+      "output": {
+        "itemId": 13851,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12203,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15856,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15861",
+      "output": {
+        "itemId": 12212,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12202,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        },
+        {
+          "itemId": 4536,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15861,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15863",
+      "output": {
+        "itemId": 12213,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12037,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15863,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15865",
+      "output": {
+        "itemId": 12214,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12037,
+          "quantity": 1
+        },
+        {
+          "itemId": 2596,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15865,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15906",
+      "output": {
+        "itemId": 12217,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12037,
+          "quantity": 1
+        },
+        {
+          "itemId": 4402,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 240,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15906,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15910",
+      "output": {
+        "itemId": 12215,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12204,
+          "quantity": 2
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 240,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15910,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15915",
+      "output": {
+        "itemId": 12216,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12206,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15915,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15933",
+      "output": {
+        "itemId": 12218,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12207,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15933,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "itemId": 12226,
+          "mapID": 1420,
+          "name": "Abigail Shiel",
+          "npcId": 2118,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70862",
+          "x": 0.61,
+          "y": 0.5246
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #15935",
+      "output": {
+        "itemId": 12224,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12223,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 1,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.wowhead.com/forever/spell=15935/crispy-bat-wing"
+        },
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 15935,
+      "teachingItems": [
+        {
+          "itemId": 12226,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.wowhead.com/forever/spell=15935/crispy-bat-wing"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18238",
+      "output": {
+        "itemId": 6887,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 4603,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18238,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18239",
+      "output": {
+        "itemId": 13927,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13754,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18239,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18240",
+      "output": {
+        "itemId": 13928,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13755,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 320,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18240,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18241",
+      "output": {
+        "itemId": 13930,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13758,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18241,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18242",
+      "output": {
+        "itemId": 13929,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13756,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 320,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18242,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Nightfin Soup",
+      "output": {
+        "itemId": 13931,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13759,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 330,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 250,
+          "source": "forever_public_reference",
+          "sourceBuild": "1.60.1.70938",
+          "url": "https://www.foreverdb.app/en/forever/spells/18243/nightfin-soup"
+        },
+        "yellow": {
+          "rank": 290,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18243,
+      "teachingItems": [
+        {
+          "itemId": 13945,
+          "source": "forever_public_reference",
+          "sourceBuild": "1.60.1.70938",
+          "url": "https://www.foreverdb.app/en/forever/spells/18243/nightfin-soup"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18244",
+      "output": {
+        "itemId": 13932,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13760,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 330,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 290,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18244,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18245",
+      "output": {
+        "itemId": 13933,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13888,
+          "quantity": 1
+        },
+        {
+          "itemId": 159,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 355,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 315,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18245,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18246",
+      "output": {
+        "itemId": 13934,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13893,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 355,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 315,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18246,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "itemId": 13949,
+          "mapID": 1444,
+          "name": "Vivianna",
+          "relation": "vendor_sells_item",
+          "source": "cmangos_classic_reference",
+          "x": 0.313,
+          "y": 0.435
+        },
+        {
+          "itemId": 13949,
+          "mapID": 1444,
+          "name": "Sheendra Tallgrass",
+          "relation": "vendor_sells_item",
+          "source": "cmangos_classic_reference",
+          "x": 0.745,
+          "y": 0.427
+        },
+        {
+          "installs": 1,
+          "itemId": 13949,
+          "mapID": 1444,
+          "name": "Sheendra Tallgrass",
+          "npcId": 8145,
+          "relation": "vendor_sells_item",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_vendor",
+          "sourceBuild": "1.60.1.70888",
+          "x": 0.745,
+          "y": 0.428
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #18247",
+      "output": {
+        "itemId": 13935,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13889,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 355,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 275,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.foreverdb.app/en/forever/items/13949/recipe-baked-salmon"
+        },
+        "yellow": {
+          "rank": 315,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 18247,
+      "teachingItems": [
+        {
+          "itemId": 13949,
+          "source": "forever_client_public_reference",
+          "sourceBuild": "1.60.1.70862",
+          "url": "https://www.foreverdb.app/en/forever/items/13949/recipe-baked-salmon"
+        }
+      ]
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #20626",
+      "output": {
+        "itemId": 16766,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 7974,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        },
+        {
+          "itemId": 1179,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 20626,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #20916",
+      "output": {
+        "itemId": 8364,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 8365,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 20916,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #21143",
+      "output": {
+        "itemId": 17197,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6889,
+          "quantity": 1
+        },
+        {
+          "itemId": 17194,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 21143,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #21144",
+      "output": {
+        "itemId": 17198,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6889,
+          "quantity": 1
+        },
+        {
+          "itemId": 1179,
+          "quantity": 1
+        },
+        {
+          "itemId": 17196,
+          "quantity": 1
+        },
+        {
+          "itemId": 17194,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 115,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 75,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 21144,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 21175,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 21175,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 21175,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 21175,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 21175,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 21175,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 21175,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 21175,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 21175,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #21175",
+      "output": {
+        "itemId": 17222,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12205,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 200,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 240,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 21175,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #22480",
+      "output": {
+        "itemId": 18045,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12208,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 305,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 265,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 22480,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #22761",
+      "output": {
+        "itemId": 18254,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 18255,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 355,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 315,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 22761,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #24418",
+      "output": {
+        "itemId": 20074,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3667,
+          "quantity": 2
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 200,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 160,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 24418,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #24801",
+      "output": {
+        "itemId": 20452,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 20424,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 365,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 325,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 24801,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #25659",
+      "output": {
+        "itemId": 21023,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2692,
+          "quantity": 1
+        },
+        {
+          "itemId": 9061,
+          "quantity": 1
+        },
+        {
+          "itemId": 8150,
+          "quantity": 1
+        },
+        {
+          "itemId": 21024,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 365,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 325,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 25659,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #25704",
+      "output": {
+        "itemId": 21072,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 21071,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 160,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 120,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 25704,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #25954",
+      "output": {
+        "itemId": 21217,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 21153,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 25954,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #470359",
+      "output": {
+        "itemId": 232436,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13888,
+          "quantity": 1
+        },
+        {
+          "itemId": 227813,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 365,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 325,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 470359,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #470370",
+      "output": {
+        "itemId": 232438,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13758,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 365,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 325,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 470370,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1225758",
+      "output": {
+        "itemId": 238637,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12202,
+          "quantity": 2
+        },
+        {
+          "itemId": 239016,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 260,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1225758,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1225759",
+      "output": {
+        "itemId": 238638,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12203,
+          "quantity": 2
+        },
+        {
+          "itemId": 239016,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 260,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1225759,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1225760",
+      "output": {
+        "itemId": 238639,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12207,
+          "quantity": 2
+        },
+        {
+          "itemId": 239016,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 260,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1225760,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1225762",
+      "output": {
+        "itemId": 238641,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 4603,
+          "quantity": 12
+        },
+        {
+          "itemId": 12184,
+          "quantity": 4
+        },
+        {
+          "itemId": 6362,
+          "quantity": 3
+        },
+        {
+          "itemId": 239017,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 290,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1225762,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1225763",
+      "output": {
+        "itemId": 238642,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13888,
+          "quantity": 12
+        },
+        {
+          "itemId": 3712,
+          "quantity": 4
+        },
+        {
+          "itemId": 3404,
+          "quantity": 3
+        },
+        {
+          "itemId": 239017,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 290,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1225763,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [
+        {
+          "installs": 1,
+          "mapID": 1426,
+          "name": "Cook Ghilm",
+          "npcId": 1355,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 1229737,
+          "x": 0.6836,
+          "y": 0.5442
+        },
+        {
+          "installs": 1,
+          "mapID": 1456,
+          "name": "Aska Mistrunner",
+          "npcId": 3026,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-11",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 1229737,
+          "x": 0.5101,
+          "y": 0.5292
+        },
+        {
+          "installs": 1,
+          "mapID": 1433,
+          "name": "Crystal Boughman",
+          "npcId": 3087,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-13",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 1229737,
+          "x": 0.1768,
+          "y": 0.4368
+        },
+        {
+          "installs": 1,
+          "mapID": 1411,
+          "name": "Cook Torka",
+          "npcId": 3191,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-07",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70840",
+          "spellId": 1229737,
+          "x": 0.512,
+          "y": 0.4251
+        },
+        {
+          "installs": 1,
+          "mapID": 1454,
+          "name": "Zamja",
+          "npcId": 3399,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 1229737,
+          "x": 0.5749,
+          "y": 0.5372
+        },
+        {
+          "installs": 1,
+          "mapID": 1453,
+          "name": "Stephen Ryback",
+          "npcId": 5482,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 1229737,
+          "x": 0.7815,
+          "y": 0.5328
+        },
+        {
+          "installs": 1,
+          "mapID": 1413,
+          "name": "Duhng",
+          "npcId": 8306,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-08",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 1229737,
+          "x": 0.5529,
+          "y": 0.3182
+        },
+        {
+          "installs": 1,
+          "mapID": 2521,
+          "name": "Zerril Softbreeze",
+          "npcId": 251905,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-12",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888",
+          "spellId": 1229737,
+          "x": 0.4382,
+          "y": 0.4386
+        },
+        {
+          "installs": 1,
+          "mapID": 1420,
+          "name": "William Pickman",
+          "npcId": 265944,
+          "relation": "trainer_teaches_spell",
+          "seenOn": "2026-11-09",
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70862",
+          "spellId": 1229737,
+          "x": 0.6167,
+          "y": 0.5154
+        }
+      ],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1229737",
+      "output": {
+        "itemId": 279981,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 4470,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 5,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": {
+          "rank": 20,
+          "source": "forever_observed_trainer",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "yellow": {
+          "rank": 1,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1229737,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1229745",
+      "output": {
+        "itemId": 279967,
+        "quantity": 1
+      },
+      "profession": "Fishing",
+      "professionId": 356,
+      "reagents": [
+        {
+          "itemId": 6291,
+          "quantity": 1
+        },
+        {
+          "itemId": 3371,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 20,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 20,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1229745,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1247741",
+      "output": {
+        "itemId": 8957,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 8959,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 210,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1247741,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249957",
+      "output": {
+        "itemId": 249865,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 159,
+          "quantity": 1
+        },
+        {
+          "itemId": 2447,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 30,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249957,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249958",
+      "output": {
+        "itemId": 249866,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1179,
+          "quantity": 1
+        },
+        {
+          "itemId": 785,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 125,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 105,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249958,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249959",
+      "output": {
+        "itemId": 249867,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1205,
+          "quantity": 1
+        },
+        {
+          "itemId": 3357,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 185,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 155,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249959,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249960",
+      "output": {
+        "itemId": 249868,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1708,
+          "quantity": 1
+        },
+        {
+          "itemId": 3818,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 235,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 195,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249960,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249961",
+      "output": {
+        "itemId": 249869,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1645,
+          "quantity": 1
+        },
+        {
+          "itemId": 8838,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 250,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249961,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249962",
+      "output": {
+        "itemId": 249870,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 8766,
+          "quantity": 1
+        },
+        {
+          "itemId": 13465,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 290,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 260,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249962,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249963",
+      "output": {
+        "itemId": 249871,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 159,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        },
+        {
+          "itemId": 1475,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 30,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249963,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249964",
+      "output": {
+        "itemId": 249872,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1179,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 2
+        },
+        {
+          "itemId": 3174,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 120,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 105,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249964,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249965",
+      "output": {
+        "itemId": 249873,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1205,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 2
+        },
+        {
+          "itemId": 1468,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 145,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 135,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249965,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249966",
+      "output": {
+        "itemId": 249874,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1708,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 3
+        },
+        {
+          "itemId": 5637,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 195,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 185,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249966,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249967",
+      "output": {
+        "itemId": 249875,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 1645,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 3
+        },
+        {
+          "itemId": 4402,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 225,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 215,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249967,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1249968",
+      "output": {
+        "itemId": 249876,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 8766,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 4
+        },
+        {
+          "itemId": 8146,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 270,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1249968,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250142",
+      "output": {
+        "itemId": 250065,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5471,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 245,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 230,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250142,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250143",
+      "output": {
+        "itemId": 250066,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3404,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250143,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250144",
+      "output": {
+        "itemId": 250067,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12223,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250144,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250145",
+      "output": {
+        "itemId": 250068,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3712,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250145,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250146",
+      "output": {
+        "itemId": 250069,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12203,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 315,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 285,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250146,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250147",
+      "output": {
+        "itemId": 250070,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3730,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250147,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250148",
+      "output": {
+        "itemId": 250071,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 5471,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250148,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250149",
+      "output": {
+        "itemId": 250072,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12202,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250149,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250150",
+      "output": {
+        "itemId": 250073,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12184,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250150,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250151",
+      "output": {
+        "itemId": 250074,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3730,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 3
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 200,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250151,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250152",
+      "output": {
+        "itemId": 250075,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12184,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250152,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250153",
+      "output": {
+        "itemId": 250076,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12184,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 245,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 230,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250153,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250154",
+      "output": {
+        "itemId": 250077,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12184,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 150,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 115,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250154,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250155",
+      "output": {
+        "itemId": 250078,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12207,
+          "quantity": 2
+        },
+        {
+          "itemId": 2692,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 195,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250155,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250156",
+      "output": {
+        "itemId": 250079,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 3685,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 75,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 35,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250156,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250157",
+      "output": {
+        "itemId": 250080,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6889,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 95,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 80,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250157,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1250158",
+      "output": {
+        "itemId": 250081,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 7974,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 310,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1250158,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1252566",
+      "output": {
+        "itemId": 251525,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 251524,
+          "quantity": 1
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 165,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 125,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1252566,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1255241",
+      "output": {
+        "itemId": 252683,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 252948,
+          "quantity": 1
+        },
+        {
+          "itemId": 5471,
+          "quantity": 1
+        },
+        {
+          "itemId": 12207,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": null,
+        "learn": null,
+        "yellow": null
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1255241,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1262978",
+      "output": {
+        "itemId": 279957,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 12037,
+          "quantity": 2
+        },
+        {
+          "itemId": 12204,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 150,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 145,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1262978,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1262990",
+      "output": {
+        "itemId": 279965,
+        "quantity": 1
+      },
+      "profession": "Fishing",
+      "professionId": 356,
+      "reagents": [
+        {
+          "itemId": 4470,
+          "quantity": 2
+        },
+        {
+          "itemId": 8925,
+          "quantity": 1
+        },
+        {
+          "itemId": 8365,
+          "quantity": 2
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 145,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 140,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1262990,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1262998",
+      "output": {
+        "itemId": 279966,
+        "quantity": 1
+      },
+      "profession": "Fishing",
+      "professionId": 356,
+      "reagents": [
+        {
+          "itemId": 4470,
+          "quantity": 5
+        },
+        {
+          "itemId": 14048,
+          "quantity": 2
+        },
+        {
+          "itemId": 273295,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 300,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 300,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1262998,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1263067",
+      "output": {
+        "itemId": 279982,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 10284,
+          "quantity": 10
+        },
+        {
+          "itemId": 159,
+          "quantity": 5
+        },
+        {
+          "itemId": 3713,
+          "quantity": 4
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 300,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 300,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1263067,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1270632",
+      "output": {
+        "itemId": 263507,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 10284,
+          "quantity": 5
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 85,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 80,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1270632,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1270633",
+      "output": {
+        "itemId": 263509,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 6889,
+          "quantity": 2
+        },
+        {
+          "itemId": 10284,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 45,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 30,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1270633,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1270635",
+      "output": {
+        "itemId": 263512,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 2675,
+          "quantity": 1
+        },
+        {
+          "itemId": 10284,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 55,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 40,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1270635,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1283400",
+      "output": {
+        "itemId": 279961,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 11291,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 105,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 95,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1283400,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1291341",
+      "output": {
+        "itemId": 279974,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 272941,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 205,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1291341,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1294014",
+      "output": {
+        "itemId": 267341,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 249796,
+          "quantity": 3
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 285,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 280,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1294014,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1295805",
+      "output": {
+        "itemId": 274971,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 730,
+          "quantity": 2
+        },
+        {
+          "itemId": 12206,
+          "quantity": 1
+        },
+        {
+          "itemId": 2692,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 240,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 220,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1295805,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1295834",
+      "output": {
+        "itemId": 274976,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 769,
+          "quantity": 2
+        },
+        {
+          "itemId": 2678,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 230,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 200,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1295834,
+      "teachingItems": []
+    },
+    {
+      "acquisitions": [],
+      "clientRecipeId": null,
+      "confidence": "verified_client",
+      "name": "Spell #1319313",
+      "output": {
+        "itemId": 286152,
+        "quantity": 1
+      },
+      "profession": "Cooking",
+      "professionId": 185,
+      "reagents": [
+        {
+          "itemId": 13890,
+          "quantity": 1
+        },
+        {
+          "itemId": 3713,
+          "quantity": 1
+        }
+      ],
+      "skills": {
+        "grey": {
+          "rank": 255,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        },
+        "learn": null,
+        "yellow": {
+          "rank": 245,
+          "source": "client_recipe_extract",
+          "sourceBuild": "1.60.1.70888"
+        }
+      },
+      "sourceBuild": "1.60.1.70888",
+      "spellId": 1319313,
+      "teachingItems": []
+    }
+  ],
+  "schema": "fishing-atlas.recipe-index-v2/1"
+}

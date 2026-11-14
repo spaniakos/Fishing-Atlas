@@ -852,7 +852,7 @@ local function build()
   label(frame, "GameFontNormalHuge", 665, 42, 105, -7):SetText("Fishing Atlas")
   label(frame, "GameFontHighlight", 670, 25, 108, -51):SetText("The Azeroth Fishing Compendium")
   versionLabel = label(frame, "GameFontHighlightSmall", 267, 30, 851, -21)
-  versionLabel:SetText("v0.99.7  |  Data: sourced + reference")
+  versionLabel:SetText("v0.99.8  |  Recipes v2 (development)")
   button(frame, "X", 1167, -10, 30, 31, function() frame:Hide() end)
   button(frame, "?", 1132, -10, 30, 31, function()
     if ns.issues then ns.issues.open() end

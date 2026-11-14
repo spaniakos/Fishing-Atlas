@@ -1,3 +1,13 @@
+## v0.99.8 — Recipes v2 (in progress, not released)
+- Begin canonical ID-based recipe index generated from 136 catalog spells, pinned
+  Forever trainer observations and explicit spell-to-teaching-item references.
+- Preserve build/source provenance, distinguish learn rank vs yellow/grey
+  thresholds and trainer-teaches-spell vs vendor-sells-item vs quest-rewards-item.
+- Strict item-ID joins only: never infer teaching scrolls from similar dish names.
+- Add RecipeRepository (read-only graph queries) and CI coverage/conflict tests;
+  existing Recipes UI and per-character SavedVariables remain unchanged until
+  the next migration/refactor stage. See issue #26.
+
 # Fishing Atlas changelog
 
 ## v0.99.7 — Map integrity and geographic context (client acceptance pending)
