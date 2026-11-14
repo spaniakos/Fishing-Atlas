@@ -25,7 +25,7 @@ UI.recipeFilter = "all"
 UI.searchAll = true
 local frame, search, listCount, listSlider, listRegion, headerName, headerMeta
 local detailsScroll, detailsChild, mapSurface, mapCaption, zoneInfo, relatedTitle
-local fullMap, fullMapSurface, fullMapLabel
+local fullMap, fullMapSurface, fullMapLabel, schoolModeButton
 local active, rows, sidebar, tabs, subTabs, detailRows, rightRows = nil, {}, {}, {}, {}, {}, {}
 local results, details = {}, {}
 local alertsButton, mapPinsButton, footerStatus, versionLabel, context, contextButtons
@@ -252,16 +252,44 @@ local function renderMap()
   if not mapSurface then return end
   local mapID, sourced = selectedMap()
   local locations = sourced and ns.viewModel.mapPoints(active) or {}
+  local mode = ns.viewModel.schoolMapMode and ns.viewModel.schoolMapMode() or "active"
+  if schoolModeButton then
+    schoolModeButton.text:SetText(mode == "active" and "Active only" or "All probable")
+  end
   ns.zoneMap.render(mapSurface, mapID, locations)
-  mapCaption:SetText(not mapID and "No source or player map available"
-    or sourced and ("MAP " .. mapID .. " | historical/reference locations")
-    or ("MAP " .. mapID .. " | current zone, not a source"))
+  mapCaption:SetText(not mapID and "No map selected"
+    or mode == "active" and active
+        and (active.kind == "zone" or active.kind == "school_type")
+        and ("Active nearby | " .. #locations .. " recent sightings")
+    or ("Map " .. mapID .. (sourced and " | referenced positions"
+      or " | current zone, no evidence")))
   if fullMap and fullMap:IsShown() then
     ns.zoneMap.render(fullMapSurface, mapID, locations)
     fullMapLabel:SetText(not mapID and "No map available"
       or "Fishing Atlas | Map " .. mapID .. (sourced and " | sourced points"
       or " | current player zone"))
   end
+end
+
+function UI.setSchoolMapMode(mode)
+  if mode ~= "active" and mode ~= "probable" then return false end
+  local settings = ns.storage.db and ns.storage.db.settings
+  if not settings then return false end
+  settings.schoolMapMode = mode
+  UI.mapOverride, UI.selectedPoint = nil, nil
+  if ns.mapPins then ns.mapPins.refresh() end
+  if frame then UI.refresh(false) end
+  return true
+end
+
+function UI.scanSchools()
+  local count, message = ns.liveSchools and ns.liveSchools.scan()
+  if ns.commands and ns.commands.say then
+    ns.commands.say(message or "School detector unavailable on this client")
+  end
+  if ns.mapPins then ns.mapPins.refresh() end
+  if frame then UI.refresh(false) end
+  return count or 0
 end
 
 function UI.openFullMap()
@@ -282,7 +310,14 @@ function UI.openFullMap()
         UISpecialFrames[#UISpecialFrames + 1] = "FishingAtlasFullMap"
       end
     end
-    fullMapLabel = label(fullMap, "GameFontNormalLarge", 835, 35, 15, -10)
+    fullMapLabel = label(fullMap, "GameFontNormalLarge", 480, 35, 15, -10)
+    button(fullMap, "Scan nearby", 490, -10, 142, 30, function()
+      UI.scanSchools()
+    end)
+    button(fullMap, "Toggle probable", 640, -10, 145, 30, function()
+      local mode = ns.viewModel.schoolMapMode()
+      UI.setSchoolMapMode(mode == "active" and "probable" or "active")
+    end)
     button(fullMap, "Close", 893, -10, 98, 30, function()
       fullMap:Hide()
     end)
@@ -791,17 +826,24 @@ local function build()
   detailsScroll:SetScrollChild(detailsChild)
 
   local right = panel(frame, 904, -167, 293, 523)
-  label(right, "GameFontNormal", 188, 24, 12, -8):SetText("ZONE MAP | Game art")
+  label(right, "GameFontNormal", 87, 24, 12, -8):SetText("ZONE MAP")
+  schoolModeButton = button(right, "Active only", 97, -6, 104, 27, function()
+    local mode = ns.viewModel.schoolMapMode()
+    UI.setSchoolMapMode(mode == "active" and "probable" or "active")
+  end)
   button(right, "Expand", 205, -6, 78, 27, function() UI.openFullMap() end)
   mapSurface = panel(right, 9, -37, 275, 195)
   mapCaption = label(right, "GameFontHighlightSmall", 267, 19, 14, -237)
-  button(right, "World Map", 156, -263, 126, 27, function()
+  button(right, "Scan now", 9, -263, 85, 27, function()
+    UI.scanSchools()
+  end)
+  button(right, "World Map", 185, -263, 98, 27, function()
     local id = selectedMap()
     if not inGameMap(id) then
       ns.commands.say("Native World Map unavailable; use Expand for map-art preview")
     end
   end)
-  button(right, "TomTom", 9, -263, 136, 27, waypoint)
+  button(right, "TomTom", 99, -263, 80, 27, waypoint)
   local info = panel(right, 9, -304, 275, 92)
   label(info, "GameFontNormal", 252, 23, 10, -6):SetText("ZONE / ITEM INFO")
   zoneInfo = label(info, "GameFontHighlightSmall", 252, 61, 10, -29)
