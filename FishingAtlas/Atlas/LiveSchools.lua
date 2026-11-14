@@ -7,7 +7,7 @@ local _, ns = ...
 ns.liveSchools = {}
 local L = ns.liveSchools
 local observations = {}
-local SECONDS = 120
+local SECONDS = 60
 local lastScan = "Not scanned yet"
 local monitor
 local elapsed = 0
@@ -81,7 +81,7 @@ function L.recordVisible(name, mapID, x, y)
   end
   prune()
   local key = string.format("%s:%d:%d:%d", name, mapID,
-    math.floor(x * 1000), math.floor(y * 1000))
+    math.floor(x * 100), math.floor(y * 100))
   observations[key] = {
     mapID = mapID, x = x, y = y,
     name = name, label = name .. " (nearby, recently visible)",
@@ -90,7 +90,7 @@ function L.recordVisible(name, mapID, x, y)
     verifiedSpawn = false, near = true,
   }
   lastScan = "Seen on world tooltip: " .. name ..
-    " (player position; expires after 2 min)"
+    " (player position; expires after 60 sec)"
   return true
 end
 
