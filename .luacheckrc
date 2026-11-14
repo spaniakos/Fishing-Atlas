@@ -12,5 +12,7 @@ exclude_files = {
   "FishingAtlas/Data/EverlootGameFiles.lua",
   "FishingAtlas/Data/ReferenceVendors.lua",
   "FishingAtlas/Data/ReferenceFishZones.lua",
-  "FishingAtlas/Data/ZoneSkill.lua"
+  "FishingAtlas/Data/ZoneSkill.lua",
+  "FishingAtlas/Data/ClassicSchoolLocations.lua",
+  "FishingAtlas/Data/ClassicNPCNames.lua"
 }
