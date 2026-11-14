@@ -122,8 +122,12 @@ function M.tiles(mapID, ox, oy, w, h)
 end
 
 function M.describe(mapID)
+  local settings = ns.storage and ns.storage.db and ns.storage.db.settings
+  if settings and settings.mapContext == false then
+    return "disabled in preferences"
+  end
   local rect, reason = M.geometry(mapID)
   if not rect then return reason end
-  return string.format("parent %d | rect %.3f,%.3f to %.3f,%.3f",
+  return string.format("candidate parent %d | rect %.3f,%.3f to %.3f,%.3f",
     rect.parentID, rect.minX, rect.minY, rect.maxX, rect.maxY)
 end

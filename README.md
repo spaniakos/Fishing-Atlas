@@ -41,6 +41,8 @@ A location is an observation of a **player standing near water**, not proof a fi
 The ID-based catalog lives at `database/catalog.json`, targets Forever build `1.60.1.70888`, and is generated with `python3 scripts/build_catalog.py`. Run `python3 scripts/catalog_coverage.py` for explicit record counts and provenance; the catalog contains extracted recipes/maps and selected reference fish/gear IDs but **is not an exhaustive Forever database**; see [coverage](docs/DATABASE-COVERAGE.md). See [ROADMAP.md](ROADMAP.md).
 
 ## Acceptance testing
+For v0.99.7 map markers, neighboring context and Cooking spell requirements,
+see [the v0.99.7 in-game checklist](docs/V0.99.7-IN-GAME-ACCEPTANCE.md).
 See [the 12-case manual test plan](docs/ACCEPTANCE-v0.99.md), [test results](docs/TEST-RESULTS-v0.99.md), and [candidate notes](docs/RELEASE-v0.99.md). Do not treat automated CI as a substitute for in-game verification.
 
 ## Roadmap

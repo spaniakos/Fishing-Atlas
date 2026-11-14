@@ -119,6 +119,8 @@ assert(contextCount == 1 and baseCount == 4 and explorationCount == 2,
 local loadReport = ns.zoneMap.describe(1439)
 assert(loadReport:find("context: test parent", 1, true),
   "Map diagnostics must identify parent context geometry")
+assert(loadReport:find("parent context: 1/1 loaded", 1, true),
+  "Map diagnostics must include actual underlay texture loading")
 assert(loadReport:find("3/4 loaded", 1, true),
   "The preview must distinguish rendered textures from C_Map file references")
 assert(loadReport:find("2:102", 1, true),

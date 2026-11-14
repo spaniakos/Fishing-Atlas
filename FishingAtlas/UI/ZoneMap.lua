@@ -262,6 +262,21 @@ local function previewLoadStatus(mapID)
     end
   end
   report.overlay = overlay
+  local context = {loaded = 0, pending = 0, unknown = 0, assigned = 0}
+  for index, fileID in ipairs(chosen.contextIDs or {}) do
+    local tile = chosen.context[index]
+    if tile and fileID then
+      context.assigned = context.assigned + 1
+      local ok, loaded = false, nil
+      if type(tile.IsObjectLoaded) == "function" then
+        ok, loaded = pcall(tile.IsObjectLoaded, tile)
+      end
+      if ok and loaded == true then context.loaded = context.loaded + 1
+      elseif ok and loaded == false then context.pending = context.pending + 1
+      else context.unknown = context.unknown + 1 end
+    end
+  end
+  report.context = context
   return report
 end
 
@@ -294,6 +309,12 @@ function M.describe(mapID)
   if #preview.unavailable > 0 then
     detail = detail .. " | pending slots (slot:fileID) " ..
       table.concat(preview.unavailable, ",")
+  end
+  if preview.context and preview.context.assigned > 0 then
+    detail = detail .. string.format(
+      " | parent context: %d/%d loaded, %d pending, %d unknown",
+      preview.context.loaded, preview.context.assigned,
+      preview.context.pending, preview.context.unknown)
   end
   if preview.overlay and preview.overlay.assigned > 0 then
     detail = detail .. string.format(
@@ -394,7 +415,7 @@ function M.render(parent, mapID, locations)
   for _, tile in ipairs(s.explored) do tile:Hide() end
   for _, marker in ipairs(s.pins) do marker:Hide() end
   -- A cleared selection must not leave a stale preview eligible for diagnosis.
-  s.renderedMap, s.tileIDs, s.overlayIDs = nil, {}, {}
+  s.renderedMap, s.tileIDs, s.overlayIDs, s.contextIDs = nil, {}, {}, {}
   if type(mapID) ~= "number" then
     s.fallback:Show()
     s.caption:SetText("Choose a zone to view its map")
@@ -419,6 +440,7 @@ function M.render(parent, mapID, locations)
       s.context[index] = texture
     end
     if texture.SetDrawLayer then texture:SetDrawLayer("BACKGROUND", 1) end
+    s.contextIDs[index] = part.texture
     texture:SetTexture(part.texture)
     texture:SetTexCoord(part.u0, part.u1, part.v0, part.v1)
     texture:ClearAllPoints()

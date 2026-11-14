@@ -6,12 +6,14 @@ local _, ns = ...
 ns.recipeLearning = {}
 local L = ns.recipeLearning
 
--- Existing Classic-reference metadata validated for these spell IDs.
+-- Source: existing Data/Recipes.lua Classic references and Forever spell
+-- https://www.wowhead.com/forever/spell=18243/nightfin-soup
+-- https://www.foreverdb.app/en/forever/spells/18243/nightfin-soup
 -- Never expand this list by guessing skill from yellow/grey thresholds.
 local historical = {
   [7751] = {minimumSkill = 1, source = "classic_reference"},
   [7753] = {minimumSkill = 50, source = "classic_reference"},
-  [18243] = {minimumSkill = 250, source = "forever_client_public_reference",
+  [18243] = {minimumSkill = 250, source = "forever_public_reference",
     historicalSeller = "Gikkix", historicalZone = "Tanaris",
     historicalMapID = 1446}
 }
