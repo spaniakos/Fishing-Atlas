@@ -5,6 +5,7 @@
   catalog = {recipe = function() return nil end,
     name = function(_, id) return "Spell #" .. tostring(id) end}
 }
+assert(loadfile("FishingAtlas/Kitchen/ProfessionScanner.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Kitchen/RecipeDiscovery.lua"))("FishingAtlas", ns)
 local D = ns.recipeDiscovery
 assert(not D.add("not-an-id"))
@@ -31,7 +32,7 @@ end
 local auto = {}
 ns.recipeKnowledge = {observeLearned = function(id) auto[id] = true end}
 local count, status = D.scan()
-assert(count == 2 and status == "Scanned open Cooking profession")
+assert(count == 2 and status:find("Cooking: 2 learned recipes", 1, true))
 assert(D.get(2541).source == "client_profession"
   and D.get(2541).outputItemId == 2684)
 assert(D.get(6499).name == "Boiled Clams" and auto[6499] == true)

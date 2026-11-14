@@ -1,4 +1,10 @@
 ## v0.99.8 — Recipes v2 (in progress, not released)
+- Fix Forever Cooking profession scanning: detect the active profession using
+  C_TradeSkillUI.GetBaseProfessionInfo/ChildProfessionInfo, read modern
+  learned recipe spell IDs, reject wrong-profession and changing-data windows,
+  and preserve a separately tested Classic fallback. Shared scanner now drives
+  manual Scan Cooking and character knowledge observations.
+
 - Begin canonical ID-based recipe index generated from 136 catalog spells, pinned
   Forever trainer observations and explicit spell-to-teaching-item references.
 - Preserve build/source provenance, distinguish learn rank vs yellow/grey
