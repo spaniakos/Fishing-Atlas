@@ -115,9 +115,12 @@ ns.viewModel.itemVendors = function() return {} end
 ns.viewModel.fishZones = function() return {} end
 ns.viewModel.mapID = function(item) return item and item.kind == "zone" and item.id or nil end
 ns.viewModel.mapPoints = function() return {} end
-ns.recipeKnowledge = {status = function(id)
-  return id == 777 and "unknown" or "known"
-end}
+ns.recipeKnowledge = {
+  status = function(id) return id == 777 and "unknown" or "known" end,
+  scanCatalog = function() return 0 end,
+  scanModern = function() return 0 end,
+  scanOpenProfession = function() return 0 end
+}
 ns.liveSchools = {
   inZone = function(mapID)
     if mapID == 1413 then
