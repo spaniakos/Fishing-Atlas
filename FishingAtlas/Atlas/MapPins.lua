@@ -9,6 +9,32 @@ local elapsed = 0
 
 function M.points(mapID)
   local out = {}
+  local mode = ns.storage.db and ns.storage.db.settings
+    and ns.storage.db.settings.schoolMapMode or "active"
+  if mode == "active" then
+    for _, rec in ipairs(ns.liveSchools and ns.liveSchools.inZone(mapID) or {}) do
+      out[#out + 1] = {x = rec.x, y = rec.y, label = rec.label,
+        kind = "school_live_nearby", verifiedSpawn = false}
+    end
+    return out
+  end
+  -- Probable mode contains explicit reference layers, not a live scan.
+  for name, places in pairs(ns.data.classicSchoolLocations or {}) do
+    for _, loc in ipairs(places) do
+      if loc.mapID == mapID then
+        out[#out + 1] = {x = loc.x, y = loc.y, label = name,
+          kind = "school_classic_reference", verifiedSpawn = false}
+      end
+    end
+  end
+  for name, places in pairs(ns.data.referenceSchoolLocations or {}) do
+    for _, loc in ipairs(places) do
+      if loc.mapID == mapID then
+        out[#out + 1] = {x = loc.x, y = loc.y, label = name,
+          kind = "school_classic_reference", verifiedSpawn = false}
+      end
+    end
+  end
   for _, node in ipairs(ns.storage.inZone(mapID)) do
     if ns.util.validCoordinate(node.x) and ns.util.validCoordinate(node.y) then
       out[#out + 1] = {x = node.x, y = node.y, label = node.label,
@@ -70,7 +96,13 @@ function M.refresh()
     pin:ClearAllPoints()
     pin:SetPoint("CENTER", canvas, "TOPLEFT", w * loc.x, -h * loc.y)
     if pin.marker.SetVertexColor then
-      if loc.kind == "observed_school" then
+      if loc.kind == "school_live_nearby" then
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
+        pin.marker:SetVertexColor(0.3, 1, 0.55, 0.98)
+      elseif loc.kind == "school_classic_reference" then
+        pin.marker:SetTexture("Interface\\Icons\\INV_Misc_Fish_02")
+        pin.marker:SetVertexColor(1, 0.8, 0.3, 0.65)
+      elseif loc.kind == "observed_school" then
         pin.marker:SetTexture("Interface\\Icons\\Trade_Fishing")
         pin.marker:SetVertexColor(0.6, 1, 0.9, 0.95)
       elseif loc.kind == "school_candidate" then
