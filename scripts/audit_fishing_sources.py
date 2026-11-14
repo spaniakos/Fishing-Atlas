@@ -121,8 +121,12 @@ def expand():
                 "historicalCraftReferences": acquired[item]["crafted"],
             },
         }
+        # An item's usage as a Cooking ingredient explains what it is for,
+        # NOT how to obtain it. Never count usage-only as an acquisition source.
+        acquisition = {key: count for key, count in record["evidence"].items()
+                       if key != "usedAsIngredientBy"}
         record["sourceStatus"] = "documented_reference_or_observation" if any(
-            record["evidence"].values()) else "unknown_not_proven_absent"
+            acquisition.values()) else "unknown_not_proven_absent"
         out.append(record)
     counts = Counter(r["group"] for r in out)
     unknown = [r for r in out if r["sourceStatus"] == "unknown_not_proven_absent"]
