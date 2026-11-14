@@ -679,6 +679,14 @@ function V.section(item, section)
   elseif item.kind == "Cooking" or item.kind == "Fishing"
       or item.kind == "gamefile_recipe" then
     local plan = ns.kitchen.catalogPlan(item.id, 1)
+    if section == "Overview" then
+      local status, statusSource = ns.recipeKnowledge and ns.recipeKnowledge.status(item.id)
+        or "unchecked", "unverified"
+      if ns.recipeKnowledge then status, statusSource = ns.recipeKnowledge.status(item.id) end
+      add("Recipe knowledge", status .. " | click: known / not learned / unchecked",
+        "Interface\\Icons\\INV_Misc_Book_09", statusSource,
+        {recipeId = item.id, toggleRecipe = true})
+    end
     if section == "Sources" then
       local recipe = ns.catalog.recipe(item.id) or
         ((ns.data.gameFiles or {}).recipes or {})[item.id]
