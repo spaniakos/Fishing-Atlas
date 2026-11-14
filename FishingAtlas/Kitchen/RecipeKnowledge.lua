@@ -26,31 +26,90 @@ local function characterStore(key)
   return db[key][char]
 end
 
-local function clientRecipe(spellId)
-  if type(C_TradeSkillUI) == "table"
-      and type(C_TradeSkillUI.GetRecipeInfo) == "function" then
-    local ok, info = pcall(C_TradeSkillUI.GetRecipeInfo, spellId)
-    if ok and type(info) == "table" and type(info.learned) == "boolean" then
-      return info.learned and "known" or "unknown", "client_tradeskill"
-    end
-  end
+local function clientSpellKnown(spellId)
   if type(IsSpellKnown) == "function" then
     local ok, yes = pcall(IsSpellKnown, spellId)
-    if ok and yes == true then return "known", "client_spellbook" end
+    if ok and yes == true then return true end
   end
   if type(C_Spell) == "table" and type(C_Spell.IsSpellKnown) == "function" then
     local ok, yes = pcall(C_Spell.IsSpellKnown, spellId)
-    if ok and yes == true then return "known", "client_spellbook" end
+    if ok and yes == true then return true end
   end
+  return false
+end
+
+-- The trade-skill recipeID is NOT necessarily the spell ID. Resolve recipe
+-- identities against the atlas by verified names, and use product IDs when
+-- duplicate names occur; never accidentally label a different recipe learned.
+local function recipesByName()
+  local map = {}
+  local function put(id, recipe)
+    local name = ns.catalog and ns.catalog.name and ns.catalog.name("spell", id)
+    if type(name) ~= "string" or name == "" or name:find("Unresolved", 1, true)
+        or name:find("Spell #", 1, true) then return end
+    local key = name:lower()
+    map[key] = map[key] or {}
+    map[key][#map[key] + 1] = {id = tonumber(id), outputItemId = recipe.outputItemId}
+  end
+  for _, recipe in ipairs(ns.catalog and ns.catalog.recipeList() or {}) do
+    put(recipe.spellId, recipe)
+  end
+  for id, recipe in pairs((ns.data.gameFiles or {}).recipes or {}) do
+    if not (ns.catalog and ns.catalog.recipe and ns.catalog.recipe(id)) then
+      put(id, recipe)
+    end
+  end
+  return map
+end
+
+function K.scanModern()
+  local api = C_TradeSkillUI
+  if type(api) ~= "table" or type(api.GetRecipeInfo) ~= "function" then return 0 end
+  local method = type(api.GetAllRecipeIDs) == "function" and api.GetAllRecipeIDs
+    or type(api.GetFilteredRecipeIDs) == "function" and api.GetFilteredRecipeIDs
+  if not method then return 0 end
+  local ok, ids = pcall(method)
+  if not ok or type(ids) ~= "table" or #ids == 0 then return 0 end
+  local byName, auto = recipesByName(), characterStore("recipeAutoByCharacter")
+  if not auto then return 0 end
+  local changed = 0
+  for _, id in ipairs(ids) do
+    local succeeded, info = pcall(api.GetRecipeInfo, id)
+    if succeeded and type(info) == "table" and type(info.name) == "string"
+        and type(info.learned) == "boolean" and not info.isDummyRecipe then
+      local matches = byName[info.name:lower()] or {}
+      local spellId
+      if #matches == 1 then spellId = matches[1].id
+      elseif #matches > 1 and type(api.GetRecipeSchematic) == "function" then
+        local schematicOK, schematic = pcall(api.GetRecipeSchematic, id, false)
+        local output = schematicOK and type(schematic) == "table"
+          and schematic.outputItemID or nil
+        if output then
+          for _, candidate in ipairs(matches) do
+            if candidate.outputItemId == output then
+              if spellId then spellId = nil; break end
+              spellId = candidate.id
+            end
+          end
+        end
+      end
+      if spellId and auto[spellId] ~= info.learned then
+        auto[spellId] = info.learned
+        changed = changed + 1
+      end
+    end
+  end
+  return changed
 end
 
 function K.status(spellId)
   spellId = tonumber(spellId)
   if not spellId then return "unchecked", "unverified" end
-  local status, reason = clientRecipe(spellId)
-  if status then return status, reason end
+  if clientSpellKnown(spellId) then return "known", "client_spellbook" end
   local auto = characterStore("recipeAutoByCharacter")
-  if auto and auto[spellId] == true then return "known", "profession_scan" end
+  if auto and auto[spellId] ~= nil then
+    return auto[spellId] and "known" or "unknown", "profession_scan"
+  end
   local manual = characterStore("recipeKnownByCharacter")
   if manual and manual[spellId] ~= nil then
     return manual[spellId] and "known" or "unknown", "manual_override"
@@ -126,7 +185,7 @@ function K.scanOpenProfession()
 end
 
 function K.refresh()
-  local added = K.scanOpenProfession()
+  local added = K.scanModern() + K.scanOpenProfession()
   if ns.ui and ns.ui.refresh then ns.ui.refresh(false) end
   return added
 end
@@ -135,6 +194,7 @@ function K.start()
   if scanner or type(CreateFrame) ~= "function" then return end
   scanner = CreateFrame("Frame")
   for _, event in ipairs({"TRADE_SKILL_SHOW", "TRADE_SKILL_UPDATE",
+      "TRADE_SKILL_LIST_UPDATE", "NEW_RECIPE_LEARNED",
       "SPELLS_CHANGED", "LEARNED_SPELL_IN_TAB"}) do
     scanner:RegisterEvent(event)
   end
