@@ -226,6 +226,21 @@ local function previewLoadStatus(mapID)
       end
     end
   end
+  local overlay = {loaded = 0, pending = 0, unknown = 0, assigned = 0}
+  for index, fileID in ipairs(chosen.overlayIDs or {}) do
+    local tile = chosen.explored[index]
+    if tile and fileID then
+      overlay.assigned = overlay.assigned + 1
+      local ok, loaded = false, nil
+      if type(tile.IsObjectLoaded) == "function" then
+        ok, loaded = pcall(tile.IsObjectLoaded, tile)
+      end
+      if ok and loaded == true then overlay.loaded = overlay.loaded + 1
+      elseif ok and loaded == false then overlay.pending = overlay.pending + 1
+      else overlay.unknown = overlay.unknown + 1 end
+    end
+  end
+  report.overlay = overlay
   return report
 end
 
@@ -250,6 +265,13 @@ function M.describe(mapID)
   if #preview.unavailable > 0 then
     detail = detail .. " | pending slots (slot:fileID) " ..
       table.concat(preview.unavailable, ",")
+  end
+  if preview.overlay and preview.overlay.assigned > 0 then
+    detail = detail .. string.format(
+      " | overlays: %d/%d loaded, %d pending, %d unknown (reference build %s)",
+      preview.overlay.loaded, preview.overlay.assigned,
+      preview.overlay.pending, preview.overlay.unknown,
+      tostring(ns.data and ns.data.classicMapOverlaysBuild or "none"))
   end
   return summary .. detail
 end
@@ -329,7 +351,7 @@ function M.render(parent, mapID, locations)
   if not width or width <= 0 or not height or height <= 0 then return false end
   local tiles, ox, oy, vw, vh, info = M.artForMap(mapID, width, height)
   ox, oy, vw, vh = ox or 0, oy or 0, vw or width, vh or height
-  s.renderedMap, s.tileIDs = mapID, {}
+  s.renderedMap, s.tileIDs, s.overlayIDs = mapID, {}, {}
   -- Retain the safe local fallback when this client lacks world-map tiles.
   s.fallback:Show()
   -- Some map assets arrive after the first request. Retry once, without an
@@ -381,6 +403,7 @@ function M.render(parent, mapID, locations)
       texture = parent:CreateTexture(nil, "ARTWORK")
       s.explored[index] = texture
     end
+    s.overlayIDs[index] = part.texture
     texture:SetTexture(part.texture)
     texture:SetTexCoord(part.u0, part.u1, part.v0, part.v1)
     texture:ClearAllPoints()
@@ -424,7 +447,7 @@ function M.render(parent, mapID, locations)
       info.tiles .. "/" .. info.expected .. " tiles)")
   else
     s.caption:SetText("Map " .. mapID .. " | " .. #explored ..
-      (overlaySource == "historical_full_reference" and " full reference" or " explored") ..
+      (overlaySource == "historical_full_reference" and " historical ref" or " explored") ..
       " tiles | " .. count .. " sourced pins")
   end
   return #tiles > 0
