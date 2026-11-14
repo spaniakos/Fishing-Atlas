@@ -21,6 +21,7 @@ function Store.init()
   if type(db.gearProfile) ~= "table" then db.gearProfile = {} end
   if type(db.settings) ~= "table" then db.settings = {} end
   if type(db.settings.notifications) ~= "boolean" then db.settings.notifications = true end
+  if type(db.settings.schoolAlerts) ~= "boolean" then db.settings.schoolAlerts = false end
   if type(db.settings.radiusPercent) ~= "number" or db.settings.radiusPercent < 0.1
      or db.settings.radiusPercent > 5 then db.settings.radiusPercent = 1 end
   if type(db.settings.showMinimap) ~= "boolean" then db.settings.showMinimap = true end
