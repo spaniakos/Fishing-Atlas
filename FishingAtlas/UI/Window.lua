@@ -1,5 +1,5 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
--- Fishing Atlas 0.99.6: image-3-inspired three-column explorer.
+-- Fishing Atlas 0.99.7: evidence-aware three-column explorer.
 -- All controls are functional FrameXML; visuals never invent game-world data.
 local _, ns = ...
 ns.ui = {}

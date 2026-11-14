@@ -96,10 +96,12 @@ function O.start()
     if ns.mapPins then ns.mapPins.refresh() end
   end)
   checkbox(panel, -162, "Alert near saved fishing positions", "notifications")
-  checkbox(panel, -214, "Show real parent-map context (where supported)",
-    "mapContext", function()
+  local contextToggle = checkbox(panel, -214,
+    "Show real parent-map context (where supported)", "mapContext", function()
       if ns.ui and ns.ui.refreshMap then ns.ui.refreshMap() end
     end)
+  contextToggle:ClearAllPoints()
+  contextToggle:SetPoint("TOPLEFT", panel, "TOPLEFT", 302, -214)
   local radiusText = note(panel, 20, -206, "")
   local function updateRadius()
     local settings = ns.storage.db and ns.storage.db.settings or {}

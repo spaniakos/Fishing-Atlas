@@ -1,5 +1,14 @@
 # Fishing Atlas changelog
 
+## v0.99.7 — Map integrity and geographic context (client acceptance pending)
+- Restore selected vendor/NPC/item, saved-position and clicked-detail markers in both school modes.
+- Centralize in-panel and native World Map marker evidence, selection highlighting,
+  tooltip attribution and content-aware cache invalidation.
+- Add guarded parent-map artwork underlays using client map geometry and UV clipping,
+  with a preference toggle and safe fallback when coordinate mapping is unavailable.
+- Extend frame-click and native-pin regression tests. No fake school spawns or map art.
+- **Pending:** real-client map alignment, surrounding-context and marker acceptance.
+
 ## v0.99.6 — Evidence-linked explorer, source pipelines (draft)
 - Clickable/hoverable item, recipe, vendor and map relationships; explicit acquisition sections.
 - Sourced observed fish, vendors, trainer recipes, drops and school-object sightings, without treating old Classic references as Forever-confirmed.

@@ -42,6 +42,7 @@ jobs:
           lua5.1 tests/test_gears.lua
           lua5.1 tests/test_map_pins.lua
           lua5.1 tests/test_map_context.lua
+          lua5.1 tests/test_map_marker_integration.lua
           lua5.1 tests/test_catalog_planner.lua
           lua5.1 tests/test_browser.lua
           lua5.1 tests/test_fishing_scope.lua

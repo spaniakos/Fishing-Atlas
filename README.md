@@ -25,7 +25,7 @@
 - **Not complete:** fishing-school coordinates, vendor guides, equipment acquisition locations and full acquisition paths remain outstanding. 23 reference fish and 11 gear IDs are indexed.
 
 ## v0.99 Explorer
-Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Live game-client UI compatibility is still pending player testing.
+Type `/fa` to open the compact UI. Tabs: fish, gear, recipes, zones, journal, schools and vendors. Search by name/ID. `/fa plan 18243 2` calculates missing Nightfin Soup ingredients against your bags. Map v0.99.7 marker and geographic context fixes require renewed real-client acceptance.
 
 ## Installation
 Follow [the step-by-step installation guide](docs/INSTALLATION.md). The CI pipeline generates a reproducible addon ZIP (including the GPL license and SHA256SUMS) for `main`.

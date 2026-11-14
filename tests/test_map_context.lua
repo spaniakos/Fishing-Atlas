@@ -26,6 +26,9 @@ for _, tile in ipairs(tiles) do
     and tile.y + tile.h <= 256.00001,
     "Parent geography may never spill outside the target map")
 end
+C_Map.IsCityMap = function() return true end
+assert(ns.mapContext.geometry(99) == nil, "City art must not inherit parent terrain")
+C_Map.IsCityMap = function() return false end
 ns.storage.db.settings.mapContext = false
 assert(#ns.mapContext.tiles(99, 0, 0, 256, 256) == 0)
 ns.storage.db.settings.mapContext = true

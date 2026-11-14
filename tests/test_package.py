@@ -38,7 +38,11 @@ class PackageTests(unittest.TestCase):
 
     def test_current_version_package(self):
         with tempfile.TemporaryDirectory() as tmp:
-            artifact, _ = build(Path(tmp), "v0.99.6")
+            toc = (ROOT / "FishingAtlas" / "FishingAtlas.toc").read_text()
+            version = next(line.removeprefix("## Version: ").strip()
+                           for line in toc.splitlines()
+                           if line.startswith("## Version: "))
+            artifact, _ = build(Path(tmp), "v" + version)
             self.assertTrue(artifact.is_file())
 
     def test_reject_missing_or_unattributed_offline_pack(self):

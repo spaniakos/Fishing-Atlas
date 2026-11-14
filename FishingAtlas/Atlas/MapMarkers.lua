@@ -30,7 +30,7 @@ function M.collect(item, mapID, selected)
   local schoolMode = mode()
   local function add(point, highlight)
     if not valid(point, mapID) then return end
-    if M.isSchool(point) and schoolMode == "active"
+    if not highlight and M.isSchool(point) and schoolMode == "active"
         and point.kind ~= "school_live_nearby" then return end
     local label = tostring(point.label or point.name or "Fishing Atlas position")
     local source = tostring(point.source or "unspecified_source")
