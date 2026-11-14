@@ -95,6 +95,12 @@ function B.list(category, term)
         seen[sighting.label:lower()] = true
       end
     end
+  elseif category == "npcs" then
+    for id in pairs(ns.fishingScope and ns.fishingScope.data().mobs or {}) do
+      local name = ns.sources and ns.sources.npcName(id)
+        or ("Unidentified creature (NPC " .. id .. ")")
+      push(out, row(id, name, "observed_npc", "observed_source"), term)
+    end
   elseif category == "journal" then
     for id, r in pairs(db.catches or {}) do
       if type(r) == "table" then
@@ -136,7 +142,7 @@ function B.searchAll(term, maxResults)
   if #term < 2 then return {} end
   local output, seen = {}, {}
   local categories = {"fish", "recipes", "items", "schools", "zones",
-    "vendors", "gear", "journal"}
+    "vendors", "npcs", "gear", "journal"}
   local maxRows = math.max(1, math.min(tonumber(maxResults) or 150, 300))
   for _, category in ipairs(categories) do
     for _, entry in ipairs(B.list(category, term)) do
@@ -311,8 +317,9 @@ function B.icon(item)
     -- A stable client icon, including schools without a corresponding item ID.
     -- An item icon ID is not guaranteed to be cached or even loadable.
     return "Interface\\Icons\\INV_Misc_Fish_02"
-  elseif item.kind == "vendor_reference" or item.kind == "merchant_observation"
-      or item.kind == "observed_npc" then
+  elseif item.kind == "observed_npc" then
+    return "Interface\\Icons\\Ability_Hunter_BeastCall"
+  elseif item.kind == "vendor_reference" or item.kind == "merchant_observation" then
     return "Interface\\Icons\\INV_Misc_Bag_10"
   end
   return "Interface\\Icons\\INV_Misc_Note_01"
