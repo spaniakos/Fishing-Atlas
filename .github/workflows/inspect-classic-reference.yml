@@ -1,4 +1,4 @@
-name: Inspect external historical school spawn format
+name: Inspect historical school coordinate calibration
 on:
   push:
     branches: [feature/explorer-linked-records]
@@ -11,24 +11,43 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect licensed historical source without changing data
+      - name: Validate CMaNGOS school template matches against published Barrens locations
         run: |
           python3 - <<'PY'
-          import gzip,io,urllib.request
-          u='https://raw.githubusercontent.com/cmangos/classic-db/master/Full_DB/ClassicDB_1_12_1_z2815.sql.gz'
-          print("Source",u,flush=True)
-          raw=urllib.request.urlopen(u,timeout=55).read()
-          print("Gzip bytes:",len(raw),flush=True)
+          import gzip,io,re,json,urllib.request
+          from pathlib import Path
+          u='https://raw.githubusercontent.com/cmangos/classic-db/09000ea8d7333856727204e4e2d30f772149b7a8/Full_DB/ClassicDB_1_12_1_z2815.sql.gz'
+          raw=urllib.request.urlopen(u,timeout=45).read()
+          print("Source SHA will be pinned; gzip bytes",len(raw),flush=True)
+          object_re=re.compile(r"\((\d+),(\d+),(\d+),(\d+),([-\d.]+),([-\d.]+),")
+          template_re=re.compile(r"\((\d+),(\d+),(\d+),'((?:\\.|[^'\\])*)'")
+          creature_re=re.compile(r"\((\d+),'((?:\\.|[^'\\])*)'")
+          names, objects, npcs = {}, [], {}
           with gzip.GzipFile(fileobj=io.BytesIO(raw)) as f:
-            targets=['CREATE TABLE `gameobject`','CREATE TABLE `gameobject_template`',
-                     'INSERT INTO `gameobject`','INSERT INTO `gameobject_template`',
-                     'INSERT INTO `creature_template`']
-            seen=set()
-            for bs in f:
-              line=bs.decode('utf-8','replace').strip()
-              for target in targets:
-                if target.lower() in line.lower() and target not in seen:
-                  seen.add(target)
-                  print("FOUND",target,"length",len(line), "sample:",line[:700],flush=True)
-              if len(seen)==len(targets): break
+            for line in f:
+              text=line.decode('utf-8','replace')
+              if text.startswith("INSERT INTO \`gameobject_template\`"):
+                for m in template_re.finditer(text):
+                  name=m.group(4).replace("\\'","'")
+                  if any(s in name.lower() for s in ("deviate fish","sagefish","firefin","blackmouth","wreckage","eel swarm")):
+                    names[int(m.group(1))]=name
+              if text.startswith("INSERT INTO \`creature_template\`"):
+                for m in creature_re.finditer(text):
+                  if int(m.group(1)) in (4156,3556): npcs[int(m.group(1))]=m.group(2)
+              if text.startswith("INSERT INTO \`gameobject\`"):
+                for m in object_re.finditer(text):
+                  objects.append(tuple(float(m.group(i)) if i in (5,6) else int(m.group(i)) for i in range(1,7)))
+          print("School template matches",len(names), list(names.items())[:50],flush=True)
+          print("Known NPC",npcs, "raw objects",len(objects),flush=True)
+          catalog=json.loads(Path("database/catalog.json").read_text())
+          zones={z['mapId']:z for z in catalog['zones']}
+          barrens=zones[1413]['bounds']
+          print("Barrens bounds",barrens,flush=True)
+          samples=[]
+          for guid, entry, continent, mask, x, y in objects:
+            if entry not in names or "deviate" not in names[entry].lower() or continent!=1: continue
+            bx=(y-barrens['left'])/(barrens['right']-barrens['left'])
+            by=(x-barrens['top'])/(barrens['bottom']-barrens['top'])
+            if 0<bx<1 and 0<by<1: samples.append([guid,entry,round(bx*100,2),round(by*100,2)])
+          print("Barrens Deviate matches",len(samples),"sample",samples[:30],flush=True)
           PY
