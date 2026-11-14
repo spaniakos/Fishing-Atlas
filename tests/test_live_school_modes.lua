@@ -36,4 +36,23 @@ C_Map = {GetBestMapForUnit = function() return 1413 end,
 local found, message = L.scan()
 assert(found == 1 and type(message) == "string")
 assert(#P.points(1413) == 1)
-print("active-only default, probable toggle, visible scan and expiry tests passed")
+-- Forever build 70938 can hand an addon a protected/secret tooltip string.
+-- The test runtime cannot model secret values, so simulate the exact rejected
+-- string-method access with a getter that throws the client's error text.
+clock = clock + 61
+GameTooltipTextLeft1.GetText = function()
+  error("attempt to index local 'value' (a secret string value)")
+end
+local protected, result = pcall(L.scan)
+assert(protected and result == 0, "A secret tooltip may never crash manual scanning")
+assert((L.blockedTooltipReads or 0) >= 1)
+local update
+CreateFrame = function()
+  return {SetScript = function(_, event, callback)
+    if event == "OnUpdate" then update = callback end
+  end}
+end
+L.start()
+assert(type(update) == "function")
+assert(pcall(update, {}, 0.5), "A secret tooltip may never crash OnUpdate")
+print("active school modes, expiry and secret-tooltip protection tests passed")
