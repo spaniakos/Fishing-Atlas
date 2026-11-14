@@ -103,4 +103,35 @@ assert(loadReport:find("3/4 loaded", 1, true),
   "The preview must distinguish rendered textures from C_Map file references")
 assert(loadReport:find("2:102", 1, true),
   "The preview must report an unloaded tile slot and its FileDataID")
-print("WoW map art tests: base IDs, explored overlays, clipping, actual load states and render passed")
+-- Real prebuilt Forever art references: the character may report ZERO
+-- explored overlays even when historical full-zone overlays exist in DB2.
+-- Only use these references if art ID + tile size match the running client.
+assert(loadfile("FishingAtlas/Data/ClassicMapOverlays.lua"))("FishingAtlas", ns)
+assert(ns.data.classicMapOverlaysBuild == "1.60.1.70338")
+assert(ns.data.classicMapOverlays[2150],
+  "Deadwind Pass art 2150 needs offline unfogged overlay references")
+local actualMapArt = 2150
+C_Map.GetMapArtID = function() return actualMapArt end
+local baseTiles, offX, offY, viewW, viewH, meta =
+  ns.zoneMap.artForMap(1430, 256, 256)
+assert(#baseTiles == 4)
+local full, source, id = ns.zoneMap.fullOverlayRecords(1430, meta)
+assert(source == "historical_full_reference" and id == 2150)
+assert(#full == 3, "Known Deadwind full map has 3 overlay groups")
+local fullArt, mode = ns.zoneMap.exploredForMap(1430, meta,
+  offX, offY, viewW, viewH)
+assert(#fullArt > 0 and mode == "historical_full_reference",
+  "Unexplored player maps should use validated full-reference overlays")
+actualMapArt = 998877
+local missing, why = ns.zoneMap.fullOverlayRecords(1430, meta)
+assert(missing == nil and why:find("no indexed overlays", 1, true),
+  "Never apply an old overlay to a changed client art ID")
+local fall, fallbackSource = ns.zoneMap.exploredForMap(1430,
+  meta, offX, offY, viewW, viewH)
+assert(#fall == 2 and fallbackSource == "character_exploration",
+  "On mismatch, fall back to character's own explored overlays")
+actualMapArt = 2150
+meta.tileWidth = 128
+assert(not ns.zoneMap.fullOverlayRecords(1430, meta),
+  "Do not use overlays when the client changed map tile dimensions")
+print("WoW map art tests: drawn base, exploration, full-reference and compatibility gate passed")
