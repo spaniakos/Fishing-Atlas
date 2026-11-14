@@ -144,6 +144,7 @@ local function inGameMap(mapID)
   end
   return false
 end
+UI.openWorldMap = inGameMap
 
 local function waypoint()
   if not active then return end
