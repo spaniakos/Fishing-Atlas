@@ -9,7 +9,7 @@ local ns = {data = {schoolTypes = {{name = "Firefin Snapper School"}},
   schools = {inZone = function() return {} end},
   util = {validCoordinate = function(x)
     return type(x) == "number" and x >= 0 and x <= 1
-  end}}
+  end}
 }
 assert(loadfile("FishingAtlas/Atlas/LiveSchools.lua"))("FishingAtlas", ns)
 assert(loadfile("FishingAtlas/Atlas/MapPins.lua"))("FishingAtlas", ns)
