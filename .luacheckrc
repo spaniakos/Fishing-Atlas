@@ -1,6 +1,6 @@
 std = "lua51"
 globals = {
-  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "Settings", "Minimap", "GameTooltip", "GameTooltipTextLeft1", "issecretvalue", "C_Timer", "WorldFrame", "GetCursorPosition", "InterfaceOptions_AddCategory", "InterfaceOptionsFrame_OpenToCategory", "C_Item", "C_Spell", "C_TradeSkillUI", "C_AddOns", "GetNumTradeSkills", "GetTradeSkillInfo", "GetTradeSkillRecipeLink", "UISpecialFrames", "TomTom", "UIParentLoadAddOn", "UnitFullName", "GetRealmName", "IsSpellKnown",
+  "FishingAtlasDB", "time", "DEFAULT_CHAT_FRAME", "C_Map", "C_MapExplorationInfo", "Settings", "Minimap", "GameTooltip", "GameTooltipTextLeft1", "issecretvalue", "C_Timer", "WorldFrame", "GetCursorPosition", "InterfaceOptions_AddCategory", "InterfaceOptionsFrame_OpenToCategory", "C_Item", "C_Spell", "C_TradeSkillUI", "C_AddOns", "GetNumTradeSkills", "GetTradeSkillInfo", "GetTradeSkillRecipeLink", "UISpecialFrames", "TomTom", "UIParentLoadAddOn", "UnitFullName", "GetRealmName", "IsSpellKnown",
   "CreateFrame", "UIParent", "GetTime", "PlaySound", "SOUNDKIT", "IsFishingLoot", "GetNumLootItems", "GetLootSlotInfo", "GetLootSlotLink", "UnitGUID", "UnitName", "GetMerchantNumItems", "GetMerchantItemLink", "GetItemInfo", "GetSpellInfo", "InCombatLockdown", "SetOverrideBindingClick", "ClearOverrideBindings", "WorldMapFrame", "OpenWorldMap", "ToggleWorldMap", "GetItemCount", "GetBuildInfo", "SlashCmdList", "SLASH_FISHINGATLAS1", "SLASH_FISHINGATLAS2"
 }
 max_line_length = 140
