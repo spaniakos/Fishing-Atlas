@@ -18,6 +18,9 @@ local function now()
 end
 
 local function schoolName(value)
+  -- Newer Forever builds may return protected/secret tooltip strings. Never
+  -- run Lua string methods on them; they are inaccessible to addons.
+  if type(issecretvalue) == "function" and issecretvalue(value) then return nil end
   if type(value) ~= "string" then return nil end
   value = value:match("^%s*(.-)%s*$")
   for _, school in ipairs(ns.data.schoolTypes or {}) do
@@ -39,6 +42,15 @@ local function worldTooltip()
   end
 end
 
+-- All tooltip reads and string processing stay in a protected call. A secret
+-- tooltip is not usable evidence of a nearby fishing school.
+local function safeWorldTooltip()
+  local ok, name = pcall(worldTooltip)
+  if ok then return name end
+  L.blockedTooltipReads = (L.blockedTooltipReads or 0) + 1
+  return nil
+end
+
 local function playerPosition()
   if type(C_Map) ~= "table" or type(C_Map.GetBestMapForUnit) ~= "function"
       or type(C_Map.GetPlayerMapPosition) ~= "function" then return end
@@ -46,10 +58,12 @@ local function playerPosition()
   if not ok or type(mapID) ~= "number" then return end
   local got, vector = pcall(C_Map.GetPlayerMapPosition, mapID, "player")
   if not got or not vector then return end
-  local x, y = tonumber(vector.x), tonumber(vector.y)
-  if x and y and ns.util.validCoordinate(x) and ns.util.validCoordinate(y) then
-    return mapID, x, y
-  end
+  local safe, x, y = pcall(function()
+    local px, py = tonumber(vector.x), tonumber(vector.y)
+    if px and py and ns.util.validCoordinate(px)
+        and ns.util.validCoordinate(py) then return px, py end
+  end)
+  if safe and x and y then return mapID, x, y end
 end
 
 local function prune()
@@ -74,7 +88,8 @@ function L.inZone(mapID, name)
 end
 
 function L.recordVisible(name, mapID, x, y)
-  name = schoolName(name)
+  local safe, school = pcall(schoolName, name)
+  name = safe and school or nil
   if not name or type(mapID) ~= "number"
       or not ns.util.validCoordinate(x) or not ns.util.validCoordinate(y) then
     return false
@@ -95,7 +110,7 @@ function L.recordVisible(name, mapID, x, y)
 end
 
 function L.scan()
-  local visible = worldTooltip()
+  local visible = safeWorldTooltip()
   if not visible then
     local mapID = playerPosition()
     local recent = mapID and L.inZone(mapID) or {}
@@ -128,10 +143,13 @@ function L.start()
     elapsed = elapsed + (dt or 0)
     if elapsed < 0.4 then return end
     elapsed = 0
-    local visible = worldTooltip()
-    if visible then
-      local id, x, y = playerPosition()
-      if id then L.recordVisible(visible, id, x, y) end
-    end
+    local ok = pcall(function()
+      local visible = safeWorldTooltip()
+      if visible then
+        local id, x, y = playerPosition()
+        if id then L.recordVisible(visible, id, x, y) end
+      end
+    end)
+    if not ok then L.blockedTooltipReads = (L.blockedTooltipReads or 0) + 1 end
   end)
 end
