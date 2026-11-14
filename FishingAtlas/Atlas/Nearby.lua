@@ -26,6 +26,21 @@ function N.find(mapID, x, y, radiusPercent)
   return found
 end
 
+-- Historical school sightings are player positions, never guaranteed active pools.
+function N.findSchools(mapID, x, y, radiusPercent)
+  local found = {}
+  local r = (tonumber(radiusPercent) or 1) / 100
+  if r <= 0 or r > 0.05 or not ns.schools then return found end
+  for _, node in ipairs(ns.schools.inZone(mapID)) do
+    local distance = N.distanceSquared(x, y, node.x, node.y)
+    if distance and distance <= r * r then
+      found[#found + 1] = {node = node, distance = distance}
+    end
+  end
+  table.sort(found, function(a, b) return a.distance < b.distance end)
+  return found
+end
+
 function N.shouldAlert(id, now)
   if type(id) ~= "string" or type(now) ~= "number" then return false end
   if lastAlerts[id] and now - lastAlerts[id] < ALERT_COOLDOWN then return false end
@@ -35,7 +50,8 @@ end
 
 function N.scan()
   local db = ns.storage.db
-  if not db or not db.settings.notifications then return end
+  if not db or not db.settings
+    or (not db.settings.notifications and not db.settings.schoolAlerts) then return end
   if not C_Map or type(C_Map.GetBestMapForUnit) ~= "function"
       or type(C_Map.GetPlayerMapPosition) ~= "function" then return end
   local mapID = C_Map.GetBestMapForUnit("player")
@@ -44,13 +60,24 @@ function N.scan()
   if not p or type(p.GetXY) ~= "function" then return end
   local x, y = p:GetXY()
   if not ns.util.validCoordinate(x) or not ns.util.validCoordinate(y) then return end
-  local matches = N.find(mapID, x, y, db.settings.radiusPercent or 1)
   local now = type(GetTime) == "function" and GetTime() or 0
-  for i = 1, math.min(1, #matches) do
-    local node = matches[i].node
-    if N.shouldAlert(node.id, now) then
-      ns.commands.say("Near saved fishing position: " .. (node.label or "Spot") ..
+  if db.settings.notifications then
+    local matches = N.find(mapID, x, y, db.settings.radiusPercent or 1)
+    local closest = matches[1] and matches[1].node
+    if closest and N.shouldAlert("spot:" .. closest.id, now) then
+      ns.commands.say("Near saved fishing position: " .. (closest.label or "Spot") ..
         " (historical observation; school activity unknown)")
+      if type(PlaySound) == "function" and type(SOUNDKIT) == "table" and SOUNDKIT.TELL_MESSAGE then
+        PlaySound(SOUNDKIT.TELL_MESSAGE)
+      end
+    end
+  end
+  if db.settings.schoolAlerts then
+    local matches = N.findSchools(mapID, x, y, db.settings.radiusPercent or 1)
+    local closest = matches[1] and matches[1].node
+    if closest and N.shouldAlert("school:" .. closest.id, now) then
+      ns.commands.say("Near a previously sighted school: " ..
+        (closest.label or "School") .. " (historical, NOT confirmed active)")
       if type(PlaySound) == "function" and type(SOUNDKIT) == "table" and SOUNDKIT.TELL_MESSAGE then
         PlaySound(SOUNDKIT.TELL_MESSAGE)
       end
