@@ -41,6 +41,7 @@ end
 function V.zoneVendors(mapID)
   local results = {}
   for _, vendor in ipairs(ns.data.referenceVendors or {}) do
+    if not ns.fishingScope or ns.fishingScope.vendor(vendor.id) then
     for _, position in ipairs(vendor.spots or {}) do
       if position.mapID == mapID and ns.util.validCoordinate(position.x)
           and ns.util.validCoordinate(position.y) then
@@ -50,10 +51,13 @@ function V.zoneVendors(mapID)
         break
       end
     end
+    end
   end
   local sellerSet = {}
-  for _, offers in pairs((ns.data.everloot or {}).vendorItems or {}) do
-    for _, offer in ipairs(offers) do sellerSet[offer.npcId] = true end
+  for itemID, offers in pairs((ns.data.everloot or {}).vendorItems or {}) do
+    if not ns.fishingScope or ns.fishingScope.item(itemID) then
+      for _, offer in ipairs(offers) do sellerSet[offer.npcId] = true end
+    end
   end
   for npcId in pairs(sellerSet) do
     if source() then
@@ -160,7 +164,12 @@ function V.itemCrafts(itemID)
 end
 
 function V.itemDrops(itemID)
-  return source() and source().dropsForItem(itemID) or {}
+  local out = source() and source().dropsForItem(itemID) or {}
+  for _, ref in ipairs((ns.data.referenceAcquisition or {})[itemID] or {}) do
+    out[#out + 1] = {kind = "reference_object", title = ref.title, note = ref.note,
+      mapID = ref.mapID, confidence = ref.confidence, sourceUrl = ref.url}
+  end
+  return out
 end
 
 function V.itemMapPoints(itemID)
@@ -245,31 +254,7 @@ function V.mapPoints(item)
     end
     return results
   elseif item.kind == "fishing_pole" or item.kind == "lure" then
-    for _, vendor in ipairs(ns.data.referenceVendors or {}) do
-      for _, id in ipairs(vendor.items or {}) do
-        if id == item.id then
-          for _, place in ipairs(vendor.spots or {}) do
-            if validPlace(place) then
-              results[#results + 1] = {mapID = place.mapID, x = place.x, y = place.y,
-                kind = "vendor", label = vendor.name,
-                source = "mixed_source_reference"}
-            end
-          end
-          break
-        end
-      end
-    end
-    if source() then
-      for _, loc in ipairs(source().vendorLocations(item.id)) do
-        if validPlace(loc) then
-          results[#results + 1] = {mapID = loc.mapID, x = loc.x, y = loc.y,
-            kind = "vendor", label = item.name .. (loc.near and " (nearby)" or ""),
-            source = loc.installs >= 3 and "observed_confirmed"
-              or "observed_provisional"}
-        end
-      end
-    end
-    return results
+    return V.itemMapPoints(item.id)
   elseif item.kind == "merchant_observation" then
     if validPlace(item.extra) then
       local rec = item.extra
@@ -299,6 +284,13 @@ function V.mapPoints(item)
     for _, school in ipairs(source() and source().schoolLocations(item.name) or {}) do
       results[#results + 1] = school
     end
+    for _, guide in ipairs((ns.data.referenceSchoolLocations or {})[item.name] or {}) do
+      if validPlace(guide) then
+        results[#results + 1] = {mapID = guide.mapID, x = guide.x, y = guide.y,
+          kind = "school_guide", label = item.name .. " (guide reference)",
+          source = "guide_reference", url = guide.url}
+      end
+    end
     for _, school in ipairs(B.schoolSightings(item.name)) do
       if validPlace(school) then
         results[#results + 1] = {mapID = school.mapID, x = school.x, y = school.y,
@@ -325,6 +317,12 @@ function V.mapID(item)
   if item.kind == "fish" then
     local zones = V.fishZones(item.id)
     return zones[1] and zones[1].mapID or nil
+  end
+  if item.kind == "fishing_pole" or item.kind == "lure" then
+    local points = V.itemMapPoints(item.id)
+    if points[1] then return points[1].mapID end
+    local references = (ns.data.referenceAcquisition or {})[item.id] or {}
+    return references[1] and references[1].mapID or nil
   end
   local points = V.mapPoints(item)
   return points[1] and points[1].mapID or nil
@@ -376,7 +374,7 @@ function V.tabs(item)
   end
   if item and item.kind == "fish" then return {"Overview", "Zones", "Recipes", "Map"} end
   if item and (item.kind == "fishing_pole" or item.kind == "lure") then
-    return {"Overview", "Vendors", "Map"}
+    return {"Overview", "Vendors", "Drops", "Crafted", "Map"}
   end
   if item and item.kind == "vendor_reference" then return {"Overview", "Goods", "Map"} end
   if item and item.kind == "school_type" then return {"Overview", "Sightings", "Map"} end
