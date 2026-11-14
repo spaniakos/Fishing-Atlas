@@ -38,4 +38,23 @@ assert(#K.unsupportedEvents == 2, "Unsupported events should be recorded")
 assert(#registered == 4, "Supported events should still register")
 assert(type(eventCallback) == "function")
 eventCallback()
-print("per-character recipe tracking and unsupported-event startup tests passed")
+-- Forever Cooking may expose recipe state by spell ID even before the
+-- filtered Trade Skill recipe list is populated.
+ns.catalog = {
+  recipeList = function() return {{spellId = 4094, outputItemId = 4457}} end,
+  name = function(_, id) return id == 4094 and "Barbecued Buzzard Wing" or "Unknown" end,
+  recipe = function() return nil end,
+}
+ns.data = {gameFiles = {recipes = {}}}
+C_TradeSkillUI = {
+  GetRecipeInfo = function(id)
+    return {name = "Barbecued Buzzard Wing", learned = id == 4094}
+  end,
+}
+name = "Fisher"
+assert(K.status(4094) == "known", "Direct client Cooking status should be known")
+assert(K.scanCatalog() == 1, "Catalog scan must import known Cooking spell")
+assert(K.scanCatalog() == 0, "Repeated scan must be idempotent")
+name = "Chef"
+assert(K.status(4094) == "known", "Direct learned status follows the live client")
+print("per-character recipes, Cooking direct scan and safe startup tests passed")
