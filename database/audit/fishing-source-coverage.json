@@ -178,7 +178,7 @@
       "group": "associated_item",
       "id": 3404,
       "name": "Item #3404",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1078,7 +1078,7 @@
       "group": "associated_item",
       "id": 12184,
       "name": "Item #12184",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1298,7 +1298,7 @@
       "group": "fishing_catch",
       "id": 13888,
       "name": "Darkclaw Lobster",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1678,7 +1678,7 @@
       "group": "fishing_catch",
       "id": 21153,
       "name": "Raw Greater Sagefish",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1718,7 +1718,7 @@
       "group": "associated_item",
       "id": 227813,
       "name": "Item #227813",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1818,7 +1818,7 @@
       "group": "associated_item",
       "id": 239017,
       "name": "Item #239017",
-      "sourceStatus": "documented_reference_or_observation"
+      "sourceStatus": "unknown_not_proven_absent"
     },
     {
       "evidence": {
@@ -1893,6 +1893,6 @@
     "purpose": "Fishing-only source coverage; not server availability",
     "referenceCredit": "Blizzard-derived client metadata and separate GPLv3 historical references",
     "totalRecords": 94,
-    "unknownSources": 0
+    "unknownSources": 6
   }
 }

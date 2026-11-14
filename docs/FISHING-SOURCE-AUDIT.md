@@ -5,7 +5,7 @@ This file is generated from **all currently bundled offline fishing-relevant rec
 Everloot observation evidence is CC BY-SA 4.0. Client files are Blizzard-derived and historical references are separately credited.
 
 Total indexed fishing-relevant item IDs: **94**.
-Items with no known acquisition/craft/ingredient edge: **0**. These are **UNKNOWN**, not unobtainable.
+Items with no known acquisition/craft/ingredient edge: **6**. These are **UNKNOWN**, not unobtainable.
 
 | ID | Name | Group | Fishing/pool/ref | Vendors obs/ref | Creature drops | Craft | Quest/object |
 |---:|---|---|---:|---:|---:|---:|---:|
