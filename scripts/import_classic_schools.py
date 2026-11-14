@@ -121,6 +121,9 @@ def generate(raw, catalog, observed):
     found = {(round(p["x"] * 100, 2), round(p["y"] * 100, 2))
              for p in locations["School of Deviate Fish"] if p["mapID"] == 1413}
     if not expected.issubset(found):
+        print("Barrens projections currently in dump:", sorted(found)[:40], flush=True)
+        print("Deviate locations by map:", {key: sum(p["mapID"] == key for p in locations["School of Deviate Fish"])
+              for key in {p["mapID"] for p in locations["School of Deviate Fish"]}}, flush=True)
         raise ValueError("School coordinate transform failed Barrens cross-check")
     total = sum(len(v) for v in locations.values())
     if len(templates) < 8 or total < 100:
