@@ -45,6 +45,17 @@ For v0.99.7 map markers, neighboring context and Cooking spell requirements,
 see [the v0.99.7 in-game checklist](docs/V0.99.7-IN-GAME-ACCEPTANCE.md).
 See [the 12-case manual test plan](docs/ACCEPTANCE-v0.99.md), [test results](docs/TEST-RESULTS-v0.99.md), and [candidate notes](docs/RELEASE-v0.99.md). Do not treat automated CI as a substitute for in-game verification.
 
+## Optional offline library integrations (draft)
+
+Fishing Atlas remains standalone. When available **and identified explicitly as
+Forever-compatible**, `LibItemDB-1.0` can provide missing item names/links and
+`LibProfessionDB-1.0` can supply Cooking learn ranks, teaching item IDs and
+reagent lookups. The latter is already used for compatible skill/scroll fallbacks.
+An installed library never proves live merchant inventory or school spawns.
+`/fa diagnose` shows library readiness and compatibility, including
+`version_unknown` if the installed ItemDB lacks verifiable game-version
+metadata. See [optional library integration and acceptance](docs/OPTIONAL-LIBRARIES.md).
+
 ## Roadmap
 - v0.2: guarded one-key fishing assistant, gear/lure profiles, client API smoke tests
 - v0.3: world-map/minimap markers, school recognition, proximity alerts, TomTom
