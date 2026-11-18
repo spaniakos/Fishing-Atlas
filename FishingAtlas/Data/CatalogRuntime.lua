@@ -32,6 +32,10 @@ function C.name(kind, id)
     local name = GetSpellInfo(id)
     if type(name) == "string" and name ~= "" then return name, true end
   end
+  if kind == "item" and ns.itemProvider and type(ns.itemProvider.name) == "function" then
+    local libName = ns.itemProvider.name(id)
+    if type(libName) == "string" and libName ~= "" then return libName, false end
+  end
   if kind == "item" and ns.sources and ns.sources.itemName then
     local fromObserved = ns.sources.itemName(id)
     if type(fromObserved) == "string" and fromObserved ~= "" then return fromObserved, false end

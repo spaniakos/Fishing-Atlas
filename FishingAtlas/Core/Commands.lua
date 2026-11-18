@@ -39,6 +39,8 @@ function commands.run(raw)
     say("Item: " .. tostring(d.itemAPI) .. "; spell: " .. tostring(d.spellAPI) ..
       "; bags: " .. tostring(d.bagAPI) .. "; secure cast: " .. tostring(d.secureCast) ..
       "; TomTom: " .. tostring(d.tomtom))
+    say("Optional libraries: ItemDB " .. tostring(d.itemLibrary) ..
+      "; ProfessionDB " .. tostring(d.professionLibrary))
   elseif command == "mapdebug" then
     local mapID = tonumber(rest)
     if not mapID and ns.ui and ns.ui.mapDiagnostics then

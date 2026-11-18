@@ -57,25 +57,11 @@ local function observed(spellId, rec)
 end
 
 local function professionDB(spellId)
-  if not LibStub then return nil end
-  local ok, lib = pcall(LibStub, "LibProfessionDB-1.0", true)
-  if not ok or type(lib) ~= "table"
-      or type(lib.GetGameVersion) ~= "function" then return nil end
-  local vOK, version = pcall(lib.GetGameVersion, lib)
-  if not vOK or version ~= "Forever" then return nil end
-  local function call(method)
-    if type(lib[method]) ~= "function" then return nil end
-    local success, value = pcall(lib[method], lib, spellId)
-    return success and value or nil
-  end
-  local required, item = call("GetRequiredSkill"), call("GetRecipeItem")
-  if type(item) == "table" then item = item.itemId or item.itemID end
-  local borrowed = false
-  if type(lib.IsBorrowed) == "function" then
-    local success, value = pcall(lib.IsBorrowed, lib, spellId, "requiredSkill")
-    borrowed = success and value == true
-  end
-  return tonumber(required), tonumber(item), borrowed
+  local provider = ns.professionProvider
+  if not provider then return nil end
+  local skill, source = provider.requirement(spellId)
+  local item = provider.teachingItem(spellId)
+  return skill, item, source == "borrowed_classic_reference"
 end
 
 local function itemTooltipSkill(itemID)
