@@ -5,7 +5,7 @@ ns.professionProvider = {}
 local P = ns.professionProvider
 
 local function library()
-  if type(LibStub) ~= "function" then return nil, "missing" end
+  if not LibStub then return nil, "missing" end
   local ok, lib = pcall(LibStub, "LibProfessionDB-1.0", true)
   if not ok or type(lib) ~= "table" then return nil, "missing" end
   if type(lib.IsReady) ~= "function" or type(lib.GetGameVersion) ~= "function" then
