@@ -23,6 +23,8 @@ function D.report()
     secureCast = type(SetOverrideBindingClick) == "function"
       and type(ClearOverrideBindings) == "function",
     tomtom = type(TomTom) == "table" and type(TomTom.AddWaypoint) == "function",
+    itemLibrary = ns.itemProvider and select(2, ns.itemProvider.status()) or "not_loaded",
+    professionLibrary = ns.professionProvider and select(2, ns.professionProvider.status()) or "not_loaded",
   }
   result.targetMatch = result.version == "1.60.1" and result.interface == 16001
   result.dataBuildMatch = result.build == "70888"
